@@ -82,6 +82,7 @@ Prefixo `/api/v1`. Público: `/version`, `/ui/config`. Auth: `/auth/login|logout
 | `docs/api.md` | referência REST |
 | `docs/skins.md` | criar/implementar skins |
 | `docs/lab.md` | lab Docker/Vagrant |
+| `docs/deployment-dev.md` | VM Vagrant híbrida: Go via systemd, MariaDB/SnappyMail via docker compose, Postfix/Dovecot nativos |
 | `docs/security.md` | higiene de segredos |
 | `docs/validation-summary.md` | estado atual do projeto (handoff) |
 

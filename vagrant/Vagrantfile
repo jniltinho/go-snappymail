@@ -1,9 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-# VM Ubuntu 24.04 — ambiente de validação go-snappymail
+# VM Ubuntu 24.04 — lab híbrido go-snappymail
 #
-# Stack: MariaDB + Postfix + Dovecot + Go-PostfixAdmin + SnappyMail (PHP) + Go webmail
+# Docker (compose em /opt/gosm-docker): MariaDB + SnappyMail PHP
+# Nativo (systemd): Postfix + Dovecot + go-snappymail + go-cubemail + go-postfixadmin
 #
 # Uso:
 #   cd vagrant && vagrant up
@@ -22,7 +23,6 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../../go-postfixadmin", "/vagrant/go-postfixadmin", type: "virtualbox", create: true
   config.vm.synced_folder "../../go-cubemail", "/vagrant/go-cubemail", type: "virtualbox", create: true
   config.vm.synced_folder "provision", "/vagrant/provision", type: "virtualbox"
-  config.vm.synced_folder "templates", "/vagrant/templates", type: "virtualbox"
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "go-snappymail-lab"
@@ -32,12 +32,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", name: "01-base", path: "provision/01-base.sh"
-  config.vm.provision "shell", name: "02-mariadb", path: "provision/02-mariadb.sh"
+  config.vm.provision "shell", name: "02-docker", path: "provision/02-docker.sh"
   config.vm.provision "shell", name: "03-mailserver", path: "provision/03-mailserver.sh"
-  config.vm.provision "shell", name: "04-snappymail", path: "provision/04-snappymail.sh"
-  config.vm.provision "shell", name: "05-go-webmail", path: "provision/05-go-webmail.sh"
+  config.vm.provision "shell", name: "04-go-apps", path: "provision/04-go-apps.sh"
+  config.vm.provision "shell", name: "05-seed", path: "provision/05-seed.sh"
   config.vm.provision "shell", name: "99-summary", path: "provision/99-summary.sh"
-
-  # Modo Docker (opcional): vagrant provision --provision-with docker
-  config.vm.provision "shell", name: "docker", path: "provision/06-docker.sh", run: "never"
 end

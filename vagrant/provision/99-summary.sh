@@ -2,12 +2,12 @@
 set -euo pipefail
 source /vagrant/provision/common.sh
 
-SNAPPY_ADMIN_PW="${SNAPPY_ADMIN_PASS}"
+SNAPPY_ADMIN_PW="$(docker exec gosm-snappymail cat /var/lib/snappymail/_data_/_default_/admin_password.txt 2>/dev/null || echo 'ver: docker exec gosm-snappymail cat /var/lib/snappymail/_data_/_default_/admin_password.txt')"
 
 cat <<EOF
 
 ================================================================================
-  go-snappymail LAB — ambiente pronto
+  go-snappymail LAB (híbrido) — ambiente pronto
 ================================================================================
 
   VM IP ..........: ${VM_IP}
@@ -17,47 +17,43 @@ cat <<EOF
     ${VM_IP}  ${MAIL_FQDN}
 
 --------------------------------------------------------------------------------
-  Serviços Web
+  Nativo na VM (systemd)                 | Docker (${COMPOSE_DIR})
 --------------------------------------------------------------------------------
-  Go-PostfixAdmin : http://${VM_IP}:8081   (admin mail server)
-  SnappyMail PHP  : http://${VM_IP}:8888   (webmail referência)
-  Go webmail (Go) : http://${VM_IP}:8080   (go-cubemail — referência Golang)
+  go-snappymail ..: http://${VM_IP}:8082 | MariaDB ......: 127.0.0.1:3306
+  go-cubemail ....: http://${VM_IP}:8080 | SnappyMail PHP: http://${VM_IP}:8888
+  go-postfixadmin : http://${VM_IP}:8081 |
+  Postfix ........: :25                  |
+  Dovecot ........: :143 / :993 (SSL)    |
 
 --------------------------------------------------------------------------------
   Credenciais de teste
 --------------------------------------------------------------------------------
   Mailbox ........: ${MAIL_USER} / ${MAIL_PASS}
   PostfixAdmin ...: ${ADMIN_EMAIL} / ${ADMIN_PASS}
-
   SnappyMail admin: admin / ${SNAPPY_ADMIN_PW}
   (painel admin SnappyMail: http://${VM_IP}:8888/?admin)
 
 --------------------------------------------------------------------------------
-  IMAP / SMTP (para clientes de email)
---------------------------------------------------------------------------------
-  IMAP ...........: ${MAIL_FQDN}:993 (SSL/TLS)
-  IMAP (plain) ...: ${MAIL_FQDN}:143
-  SMTP ...........: ${MAIL_FQDN}:25
-  SMTP submission : ${MAIL_FQDN}:587 (STARTTLS — se habilitado)
-
---------------------------------------------------------------------------------
   Validação rápida
 --------------------------------------------------------------------------------
-  # Testar IMAP login
+  # Apps Go (systemd)
+  systemctl status go-snappymail go-cubemail postfixadmin --no-pager
+  journalctl -u go-snappymail -f
+
+  # Containers
+  docker compose -f ${COMPOSE_DIR}/docker-compose.yml ps
+
+  # IMAP login
   doveadm auth test '${MAIL_USER}' '${MAIL_PASS}'
 
   # Enviar email de teste
   echo "teste" | mail -s "Lab test" ${MAIL_USER}
 
-  # Status dos serviços
-  systemctl status postfix dovecot postfixadmin go-cubemail nginx --no-pager
+  # API go-snappymail
+  curl http://${VM_IP}:8082/api/v1/version
 
   SSH ............: vagrant ssh  (ou root/vagrant123)
 
-================================================================================
-  Nota: go-snappymail ainda não tem código — go-cubemail serve como referência
-  Golang na porta 8080. Quando go-snappymail P0 estiver pronto, substitua o
-  serviço go-cubemail pelo binário go-snappymail.
 ================================================================================
 
 EOF

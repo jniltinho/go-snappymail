@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+# Base packages for the hybrid lab: Postfix/Dovecot nativos + cliente MariaDB.
+# MariaDB e SnappyMail PHP rodam em Docker (02-docker.sh).
 set -euo pipefail
 source /vagrant/provision/common.sh
 
 log "Atualizando sistema e instalando pacotes base"
-export DEBIAN_FRONTEND=noninteractive
 
 debconf-set-selections <<< "postfix postfix/mailname string ${MAIL_FQDN}"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
@@ -11,13 +12,10 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Si
 apt-get update -qq
 apt-get upgrade -y -qq
 apt-get install -y -qq \
-  curl wget ca-certificates gnupg openssl \
+  curl wget ca-certificates gnupg openssl gcc \
   postfix postfix-mysql \
   dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-mysql \
-  mariadb-server \
-  nginx \
-  php-fpm php-cli php-mbstring php-json php-xml php-zip php-intl php-curl php-gd php-sqlite3 php-mysql \
-  sqlite3 \
+  mariadb-client \
   mailutils swaks
 
 # Hostname
@@ -32,6 +30,9 @@ if ! id vmail &>/dev/null; then
   useradd -g vmail -u "${VMAIL_UID}" vmail -d /var/vmail -m
 fi
 chown -R vmail:vmail /var/vmail
+
+# Limpeza de layouts antigos (VM reaproveitada): serviços que agora vivem no Docker
+systemctl disable --now mariadb nginx php8.3-fpm 2>/dev/null || true
 
 # Root SSH for convenience in lab
 echo "root:vagrant123" | chpasswd

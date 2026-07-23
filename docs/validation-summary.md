@@ -226,6 +226,7 @@ frontend/src/
 | 4 domínios novos via painel Go-PostfixAdmin (linuxpro.com.br, criare-net.com.br, uol.com.br, criarenet.com) | ✅ — print 18 |
 | 20 contas por domínio novo (80 via CLI `postfixadmin mailbox --add` + 4 `user15@` via painel web) | ✅ — print 21 |
 | 5 aliases por domínio novo (postmaster/abuse/admin→ti, info→contato, atendimento→suporte) | ✅ — `docker/lab/aliases.txt` |
+| VM Vagrant híbrida (`vagrant up` do zero): Go via systemd, MariaDB/SnappyMail via compose, Postfix/Dovecot nativos — systemctl active, HTTP 200 nos 4 apps, IMAPS/SMTP/login OK | ✅ — `docs/deployment-dev.md` |
 
 Correções de lab feitas no caminho:
 

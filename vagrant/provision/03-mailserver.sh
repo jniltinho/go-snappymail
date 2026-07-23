@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
+# Postfix + Dovecot NATIVOS na VM, apontando para o MariaDB em container (127.0.0.1:3306).
+# Templates SQL/Dovecot reutilizados de docker/mailserver/templates (@@DB_HOST@@ = 127.0.0.1).
 set -euo pipefail
 source /vagrant/provision/common.sh
 
 log "Instalando Go-PostfixAdmin e configurando Postfix/Dovecot"
 
-# --- Go-PostfixAdmin ---
+wait_for_mariadb
+
+# --- Go-PostfixAdmin (nativo, systemd) ---
 DEB="/tmp/go-postfixadmin_${GO_POSTFIXADMIN_VERSION}_amd64.deb"
 if [[ ! -f "$DEB" ]]; then
   wget -q -O "$DEB" \
@@ -16,7 +20,7 @@ SESSION_SECRET=$(openssl rand -hex 32)
 
 cat > /opt/go-postfixadmin/config.toml <<EOF
 [database]
-host   = "localhost"
+host   = "${DB_HOST}"
 port   = "3306"
 user   = "${DB_USER}"
 pass   = "${DB_PASS}"
@@ -66,8 +70,7 @@ type   = "plain"
 EOF
 
 cd /opt/go-postfixadmin
-PA_BIN="./postfixadmin"
-[[ -x /opt/go-postfixadmin/postfixadmin ]] && PA_BIN="/opt/go-postfixadmin/postfixadmin"
+PA_BIN="/opt/go-postfixadmin/postfixadmin"
 
 $PA_BIN migrate
 
@@ -83,21 +86,22 @@ $PA_BIN transport --add "local:lmtp:unix:private/dovecot-lmtp" || true
 systemctl enable postfixadmin
 systemctl restart postfixadmin
 
-# --- Postfix SQL maps ---
+# --- Postfix SQL maps (templates de docker/mailserver — DB_HOST=127.0.0.1) ---
 mkdir -p /etc/postfix/sql
 for f in mysql_virtual_domains_maps.cf mysql_virtual_mailbox_maps.cf \
          mysql_virtual_alias_maps.cf mysql_virtual_alias_domain_maps.cf \
          mysql_virtual_alias_domain_catchall_maps.cf mysql_virtual_alias_domain_mailbox_maps.cf; do
-  render_template "/vagrant/templates/postfix/sql/${f}" "/etc/postfix/sql/${f}"
+  render_template "${MAILSERVER_TEMPLATES}/postfix/sql/${f}" "/etc/postfix/sql/${f}"
 done
 chmod 640 /etc/postfix/sql/*.cf
 chown root:postfix /etc/postfix/sql/*.cf
 
-render_template /vagrant/templates/postfix/main.cf /etc/postfix/main.cf
+# main.cf do template docker (virtual_transport lmtp; mynetworks já cobre 192.168.0.0/16)
+render_template "${MAILSERVER_TEMPLATES}/postfix/main.cf" /etc/postfix/main.cf
 
-# --- Dovecot ---
-render_template /vagrant/templates/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
-render_template /vagrant/templates/dovecot/dovecot-sql.conf /etc/dovecot/dovecot-sql.conf
+# --- Dovecot (templates de docker/mailserver) ---
+render_template "${MAILSERVER_TEMPLATES}/dovecot/dovecot.conf" /etc/dovecot/dovecot.conf
+render_template "${MAILSERVER_TEMPLATES}/dovecot/dovecot-sql.conf" /etc/dovecot/dovecot-sql.conf
 chmod 640 /etc/dovecot/dovecot-sql.conf
 chown root:dovecot /etc/dovecot/dovecot-sql.conf
 
@@ -113,4 +117,4 @@ systemctl restart postfix dovecot
 sleep 3
 echo "Test message from go-snappymail lab" | mail -s "Welcome to ${MAIL_DOMAIN}" "${MAIL_USER}" || true
 
-log "Mailserver configurado (Postfix + Dovecot + Go-PostfixAdmin)"
+log "Mailserver configurado (Postfix + Dovecot nativos + Go-PostfixAdmin :8081)"

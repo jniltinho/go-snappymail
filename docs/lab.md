@@ -70,23 +70,18 @@ Quick login:
 | `ceo@acme.local` | `Password1@` |
 | PostfixAdmin admin | `admin@test.local` / `Password1@` |
 
-## Vagrant VM
+## Vagrant VM (híbrido)
 
 ```bash
+make frontend   # no host — web/dist/ é embedado no binário
 cd vagrant
 cp .env.example .env
 vagrant up
 ```
 
-**Docker mode** (recommended for full stack including go-snappymail :8082):
+Modelo híbrido: MariaDB + SnappyMail PHP em Docker dentro da VM; Postfix, Dovecot e os binários Go (go-snappymail :8082, go-cubemail :8080, go-postfixadmin :8081) nativos via systemd.
 
-```bash
-vagrant provision --provision-with docker
-```
-
-Do **not** run bare-metal and Docker modes at the same time — same ports.
-
-Details: [vagrant/README.md](../vagrant/README.md)
+Details: [vagrant/README.md](../vagrant/README.md) e [deployment-dev.md](deployment-dev.md)
 
 ## Verify IMAP
 
