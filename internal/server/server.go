@@ -15,6 +15,7 @@ import (
 
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/handler"
+	"go-snappymail/internal/model"
 	appMiddleware "go-snappymail/internal/server/middleware"
 	"go-snappymail/internal/session"
 	"github.com/labstack/echo/v5"
@@ -27,6 +28,13 @@ var AppVersion = "dev"
 
 // Start wires middleware, routes, and blocks until shutdown.
 func Start(cfg *config.Config, db *gorm.DB, embeddedFiles embed.FS) error {
+	if len(cfg.Server.SecretKey) < 32 {
+		return fmt.Errorf("server.secret_key deve ter pelo menos 32 bytes (atual: %d); gere uma chave com: openssl rand -hex 32", len(cfg.Server.SecretKey))
+	}
+
+	if err := db.AutoMigrate(&model.Session{}); err != nil {
+		return fmt.Errorf("auto-migrate sessions: %w", err)
+	}
 	session.InitDB(db)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -37,7 +45,7 @@ func Start(cfg *config.Config, db *gorm.DB, embeddedFiles embed.FS) error {
 	e.Use(echoMiddleware.Recover())
 	e.Use(echoMiddleware.RequestID())
 	e.Use(appMiddleware.SecurityHeaders())
-	e.Use(appMiddleware.CSRF())
+	e.Use(appMiddleware.CSRF(cfg.Session.Secure))
 	e.Use(echoMiddleware.RequestLoggerWithConfig(echoMiddleware.RequestLoggerConfig{
 		LogMethod:    true,
 		LogURI:       true,

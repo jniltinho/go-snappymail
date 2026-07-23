@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -148,7 +149,8 @@ func (h *MailboxHandler) CreateSubfolder(c *echo.Context) error {
 	s := c.Get("imap_session").(*session.IMAPSession)
 	conn, err := imapConn(h.cfg, s)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("IMAP connection failed", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create folder."})
 	}
 	defer conn.Close()
 
@@ -159,7 +161,8 @@ func (h *MailboxHandler) CreateSubfolder(c *echo.Context) error {
 	}
 
 	if err := conn.CreateMailbox(fullName); err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to create mailbox", "name", fullName, "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create folder."})
 	}
 	return c.JSON(http.StatusOK, map[string]string{"status": "ok", "name": fullName})
 }
@@ -174,12 +177,14 @@ func (h *MailboxHandler) RenameFolder(c *echo.Context) error {
 	s := c.Get("imap_session").(*session.IMAPSession)
 	conn, err := imapConn(h.cfg, s)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("IMAP connection failed", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to rename folder."})
 	}
 	defer conn.Close()
 
 	if err := conn.RenameMailbox(name, newname); err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to rename mailbox", "name", name, "newname", newname, "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to rename folder."})
 	}
 	return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
 }
@@ -193,13 +198,15 @@ func (h *MailboxHandler) DeleteFolder(c *echo.Context) error {
 	s := c.Get("imap_session").(*session.IMAPSession)
 	conn, err := imapConn(h.cfg, s)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("IMAP connection failed", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete folder."})
 	}
 	defer conn.Close()
 
 	folders, err := conn.ListMailboxes()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to list mailboxes", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete folder."})
 	}
 	for _, f := range folders {
 		if f.Name == name && f.IsSystem {
@@ -208,7 +215,8 @@ func (h *MailboxHandler) DeleteFolder(c *echo.Context) error {
 	}
 
 	if err := conn.DeleteMailboxRecursive(name); err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to delete mailbox", "name", name, "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete folder."})
 	}
 	return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
 }

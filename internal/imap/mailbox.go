@@ -160,27 +160,6 @@ func (c *Client) UnreadCount(mailbox string) (uint32, error) {
 	return *data.NumUnseen, nil
 }
 
-// MessageCount returns the total number of messages in the given mailbox.
-func (c *Client) MessageCount(mailbox string) (uint32, error) {
-	data, err := c.Client.Status(mailbox, &imap.StatusOptions{NumMessages: true}).Wait()
-	if err != nil {
-		return 0, err
-	}
-	if data.NumMessages == nil {
-		return 0, nil
-	}
-	return *data.NumMessages, nil
-}
-
-// FetchAllUIDs returns all message UIDs in the currently selected mailbox.
-func (c *Client) FetchAllUIDs() ([]imap.UID, error) {
-	data, err := c.Client.UIDSearch(&imap.SearchCriteria{}, nil).Wait()
-	if err != nil {
-		return nil, err
-	}
-	return data.AllUIDs(), nil
-}
-
 // SelectMailbox issues an IMAP SELECT command so subsequent operations target the named folder.
 func (c *Client) SelectMailbox(mailbox string) error {
 	_, err := c.Client.Select(mailbox, nil).Wait()
@@ -305,9 +284,12 @@ type QuotaInfo struct {
 // GetQuota fetches the STORAGE quota via GETQUOTAROOT on INBOX.
 // Returns nil without error when the server does not support the QUOTA extension.
 func (c *Client) GetQuota() (*QuotaInfo, error) {
+	if !c.Client.Caps().Has(imap.CapQuota) {
+		return nil, nil // quota extension not supported
+	}
 	data, err := c.Client.GetQuotaRoot("INBOX").Wait()
 	if err != nil {
-		return nil, nil // quota extension not supported — ignore
+		return nil, err
 	}
 	for _, qd := range data {
 		if res, ok := qd.Resources[imap.QuotaResourceStorage]; ok {

@@ -12,7 +12,7 @@ import (
 
 func TestCSRF(t *testing.T) {
 	e := echo.New()
-	e.Use(CSRF())
+	e.Use(CSRF(false))
 	e.GET("/", func(c *echo.Context) error {
 		return c.String(http.StatusOK, "ok")
 	})

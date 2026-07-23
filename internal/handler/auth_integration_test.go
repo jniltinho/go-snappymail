@@ -32,7 +32,7 @@ func TestAuthDoLoginIntegration(t *testing.T) {
 
 	h := &AuthHandler{cfg: cfg}
 	e := echo.New()
-	e.Use(appMiddleware.CSRF())
+	e.Use(appMiddleware.CSRF(false))
 	e.GET("/", func(c *echo.Context) error { return c.NoContent(http.StatusOK) })
 	e.POST("/login", h.DoLogin)
 

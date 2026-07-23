@@ -98,10 +98,10 @@ func Set(sessionID string, s *IMAPSession) {
 
 // Get returns the session by ID; nil if it doesn't exist.
 func Get(sessionID string) *IMAPSession {
-	storeMu.RLock()
+	storeMu.Lock()
 	s := store[sessionID]
-	storeMu.RUnlock()
-	
+	defer storeMu.Unlock()
+
 	if s != nil {
 		// Only update LastUsed in memory for now to avoid constant DB hits
 		s.LastUsed = time.Now()
@@ -190,17 +190,6 @@ func (s *IMAPSession) Password(key string) (string, error) {
 	return DecryptPassword(s.EncPassword, key)
 }
 
-// All returns a snapshot of all active sessions keyed by session ID.
-func All() map[string]*IMAPSession {
-	storeMu.RLock()
-	defer storeMu.RUnlock()
-	out := make(map[string]*IMAPSession, len(store))
-	for id, s := range store {
-		out[id] = s
-	}
-	return out
-}
-
 // Cleanup removes idle sessions older than maxIdle.
 func Cleanup(maxIdle time.Duration) {
 	storeMu.Lock()
@@ -217,7 +206,9 @@ func Cleanup(maxIdle time.Duration) {
 	
 	if len(toDelete) > 0 && globalDB != nil {
 		go func(ids []string) {
-			globalDB.Where("id IN ?", ids).Delete(&model.Session{})
+			if err := globalDB.Where("id IN ?", ids).Delete(&model.Session{}).Error; err != nil {
+				slog.Error("Failed to remove expired sessions from database", "error", err)
+			}
 		}(toDelete)
 	}
 }

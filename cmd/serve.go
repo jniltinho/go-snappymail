@@ -5,6 +5,7 @@ package cmd
 // Port and debug-mode flags can override the config file values.
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -27,8 +28,7 @@ var serveCmd = &cobra.Command{
 
 		db, err := database.Open(cfg)
 		if err != nil {
-			slog.Error("failed to connect to database", "error", err)
-			os.Exit(1)
+			return fmt.Errorf("open database: %w", err)
 		}
 
 		server.AppVersion = Version

@@ -1,5 +1,5 @@
 // Package config defines the application configuration structures and the Load function
-// that populates them from Viper (config.toml + GORC_* environment variables).
+// that populates them from Viper (config.toml + GOSM_* environment variables).
 package config
 
 import (

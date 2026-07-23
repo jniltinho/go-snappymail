@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"crypto/rand"
-	"encoding/hex"
 	"net/http"
 	"strings"
 	"time"
@@ -33,7 +31,10 @@ type AuthHandler struct {
 // @Failure      500  {object}  map[string]string "Session error"
 // @Router       /auth/login [post]
 func (h *AuthHandler) DoLogin(c *echo.Context) error {
-	imapHost := c.FormValue("imap_host")
+	var imapHost string
+	if h.cfg.IMAP.ShowHostInput {
+		imapHost = c.FormValue("imap_host")
+	}
 	username := strings.TrimSpace(c.FormValue("username"))
 	password := c.FormValue("password")
 
@@ -67,7 +68,10 @@ func (h *AuthHandler) DoLogin(c *echo.Context) error {
 	conn.EnsureSystemFolders()
 	conn.Close()
 
-	sessID := newSessionID()
+	sessID, err := randomID()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Session error."})
+	}
 	s := &session.IMAPSession{
 		IMAPHost: imapHost,
 		IMAPPort: h.cfg.IMAP.Port,
@@ -139,12 +143,7 @@ func (h *AuthHandler) Me(c *echo.Context) error {
 // @Router       /auth/quota [get]
 func (h *AuthHandler) Quota(c *echo.Context) error {
 	s := c.Get("imap_session").(*session.IMAPSession)
-	pass, err := s.Password(h.cfg.Server.SecretKey)
-	if err != nil {
-		return err
-	}
-	conn, err := imap.Connect(s.IMAPHost, h.cfg.IMAP.Port, h.cfg.IMAP.TLS, h.cfg.IMAP.TLSServerName, h.cfg.IMAP.InsecureSkipVerify,
-		time.Duration(h.cfg.IMAP.TimeoutSec)*time.Second, s.Username, pass, h.cfg.Server.Debug)
+	conn, err := imapConn(h.cfg, s)
 	if err != nil {
 		return err
 	}
@@ -158,11 +157,4 @@ func (h *AuthHandler) Quota(c *echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]int64{"used": 0, "limit": 0})
 	}
 	return c.JSON(http.StatusOK, map[string]int64{"used": q.UsageBytes, "limit": q.LimitBytes})
-}
-
-// newSessionID generates a cryptographically random 16-byte session identifier as hex.
-func newSessionID() string {
-	b := make([]byte, 16)
-	rand.Read(b)
-	return hex.EncodeToString(b)
 }

@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"html/template"
+	"mime"
 	"net/http"
 	"strconv"
 
@@ -13,6 +14,30 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/microcosm-cc/bluemonday"
 )
+
+// bodyPolicy sanitizes message HTML bodies. Built once; bluemonday policies are
+// safe for concurrent use. The "data" scheme is required for inline cid images,
+// which are rewritten to data: URIs during parsing.
+var bodyPolicy = func() *bluemonday.Policy {
+	p := bluemonday.NewPolicy()
+	p.AllowElements(
+		"html", "head", "body", "div", "span", "p", "br", "hr",
+		"h1", "h2", "h3", "h4", "h5", "h6",
+		"b", "strong", "i", "em", "u", "s", "strike", "sup", "sub",
+		"ul", "ol", "li", "blockquote", "pre", "code",
+		"table", "thead", "tbody", "tfoot", "tr", "th", "td", "caption",
+		"img", "a", "font",
+	)
+	p.AllowAttrs("style").Globally()
+	p.AllowAttrs("class").Globally()
+	p.AllowAttrs("align", "valign", "bgcolor", "color", "width", "height", "border", "cellpadding", "cellspacing").OnElements("table", "td", "th", "tr")
+	p.AllowAttrs("src", "alt", "width", "height", "border").OnElements("img")
+	p.AllowAttrs("href", "target").OnElements("a")
+	p.AllowAttrs("face", "size", "color").OnElements("font")
+	p.AllowAttrs("colspan", "rowspan").OnElements("td", "th")
+	p.AllowURLSchemes("http", "https", "cid", "data", "mailto")
+	return p
+}()
 
 func (h *MessageHandler) Read(c *echo.Context) error {
 	mailbox := c.Param("mailbox")
@@ -47,24 +72,6 @@ func (h *MessageHandler) Read(c *echo.Context) error {
 
 	var safeHTML template.HTML
 	if parsed != nil {
-		bodyPolicy := bluemonday.NewPolicy()
-		bodyPolicy.AllowElements(
-			"html", "head", "body", "div", "span", "p", "br", "hr",
-			"h1", "h2", "h3", "h4", "h5", "h6",
-			"b", "strong", "i", "em", "u", "s", "strike", "sup", "sub",
-			"ul", "ol", "li", "blockquote", "pre", "code",
-			"table", "thead", "tbody", "tfoot", "tr", "th", "td", "caption",
-			"img", "a", "font",
-		)
-		bodyPolicy.AllowAttrs("style").Globally()
-		bodyPolicy.AllowAttrs("class").Globally()
-		bodyPolicy.AllowAttrs("align", "valign", "bgcolor", "color", "width", "height", "border", "cellpadding", "cellspacing").OnElements("table", "td", "th", "tr")
-		bodyPolicy.AllowAttrs("src", "alt", "width", "height", "border").OnElements("img")
-		bodyPolicy.AllowAttrs("href", "target").OnElements("a")
-		bodyPolicy.AllowAttrs("face", "size", "color").OnElements("font")
-		bodyPolicy.AllowAttrs("colspan", "rowspan").OnElements("td", "th")
-		bodyPolicy.AllowURLSchemes("http", "https", "cid", "data", "mailto")
-
 		if parsed.TextHTML != "" {
 			safeHTML = template.HTML(bodyPolicy.Sanitize(parsed.TextHTML))
 		} else if parsed.TextPlain != "" {
@@ -149,7 +156,8 @@ func (h *MessageHandler) Download(c *echo.Context) error {
 		filename = messageDownloadName(envelopes[0].Subject, uid)
 	}
 
-	c.Response().Header().Set("Content-Disposition", "attachment; filename=\""+filename+"\"")
+	c.Response().Header().Set("Content-Disposition",
+		mime.FormatMediaType("attachment", map[string]string{"filename": filename}))
 	return c.Blob(http.StatusOK, "message/rfc822", rawMsg)
 }
 
@@ -218,7 +226,7 @@ func (h *MessageHandler) Attachment(c *echo.Context) error {
 				ct = "application/octet-stream"
 			}
 			c.Response().Header().Set("Content-Disposition",
-				"attachment; filename=\""+att.Filename+"\"")
+				mime.FormatMediaType("attachment", map[string]string{"filename": att.Filename}))
 			return c.Blob(http.StatusOK, ct, att.Data)
 		}
 	}

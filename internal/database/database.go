@@ -14,7 +14,7 @@ import (
 )
 
 // Open establishes a connection to the database according to the
-// configured driver in config.toml (or GORC_* environment variables).
+// configured driver in config.toml (or GOSM_* environment variables).
 //
 // Supported drivers:
 //   - "sqlite"      (default)

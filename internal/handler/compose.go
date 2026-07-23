@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -65,13 +66,18 @@ func (h *ComposeHandler) Send(c *echo.Context) error {
 
 	raw, err := smtppkg.Send(smtpCfg, s.Username, pass, msg)
 	if err != nil {
-		return c.JSON(http.StatusBadGateway, map[string]string{"error": err.Error()})
+		slog.Error("SMTP send failed", "user", s.Username, "error", err)
+		return c.JSON(http.StatusBadGateway, map[string]string{"error": "Failed to send message."})
 	}
 
 	if conn, imapErr := imapConn(h.cfg, s); imapErr == nil {
 		defer conn.Close()
 		sentFolder := resolveFolderByIcon(conn, "sent", "Sent")
-		_ = conn.AppendMessage(sentFolder, []goimap.Flag{goimap.FlagSeen}, raw)
+		if appendErr := conn.AppendMessage(sentFolder, []goimap.Flag{goimap.FlagSeen}, raw); appendErr != nil {
+			slog.Warn("Failed to append sent message to IMAP folder", "folder", sentFolder, "error", appendErr)
+		}
+	} else {
+		slog.Warn("Failed to connect to IMAP to save sent message", "error", imapErr)
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{"status": "sent"})
@@ -104,18 +110,21 @@ func (h *ComposeHandler) SaveDraft(c *echo.Context) error {
 
 	raw, err := smtppkg.Serialize(msg)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to serialize draft", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save draft."})
 	}
 
 	conn, err := imapConn(h.cfg, s)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("IMAP connection failed", "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save draft."})
 	}
 	defer conn.Close()
 
 	draftsFolder := resolveFolderByIcon(conn, "drafts", "Drafts")
 	if err := conn.AppendMessage(draftsFolder, []goimap.Flag{goimap.FlagDraft}, raw); err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		slog.Error("Failed to append draft to IMAP folder", "folder", draftsFolder, "error", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save draft."})
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{"status": "ok", "folder": draftsFolder})
@@ -199,7 +208,7 @@ func (h *ComposeHandler) attachFormFiles(c *echo.Context, msg *smtppkg.Message) 
 		}
 		src, err := file.Open()
 		if err != nil {
-			continue
+			return fmt.Errorf("open attachment %q: %w", file.Filename, err)
 		}
 		data, err := io.ReadAll(io.LimitReader(src, maxBytes+1))
 		src.Close()
