@@ -1,0 +1,45 @@
+[server]
+host           = "0.0.0.0"
+port           = 8082
+debug          = false
+secret_key     = "change-this-secret-key-32-chars!!"
+base_url       = "http://localhost:8082"
+tls_cert       = ""
+tls_key        = ""
+swagger_enable = false
+
+[imap]
+host            = "mailserver"
+port            = 993
+tls             = true
+timeout_sec     = 30
+show_host_input = false
+
+[smtp]
+host        = "mailserver"
+port        = 25
+starttls    = false
+timeout_sec = 30
+
+[database]
+driver = "sqlite"
+dsn    = "./data/app.db"
+debug  = false
+
+[session]
+name      = "gsn_session"
+max_age   = 86400
+secure    = false
+http_only = true
+
+[ui]
+theme           = "snappymail-default"
+rows_per_page   = 50
+timezone        = "UTC"
+date_format     = "02/01/2006"
+datetime_format = "02/01/2006 15:04"
+compose_html    = true
+
+[upload]
+max_size_mb = 25
+temp_dir    = "./tmp/uploads"
