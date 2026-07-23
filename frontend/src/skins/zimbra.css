@@ -142,10 +142,28 @@
 }
 
 [data-skin='zimbra'] .tabstrip .tab {
-  background: var(--color-panel);
-  color: var(--color-ink);
   padding: 4px 20px;
   font-size: 12px;
+  color: #ffffff;
+}
+
+[data-skin='zimbra'] .tabstrip .tab.active {
+  background: var(--color-panel);
+  color: var(--color-ink);
+}
+
+[data-skin='zimbra'] .tabstrip .tab.disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+[data-skin='zimbra'] .tabstrip .tab-refresh {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0 8px 4px;
 }
 
 /* Folder icons: gray like Zimbra's, not colored emoji */

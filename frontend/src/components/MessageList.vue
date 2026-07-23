@@ -5,20 +5,36 @@ const mail = useMailStore()
 </script>
 
 <template>
-  <section class="border-r border-line bg-panel overflow-y-auto min-h-0">
-    <div
-      v-for="msg in mail.messages"
-      :key="msg.uid"
-      class="msg-row"
-      :class="{ selected: mail.selectedUid === msg.uid, unread: !msg.seen }"
-      @click="mail.selectMessage(msg.uid)"
-    >
-      <div>
-        <div class="text-sm truncate">{{ msg.from || msg.fromEmail }}</div>
-        <div class="msg-subject text-sm truncate">{{ msg.subject }}</div>
-      </div>
-      <div class="text-xs text-ink-mute whitespace-nowrap">{{ msg.date }}</div>
+  <section class="border-r border-line bg-panel min-h-0 flex flex-col">
+    <div class="sort-header">
+      <span>Sorted by: Date</span>
+      <span>{{ mail.messages.length }} message{{ mail.messages.length === 1 ? '' : 's' }}</span>
     </div>
-    <p v-if="!mail.messages.length" class="p-4 text-sm text-ink-mute">No messages</p>
+
+    <div class="flex-1 overflow-y-auto min-h-0">
+      <div
+        v-for="msg in mail.messages"
+        :key="msg.uid"
+        class="msg-row"
+        :class="{ selected: mail.selectedUid === msg.uid, unread: !msg.seen }"
+        @click="mail.selectMessage(msg.uid)"
+      >
+        <div>
+          <div class="text-sm truncate">{{ msg.from || msg.fromEmail }}</div>
+          <div class="msg-subject text-sm truncate">{{ msg.subject }}</div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-ink-mute whitespace-nowrap">{{ msg.date }}</div>
+          <span
+            class="row-flag"
+            :class="{ on: msg.flagged }"
+            title="Flag"
+            @click.stop="mail.toggleFlag(msg.uid, !msg.flagged)"
+            >⚑</span
+          >
+        </div>
+      </div>
+      <p v-if="!mail.messages.length" class="p-4 text-sm text-ink-mute">No messages</p>
+    </div>
   </section>
 </template>

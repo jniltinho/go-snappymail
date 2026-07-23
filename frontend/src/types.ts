@@ -16,6 +16,7 @@ export interface MailMessage {
   seen: boolean
   flagged: boolean
   size: number
+  to?: string
   htmlBody?: string
   plainBody?: string
   attachments?: AttachmentMeta[]

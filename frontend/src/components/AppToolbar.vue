@@ -35,11 +35,43 @@ async function onSearch() {
     </div>
 
     <div class="tabstrip">
-      <span class="tab">Mail</span>
+      <span class="tab active">Mail</span>
+      <span class="tab disabled" title="Coming soon">Contacts</span>
+      <span class="tab disabled" title="Coming soon">Calendar</span>
+      <span class="tab disabled" title="Coming soon">Tasks</span>
+      <span class="tab disabled" title="Coming soon">Preferences</span>
+      <button type="button" class="tab-refresh ml-auto" title="Refresh" @click="mail.refresh">⟳</button>
     </div>
 
     <div class="actionbar flex items-center gap-2 px-3 py-2 border-b border-line">
-      <button type="button" class="tbtn" @click="mail.refresh">Refresh</button>
+      <div class="w-[204px] shrink-0">
+        <button type="button" class="btn-new" @click="mail.openCompose('new')">New message ▾</button>
+      </div>
+
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.openCompose('reply')">
+        Reply
+      </button>
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.openCompose('replyall')">
+        Reply to all
+      </button>
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.openCompose('forward')">
+        Forward
+      </button>
+
+      <span class="toolbar-sep"></span>
+
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.archiveSelected">
+        Archive
+      </button>
+      <button type="button" class="tbtn tbtn-danger" :disabled="!mail.selectedUid" @click="mail.deleteSelected">
+        Delete
+      </button>
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.spamSelected">
+        Spam
+      </button>
+
+      <span class="toolbar-sep"></span>
+
       <button
         type="button"
         class="tbtn"
@@ -55,12 +87,6 @@ async function onSearch() {
         @click="mail.selectedUid && mail.setSeen(mail.selectedUid, !mail.selectedMessage?.seen)"
       >
         {{ mail.selectedMessage?.seen ? 'Mark unread' : 'Mark read' }}
-      </button>
-      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.archiveSelected">
-        Archive
-      </button>
-      <button type="button" class="tbtn tbtn-danger" :disabled="!mail.selectedUid" @click="mail.deleteSelected">
-        Delete
       </button>
     </div>
   </header>

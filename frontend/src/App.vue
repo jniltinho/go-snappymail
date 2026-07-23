@@ -8,6 +8,7 @@ import FolderSidebar from './components/FolderSidebar.vue'
 import MessageList from './components/MessageList.vue'
 import ReadingPane from './components/ReadingPane.vue'
 import AppToolbar from './components/AppToolbar.vue'
+import ComposerModal from './components/ComposerModal.vue'
 
 const auth = useAuthStore()
 const mail = useMailStore()
@@ -56,5 +57,6 @@ onBeforeUnmount(() => {
       <MessageList />
       <ReadingPane />
     </div>
+    <ComposerModal />
   </div>
 </template>

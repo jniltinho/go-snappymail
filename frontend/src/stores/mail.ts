@@ -36,6 +36,7 @@ export const useMailStore = defineStore('mail', () => {
       seen: Boolean(raw.seen),
       flagged: Boolean(raw.flagged),
       size: Number(raw.size) || 0,
+      to: String(raw.to || ''),
     }
   }
 
@@ -150,19 +151,117 @@ export const useMailStore = defineStore('mail', () => {
     await loadFolders()
   }
 
-  async function archiveSelected(): Promise<void> {
+  async function moveToSpecial(iconType: string, names: string[], createName: string): Promise<void> {
     if (!selectedUid.value) return
     let dest =
-      folders.value.find((f) => f.iconType === 'archive')?.name ??
-      folders.value.find((f) => f.name.toLowerCase() === 'archive')?.name
+      folders.value.find((f) => f.iconType === iconType)?.name ??
+      folders.value.find((f) => names.includes(f.name.toLowerCase()))?.name
     if (!dest) {
       const body = new URLSearchParams()
       body.set('parent', '')
-      body.set('name', 'Archive')
+      body.set('name', createName)
       await axios.post(`${API_BASE}/folders`, body)
-      dest = 'Archive'
+      dest = createName
     }
     await moveMessage(selectedUid.value, dest)
+  }
+
+  async function archiveSelected(): Promise<void> {
+    await moveToSpecial('archive', ['archive'], 'Archive')
+  }
+
+  async function spamSelected(): Promise<void> {
+    await moveToSpecial('junk', ['junk', 'spam'], 'Junk')
+  }
+
+  // ── Composer ──────────────────────────────────────────────────
+  const composeOpen = ref(false)
+  const composeBusy = ref(false)
+  const composeErr = ref('')
+  const cTo = ref('')
+  const cCc = ref('')
+  const cSubject = ref('')
+  const cBody = ref('')
+
+  function quoteOriginal(msg: MailMessage): string {
+    const body = msg.plainBody || ''
+    return [
+      '',
+      '',
+      '----- Original Message -----',
+      `From: ${msg.from || msg.fromEmail}`,
+      `To: ${msg.to || ''}`,
+      `Sent: ${msg.date}`,
+      `Subject: ${msg.subject}`,
+      '',
+      body,
+    ].join('\n')
+  }
+
+  function openCompose(mode: 'new' | 'reply' | 'replyall' | 'forward' = 'new'): void {
+    composeErr.value = ''
+    const msg = selectedMessage.value
+    if (mode === 'new' || !msg) {
+      cTo.value = ''
+      cCc.value = ''
+      cSubject.value = ''
+      cBody.value = ''
+    } else {
+      const reSubject = /^re:/i.test(msg.subject) ? msg.subject : `Re: ${msg.subject}`
+      if (mode === 'reply') {
+        cTo.value = msg.fromEmail
+        cCc.value = ''
+        cSubject.value = reSubject
+      } else if (mode === 'replyall') {
+        cTo.value = msg.fromEmail
+        cCc.value = msg.to || ''
+        cSubject.value = reSubject
+      } else {
+        cTo.value = ''
+        cCc.value = ''
+        cSubject.value = /^fwd:/i.test(msg.subject) ? msg.subject : `Fwd: ${msg.subject}`
+      }
+      cBody.value = quoteOriginal(msg)
+    }
+    composeOpen.value = true
+  }
+
+  function composeForm(): URLSearchParams {
+    const body = new URLSearchParams()
+    body.set('to', cTo.value)
+    body.set('cc', cCc.value)
+    body.set('subject', cSubject.value)
+    body.set('body_plain', cBody.value)
+    return body
+  }
+
+  async function sendCompose(): Promise<void> {
+    composeBusy.value = true
+    composeErr.value = ''
+    try {
+      await axios.post(`${API_BASE}/compose/send`, composeForm())
+      composeOpen.value = false
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { error?: string } } }
+      composeErr.value = err.response?.data?.error || 'Failed to send message.'
+    } finally {
+      composeBusy.value = false
+    }
+  }
+
+  async function saveDraftCompose(): Promise<void> {
+    composeBusy.value = true
+    composeErr.value = ''
+    try {
+      await axios.post(`${API_BASE}/compose/draft`, composeForm())
+      composeOpen.value = false
+      await loadFolders()
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { error?: string } } }
+      composeErr.value = err.response?.data?.error || 'Failed to save draft.'
+    } finally {
+      composeBusy.value = false
+    }
   }
 
   async function deleteSelected(): Promise<void> {
@@ -191,6 +290,17 @@ export const useMailStore = defineStore('mail', () => {
     setSeen,
     moveMessage,
     archiveSelected,
+    spamSelected,
     deleteSelected,
+    composeOpen,
+    composeBusy,
+    composeErr,
+    cTo,
+    cCc,
+    cSubject,
+    cBody,
+    openCompose,
+    sendCompose,
+    saveDraftCompose,
   }
 })
