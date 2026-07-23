@@ -2,6 +2,8 @@
 
 Ambiente containerizado equivalente ao provisionamento bare-metal da VM Vagrant.
 
+Documentação completa: [docs/lab.md](../docs/lab.md) · contas de teste: [LAB_ACCOUNTS.md](LAB_ACCOUNTS.md)
+
 ## Serviços
 
 | Container | Porta | Imagem |

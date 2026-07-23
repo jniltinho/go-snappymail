@@ -1,68 +1,73 @@
 # go-snappymail
 
-Self-hosted webmail in Go with SnappyMail-inspired UX. Single binary, IMAP/SMTP passthrough, embedded SPA.
+Self-hosted webmail in Go with **SnappyMail-inspired UX**. Single binary, IMAP/SMTP passthrough, embedded SPA — no PHP runtime.
 
-## Stack
+| | |
+|---|---|
+| **Module** | `go-snappymail` |
+| **Default port** | `8082` |
+| **Stack** | Go 1.26 · Echo v5 · GORM · Cobra · Viper |
+| **Reference** | [go-cubemail](https://github.com/jniltinho/go-cubemail) (architecture) · SnappyMail (UI/UX) |
 
-| Component | Description |
-|-----------|-------------|
-| **go-snappymail** | This project — Echo v5, Cobra, embedded UI |
-| **Reference** | [go-cubemail](https://github.com/jniltinho/go-cubemail) architecture |
-| **UI target** | SnappyMail 3-column layout (Vue 3 in P1+) |
-
-## Git hygiene
-
-**Never commit:** `base/`, `dist/`, **`.env`**, local `config.toml`, private keys, GitHub/AWS tokens, `.agents/`, `.cursor/`, `vagrant/.vagrant/`.
-
-| Secret | Where it lives |
-|--------|----------------|
-| Mail/DB passwords | `docker/.env` or `vagrant/.env` (copy from `.env.example`) |
-| `server.secret_key` | `config.toml` local or `GOSM_SERVER_SECRET_KEY` env |
-| Session/JWT secrets | `SESSION_SECRET` in `docker/.env` |
-
-Before push: `make check-git`
-
-Lab docs may mention default passwords (`Password1@`) — those are **local lab only**, not production. Override via `.env`.
-
-## Development
-
-**Backend first, frontend second:** implement REST handlers, IMAP/SMTP, and tests before Vue components. P1 = mail API; Vue 3 inbox comes after the API is stable.
+## Quick start
 
 ```bash
-make build-prod          # → dist/go-snappymail (UPX compressed)
+git clone git@github.com:jniltinho/go-snappymail.git
+cd go-snappymail
+
+make build-prod          # → dist/go-snappymail (UPX)
 ./dist/go-snappymail init
 ./dist/go-snappymail migrate
 ./dist/go-snappymail serve
 ```
 
-Default HTTP port: **8082** (see `web/files/config.default.toml`).
+Open http://localhost:8082
 
-## Docker lab
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Architecture](docs/architecture.md) | Components, project layout, delivery phases |
+| [Development](docs/development.md) | Build, test, backend-first workflow |
+| [Configuration](docs/configuration.md) | `config.toml` and `GOSM_*` environment variables |
+| [API (P0)](docs/api.md) | REST endpoints (auth, version) |
+| [Security](docs/security.md) | Secrets, `.env`, git hygiene |
+| [Lab environment](docs/lab.md) | Docker + Vagrant comparison stack |
+| [Docker lab](docker/README.md) | Container setup and commands |
+| [Vagrant VM](vagrant/README.md) | Ubuntu 24.04 validation VM |
+| [Test accounts](docker/LAB_ACCOUNTS.md) | 4 domains, 15 mailboxes |
+| [OpenSpec](openspec/changes/go-snappymail-foundation/) | Proposal, design, tasks |
+
+## Lab URLs (comparison)
+
+Add to `/etc/hosts`: `192.168.56.20 mail.test.local`
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| **go-snappymail** | 8082 | This project |
+| go-cubemail | 8080 | Go reference webmail |
+| PostfixAdmin | 8081 | Mailbox admin |
+| SnappyMail (PHP) | 8888 | UX/behavior reference |
 
 ```bash
-cd docker
-cp .env.example .env
-docker compose up -d --build
-bash scripts/bootstrap.sh
+cd docker && cp .env.example .env
+docker compose up -d --build && bash scripts/bootstrap.sh
 ```
 
-See [docker/LAB_ACCOUNTS.md](docker/LAB_ACCOUNTS.md) for test mailboxes (4 domains, 15 accounts).
+## Make targets
 
-| Service | Port |
-|---------|------|
-| go-snappymail | 8082 |
-| go-cubemail | 8080 |
-| PostfixAdmin | 8081 |
-| SnappyMail (PHP) | 8888 |
+```bash
+make help          # all targets
+make test          # unit tests + race + coverage
+make check-git     # block secrets, base/, binaries before push
+```
 
-## Vagrant
+## Principles
 
-Bare-metal or Docker mode on `192.168.56.20` — see [vagrant/README.md](vagrant/README.md).
-
-## Spec
-
-OpenSpec change: `openspec/changes/go-snappymail-foundation/`
+1. **Backend first, frontend second** — complete Go API + tests before Vue UI (P1+).
+2. **No mail duplication** — messages stay on the IMAP server; GORM stores sessions/settings only.
+3. **Clean git** — never commit `base/`, `dist/`, `.env`, or private keys. Run `make check-git`.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE)
