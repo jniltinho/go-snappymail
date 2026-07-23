@@ -10,7 +10,9 @@ Self-hosted webmail in Go with SnappyMail-inspired UX. Single binary, IMAP/SMTP 
 | **Reference** | [go-cubemail](https://github.com/jniltinho/go-cubemail) architecture |
 | **UI target** | SnappyMail 3-column layout (Vue 3 in P1+) |
 
-## Quick start
+## Development
+
+**Backend first, frontend second:** implement REST handlers, IMAP/SMTP, and tests before Vue components. P1 = mail API; Vue 3 inbox comes after the API is stable.
 
 ```bash
 make build-prod          # → dist/go-snappymail (UPX compressed)

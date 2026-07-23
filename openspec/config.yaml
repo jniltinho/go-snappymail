@@ -11,6 +11,7 @@ context: |
   Go standards: log/slog, fmt.Errorf %w wrapping, table-driven tests, bluemonday HTML sanitization, AES-GCM sessions.
   Language: code, comments, and specs in English. User-facing docs may be bilingual.
   Non-goals for v1: ActiveSync/EAS, CalDAV/CardDAV servers (defer to later phases; go-cubemail already has these).
+  Delivery order: **backend first, frontend second** — complete Go API + tests per feature before Vue components.
 
 rules:
   proposal:
@@ -19,6 +20,8 @@ rules:
   design:
     - Include architecture diagram (mermaid)
     - Map SnappyMail features to Go/Vue components
+    - State backend-first delivery: API handlers, IMAP/SMTP, tests before Vue UI
   tasks:
     - Break into phases: foundation, core-mail, ui-parity, advanced
+    - Within each phase: backend tasks before frontend tasks
     - Each task chunk max 2 hours

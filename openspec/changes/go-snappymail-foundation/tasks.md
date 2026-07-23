@@ -1,3 +1,7 @@
+## Delivery order
+
+**Backend first, frontend second.** Complete Go handlers + tests for each feature before Vue work. Section 2 (Vue scaffold) starts only after section 4–6 (P1 mail API) is done.
+
 ## 1. Project Scaffold (P0)
 
 - [x] 1.1 Initialize Go module `go-snappymail` with go.mod (Go 1.26+, Echo v5, Cobra, Viper, GORM, go-imap/v2)
@@ -11,12 +15,12 @@
 - [x] 1.9 Scaffold `internal/server/server.go` with Echo v5, middleware stack (recover, request-id, security headers, CSRF, slog logger)
 - [x] 1.10 Implement static file serving for embedded SPA with SPA fallback routing
 - [x] 1.11 Create Makefile with targets: `build`, `build-prod`, `release`, `run`, `clean` (binaries in `dist/`, UPX)
-- [ ] 1.12 Add `.gitignore`, `LICENSE` (MIT), and initial `README.md`
+- [x] 1.12 Add `.gitignore`, `LICENSE` (MIT), and initial `README.md`
 - [x] 1.13 Docker service `go-snappymail` on port 8082 in `docker/docker-compose.yml`
 
-## 2. Frontend Scaffold (P0)
+## 2. Frontend Scaffold (after P1 backend — section 4–6)
 
-- [x] 2.5 Build placeholder login page (`web/dist/index.html`) with SnappyMail-like styling
+- [x] 2.5 Build placeholder login page (`web/dist/index.html`) — temporary until Vue P2
 - [ ] 2.1 Initialize Vue 3 + TypeScript + Vite project in `frontend/`
 - [ ] 2.2 Configure Tailwind CSS v4 with dark mode support
 - [ ] 2.3 Set up Pinia stores skeleton: `auth`, `mail`, `settings`

@@ -189,10 +189,20 @@ go-snappymail/
 
 ## Phased Delivery
 
+**Rule: backend first, frontend second.** For every feature slice, ship the Go REST API (handlers, IMAP/SMTP, tests, Swagger) before Vue components. The minimal `web/dist/index.html` placeholder is enough until P1 backend is complete.
+
+| Phase | Backend (Go) | Frontend (Vue) |
+|---|---|---|
+| **P0 — Foundation** | CLI, config, DB, Echo, auth API | Placeholder login HTML only |
+| **P1 — Core Mail** | Folders, messages, compose/send, search APIs + tests | Deferred until P1 backend done |
+| **P2 — UI Parity** | SSE events, HTML sanitization API | 3-column layout, dark mode, shortcuts |
+| **P3 — Contacts & Settings** | Contacts, identities, settings CRUD | Settings/contacts panes |
+| **P4 — Advanced** | PGP metadata, Sieve, admin API | PGP UI, filter editor, admin panel |
+
 | Phase | Scope | Target |
 |---|---|---|
-| **P0 — Foundation** | CLI, config, DB, Echo server, embed SPA, login | Runnable binary with login screen |
-| **P1 — Core Mail** | Folders, message list/read, flag/move/delete, compose/send | Usable webmail |
+| **P0 — Foundation** | CLI, config, DB, Echo server, auth API, embed placeholder | Runnable binary with login |
+| **P1 — Core Mail** | Folders, message list/read, flag/move/delete, compose/send | Usable webmail (API-first) |
 | **P2 — UI Parity** | SnappyMail layout polish, dark mode, keyboard shortcuts, SSE notifications | Visual parity |
 | **P3 — Contacts & Settings** | Address book, identities, signatures, preferences | Feature parity (basic) |
 | **P4 — Advanced** | PGP, Sieve filters, admin panel | SnappyMail differentiators |
