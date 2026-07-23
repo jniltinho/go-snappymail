@@ -1,42 +1,83 @@
-/* Outlook skin — color tokens (full layout: future) */
+/*
+ * Outlook skin — minimalist Fluent 2 look.
+ * Light neutrals, #0f6cbd accent, flat squared surfaces.
+ */
 
 [data-skin='outlook'] {
-  --color-accent: #0078d4;
-  --color-accent-2: #106ebe;
-  --color-accent-bar: #005a9e;
-  --color-line: #edebe9;
+  /* ── Brand ───────────────────────────────────── */
+  --color-accent: #0f6cbd;
+  --color-accent-2: #115ea3;
+  --color-accent-bar: #0c5397;
+
+  /* ── Surfaces ────────────────────────────────── */
+  --color-line: #e5e3e1;
   --color-panel: #ffffff;
   --color-panel-2: #faf9f8;
-  --color-app-bg: #faf9f8;
-  --color-ink: #323130;
-  --color-ink-sub: #605e5c;
+  --color-app-bg: #f3f2f1;
+
+  /* ── Text ──────────────────────────────────── */
+  --color-ink: #242424;
+  --color-ink-sub: #616161;
   --color-ink-mute: #8a8886;
-  --color-row-selected: #deecf9;
-  --skin-login-bg: #0078d4;
+  --color-row-selected: #cfe4fa;
+
+  /* ── Login page (minimalist: neutral bg, white card) ── */
+  --skin-login-bg: #f3f2f1;
   --skin-login-card: #ffffff;
-  --skin-login-header-bg: var(--color-panel-2);
-  --skin-login-header-border: var(--color-line);
-  --skin-login-text: var(--color-ink);
+  --skin-login-header-bg: #ffffff;
+  --skin-login-header-border: #edebe9;
+  --skin-login-text: #242424;
   --skin-login-input-bg: #ffffff;
-  --skin-login-input-border: #8a8886;
-  --skin-login-input-text: var(--color-ink);
+  --skin-login-input-border: #d1cfcd;
+  --skin-login-input-text: #242424;
   --skin-login-btn-bg: var(--color-accent);
   --skin-login-btn-text: #ffffff;
-  --skin-login-error-bg: #fde7e9;
-  --skin-login-error-text: #a4262c;
-  --skin-login-error-border: #d13438;
+  --skin-login-error-bg: #fdf3f4;
+  --skin-login-error-text: #b10e1c;
+  --skin-login-error-border: #eeacb2;
+
   --skin-layout: outlook;
   --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 [data-skin='outlook'].dark {
-  --color-panel: #292827;
-  --color-panel-2: #323130;
-  --color-app-bg: #201f1e;
+  --color-accent: #479ef5;
+  --color-accent-2: #62abf5;
+  --color-panel: #272727;
+  --color-panel-2: #2b2b2b;
+  --color-app-bg: #1f1f1f;
   --color-ink: #f3f2f1;
   --color-ink-sub: #c8c6c4;
-  --color-line: #3b3a39;
-  --color-row-selected: #004578;
-  --skin-login-bg: #201f1e;
-  --skin-login-card: #292827;
+  --color-ink-mute: #979593;
+  --color-line: #3d3d3d;
+  --color-row-selected: #113a5f;
+
+  --skin-login-bg: #1f1f1f;
+  --skin-login-card: #272727;
+  --skin-login-header-bg: #272727;
+  --skin-login-header-border: #3d3d3d;
+  --skin-login-text: #f3f2f1;
+  --skin-login-input-bg: #1f1f1f;
+  --skin-login-input-border: #575757;
+  --skin-login-input-text: #f3f2f1;
+  --skin-login-btn-bg: #115ea3;
+  --skin-login-error-bg: #3b1c1f;
+  --skin-login-error-text: #f1707b;
+  --skin-login-error-border: #6e2830;
+}
+
+/* ── Fluent chrome (scoped, minimal, squared) ────────────────── */
+
+[data-skin='outlook'] .login-card {
+  border-color: var(--color-line);
+}
+
+[data-skin='outlook'] .login-shadow {
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.13);
+}
+
+/* Outlook-style left accent bar on active folder / selected message */
+[data-skin='outlook'] .side-item.active,
+[data-skin='outlook'] .msg-row.selected {
+  box-shadow: inset 3px 0 0 var(--color-accent);
 }

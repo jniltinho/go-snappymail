@@ -20,8 +20,14 @@ export const SKIN_MANIFEST = [
   {
     id: 'outlook',
     label: 'Outlook',
-    ready: false,
+    ready: true,
     aliases: ['office', 'microsoft'],
+  },
+  {
+    id: 'carbonio',
+    label: 'Carbonio',
+    ready: true,
+    aliases: ['zextras'],
   },
 ] as const // manifest-end
 

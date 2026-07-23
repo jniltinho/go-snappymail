@@ -15,7 +15,7 @@ async function onSubmit() {
 
 <template>
   <div class="min-h-full flex flex-col items-center pt-24 px-6 pb-10 login-page">
-    <form class="w-full max-w-md login-card border login-shadow rounded-sm" @submit.prevent="onSubmit">
+    <form class="w-full max-w-md login-card border login-shadow" @submit.prevent="onSubmit">
       <div class="login-header flex items-center gap-3 px-5 py-3 border-b">
         <div class="text-lg font-bold tracking-tight">
           go-snappymail

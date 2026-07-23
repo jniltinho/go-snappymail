@@ -1,0 +1,89 @@
+/*
+ * Carbonio skin — Zextras Carbonio look.
+ * White chrome, #2b73d2 primary, light gray panels, Roboto, squared.
+ * Reference: docs/prints/carbonio/ (live capture).
+ */
+
+[data-skin='carbonio'] {
+  /* ── Brand ───────────────────────────────────── */
+  --color-accent: #2b73d2;
+  --color-accent-2: #2160b5;
+  --color-accent-bar: #1c5199;
+
+  /* ── Surfaces ────────────────────────────────── */
+  --color-line: #e6e9ed;
+  --color-panel: #ffffff;
+  --color-panel-2: #f5f6f8;
+  --color-app-bg: #eeeff3;
+
+  /* ── Text ──────────────────────────────────── */
+  --color-ink: #333333;
+  --color-ink-sub: #828282;
+  --color-ink-mute: #a6a6a6;
+  --color-row-selected: #d5e3f6;
+
+  /* ── Login page (dark navy scene, white card) ── */
+  --skin-login-bg: #16283c;
+  --skin-login-card: #ffffff;
+  --skin-login-header-bg: #ffffff;
+  --skin-login-header-border: #e6e9ed;
+  --skin-login-text: #333333;
+  --skin-login-input-bg: #ffffff;
+  --skin-login-input-border: #cfd5dc;
+  --skin-login-input-text: #333333;
+  --skin-login-btn-bg: var(--color-accent);
+  --skin-login-btn-text: #ffffff;
+  --skin-login-error-bg: #fbe9eb;
+  --skin-login-error-text: #d74942;
+  --skin-login-error-border: #efb1ad;
+
+  --skin-layout: carbonio;
+  --font-sans: Roboto, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+[data-skin='carbonio'].dark {
+  --color-accent: #4b8ceb;
+  --color-accent-2: #6ba0ef;
+  --color-panel: #232629;
+  --color-panel-2: #282b2f;
+  --color-app-bg: #1b1e21;
+  --color-ink: #eeeff3;
+  --color-ink-sub: #b6bcc4;
+  --color-ink-mute: #82878d;
+  --color-line: #35393d;
+  --color-row-selected: #23477a;
+
+  --skin-login-bg: #101821;
+  --skin-login-card: #232629;
+  --skin-login-header-bg: #232629;
+  --skin-login-header-border: #35393d;
+  --skin-login-text: #eeeff3;
+  --skin-login-input-bg: #1b1e21;
+  --skin-login-input-border: #4a4f55;
+  --skin-login-input-text: #eeeff3;
+  --skin-login-btn-bg: #2b73d2;
+  --skin-login-error-bg: #3b2023;
+  --skin-login-error-text: #f08a84;
+  --skin-login-error-border: #6e3034;
+}
+
+/* ── Carbonio chrome (scoped, squared) ───────────────────────── */
+
+[data-skin='carbonio'] .login-card {
+  border-color: var(--color-line);
+}
+
+[data-skin='carbonio'] .login-shadow {
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
+}
+
+[data-skin='carbonio'] .login-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Carbonio-style selected folder: soft blue block, no accent bar */
+[data-skin='carbonio'] .side-item.active {
+  background: var(--color-row-selected);
+  font-weight: 500;
+}

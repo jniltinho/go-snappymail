@@ -20,6 +20,8 @@ host        = "mailserver"
 port        = 25
 starttls    = false
 timeout_sec = 30
+# Disable TLS certificate verification (lab/dev only)
+insecure_skip_verify = false
 
 [database]
 driver = "sqlite"
@@ -33,7 +35,7 @@ secure    = false
 http_only = true
 
 [ui]
-# Layout skin: snappymail | gmail | outlook (gmail/outlook are stubs for now)
+# Layout skin: snappymail | gmail | outlook | carbonio (gmail is a stub for now)
 skin            = "snappymail"
 # Deprecated alias for skin — use skin instead
 theme           = "snappymail-default"

@@ -1,6 +1,9 @@
 package ui
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 // Skin describes a webmail UI skin exposed to the SPA and config.toml.
 type Skin struct {
@@ -30,8 +33,14 @@ var catalog = []Skin{
 	{
 		ID:      "outlook",
 		Label:   "Outlook",
-		Ready:   false,
+		Ready:   true,
 		Aliases: []string{"office", "microsoft"},
+	},
+	{
+		ID:      "carbonio",
+		Label:   "Carbonio",
+		Ready:   true,
+		Aliases: []string{"zextras"},
 	},
 } // catalog-end
 
@@ -61,13 +70,8 @@ func NormalizeSkin(raw string) string {
 		return defaultSkinID
 	}
 	for _, skin := range catalog {
-		if s == skin.ID {
+		if s == skin.ID || slices.Contains(skin.Aliases, s) {
 			return skin.ID
-		}
-		for _, alias := range skin.Aliases {
-			if s == alias {
-				return skin.ID
-			}
 		}
 	}
 	return defaultSkinID
