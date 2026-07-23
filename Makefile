@@ -23,7 +23,7 @@ LDFLAGS := -trimpath -ldflags "-s -w \
 	-X $(CMD_PKG).GitCommit=$(GIT_COMMIT)"
 
 .PHONY: all build build-prod release run migrate clean tidy deps frontend frontend-dev dev \
-        install-upx test test-integration test-short help
+        install-upx test test-integration test-short check-git help
 
 ## Default: build binary into dist/
 all: build
@@ -89,6 +89,10 @@ test-integration:
 test-short:
 	go test -v -short ./...
 
+## Reject base/ and dist/ binaries from git
+check-git:
+	@bash scripts/check-git-clean.sh
+
 clean:
 	@echo "Removing binaries from $(DIST_DIR)/"
 	rm -rf $(DIST_DIR)/$(APP) $(DIST_DIR)/$(APP)_*
@@ -118,6 +122,7 @@ help:
 	@echo "  migrate      Run dist/$(APP) migrate"
 	@echo "  test         Run unit tests with race and coverage"
 	@echo "  test-integration  Run IMAP login integration test (Docker lab)"
+	@echo "  check-git    Fail if base/ or dist/ binaries are tracked"
 	@echo "  frontend     Build Vue SPA to web/dist/ (when frontend/ exists)"
 	@echo "  clean        Remove dist/$(APP)* binaries"
 	@echo "  tidy         go mod tidy"

@@ -1,21 +1,38 @@
-# Binaries
+# =============================================================================
+# NEVER COMMIT — binaries and reference tree
+# =============================================================================
 /dist/
+dist/
+/go-snappymail
+go-snappymail
+go-snappymail_*
+*.upx
+
+/base/
+base/
+
+# Other binaries
 /coverage.out
 *.exe
 *.dll
 *.so
 *.dylib
-
-# Go
 *.test
 *.out
 /vendor/
 
-# Embedded SPA: only web/dist/ placeholder is tracked until frontend/ exists
+# Embedded SPA placeholder only (HTML/JS/CSS — not Go binaries)
+# web/dist/ is tracked intentionally until frontend/ replaces it
+
+# =============================================================================
+# Frontend source (added to repo only when ready)
+# =============================================================================
 /frontend/
 /frontend/node_modules/
 
+# =============================================================================
 # Local runtime / secrets
+# =============================================================================
 /data/
 /tmp/
 /config.toml
@@ -27,22 +44,16 @@
 *.crt
 !docker/mailserver/templates/**
 
-# SQLite / local DB files
 *.db
 *.sqlite
 *.sqlite3
-
-# Logs and caches
 *.log
 .cache/
-
-# UPX download artifacts
 /upx-*
 
-# Reference tree (read-only SnappyMail PHP — ~100MB, not part of this repo)
-/base/
-
-# Agent / IDE tooling (local only — never commit)
+# =============================================================================
+# Agent / IDE / OS (local only)
+# =============================================================================
 /.agents/
 /.claude/
 /.claude
@@ -54,11 +65,9 @@
 .DS_Store
 Thumbs.db
 
-# Vagrant machine state and empty mount placeholders
 /vagrant/.vagrant/
 /vagrant/go-cubemail/
 /vagrant/go-postfixadmin/
 /vagrant/go-snappymail/
 
-# Generated screenshots (keep README only)
 /docs/prints/*.png

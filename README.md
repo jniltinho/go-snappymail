@@ -12,7 +12,13 @@ Self-hosted webmail in Go with SnappyMail-inspired UX. Single binary, IMAP/SMTP 
 
 ## Git hygiene
 
-Do **not** commit: `base/`, `dist/`, `docker/.env`, local `config.toml`, `.agents/`, `.claude/`, `.cursor/`, `vagrant/.vagrant/`, `docs/prints/*.png`, `*.db`, `coverage.out`, `node_modules/`.
+**Never commit `base/` or compiled binaries** (`dist/go-snappymail`, UPX output, `*.db`).
+
+`base/snappymail/` is a **local-only** SnappyMail PHP reference (~100 MB). Clone or copy it on your machine; it is not in this repository.
+
+Do **not** commit: `dist/`, `docker/.env`, local `config.toml`, `.agents/`, `.claude/`, `.cursor/`, `vagrant/.vagrant/`, `docs/prints/*.png`, `coverage.out`, `node_modules/`.
+
+Before push: `make check-git`
 
 Lab credentials live in `docker/.env.example` and `docker/lab/` only. Copy `.env.example` → `.env` locally; keep `.env` untracked.
 
