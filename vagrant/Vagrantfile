@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# VM Ubuntu 24.04 — ambiente de validação go-snappymail
+#
+# Stack: MariaDB + Postfix + Dovecot + Go-PostfixAdmin + SnappyMail (PHP) + Go webmail
+#
+# Uso:
+#   cd vagrant && vagrant up
+#   vagrant ssh
+#
+# Adicione no /etc/hosts do host:
+#   192.168.56.20  mail.test.local
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.hostname = "mail.test.local"
+
+  config.vm.network "private_network", ip: "192.168.56.20"
+
+  config.vm.synced_folder "..", "/vagrant/go-snappymail", type: "virtualbox"
+  config.vm.synced_folder "../../go-postfixadmin", "/vagrant/go-postfixadmin", type: "virtualbox", create: true
+  config.vm.synced_folder "../../go-cubemail", "/vagrant/go-cubemail", type: "virtualbox", create: true
+  config.vm.synced_folder "provision", "/vagrant/provision", type: "virtualbox"
+  config.vm.synced_folder "templates", "/vagrant/templates", type: "virtualbox"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "go-snappymail-lab"
+    vb.memory = "4096"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  config.vm.provision "shell", name: "01-base", path: "provision/01-base.sh"
+  config.vm.provision "shell", name: "02-mariadb", path: "provision/02-mariadb.sh"
+  config.vm.provision "shell", name: "03-mailserver", path: "provision/03-mailserver.sh"
+  config.vm.provision "shell", name: "04-snappymail", path: "provision/04-snappymail.sh"
+  config.vm.provision "shell", name: "05-go-webmail", path: "provision/05-go-webmail.sh"
+  config.vm.provision "shell", name: "99-summary", path: "provision/99-summary.sh"
+
+  # Modo Docker (opcional): vagrant provision --provision-with docker
+  config.vm.provision "shell", name: "docker", path: "provision/06-docker.sh", run: "never"
+end
