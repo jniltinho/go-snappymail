@@ -11,43 +11,54 @@
 *.out
 /vendor/
 
-# Embedded SPA build output is tracked; Vue build artifacts are not
+# Embedded SPA: only web/dist/ placeholder is tracked until frontend/ exists
+/frontend/
 /frontend/node_modules/
-/frontend/dist/
 
 # Local runtime / secrets
 /data/
 /tmp/
 /config.toml
 /config_*.toml
-/docker/.env
+**/.env
+!**/.env.example
 *.pem
 *.key
 *.crt
 !docker/mailserver/templates/**
 
+# SQLite / local DB files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and caches
+*.log
+.cache/
+
 # UPX download artifacts
 /upx-*
 
-# Reference tree (read-only SnappyMail PHP — not part of this repo)
+# Reference tree (read-only SnappyMail PHP — ~100MB, not part of this repo)
 /base/
 
-# Agent / IDE tooling (local only)
+# Agent / IDE tooling (local only — never commit)
 /.agents/
+/.claude/
 /.claude
 /.cursor/
 .idea/
 .vscode/
 *.swp
+*~
 .DS_Store
+Thumbs.db
 
-# Vagrant machine state
+# Vagrant machine state and empty mount placeholders
 /vagrant/.vagrant/
-
-# Generated screenshots (keep README)
-/docs/prints/*.png
-
-# Empty placeholder dirs in vagrant (sources live elsewhere)
 /vagrant/go-cubemail/
 /vagrant/go-postfixadmin/
 /vagrant/go-snappymail/
+
+# Generated screenshots (keep README only)
+/docs/prints/*.png
