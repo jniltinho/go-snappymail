@@ -1,0 +1,20 @@
+# Lab mailboxes — email:password (shared password for local testing only)
+# test.local
+user@test.local:Password1@
+alice@test.local:Password1@
+bob@test.local:Password1@
+admin@test.local:Password1@
+# acme.local
+ceo@acme.local:Password1@
+sales@acme.local:Password1@
+support@acme.local:Password1@
+billing@acme.local:Password1@
+# demo.local
+demo@demo.local:Password1@
+guest@demo.local:Password1@
+trainer@demo.local:Password1@
+# org.local
+team@org.local:Password1@
+hr@org.local:Password1@
+dev@org.local:Password1@
+ops@org.local:Password1@

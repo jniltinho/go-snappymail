@@ -1,0 +1,43 @@
+# Domain and hostname
+myhostname = @@MAIL_FQDN@@
+mydomain   = @@MAIL_DOMAIN@@
+myorigin   = $mydomain
+inet_interfaces = all
+inet_protocols = ipv4
+
+# Virtual mailboxes
+virtual_mailbox_base    = /var/vmail
+virtual_mailbox_domains = proxy:mysql:/etc/postfix/sql/mysql_virtual_domains_maps.cf
+virtual_mailbox_maps    = proxy:mysql:/etc/postfix/sql/mysql_virtual_mailbox_maps.cf,
+                          proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf
+virtual_alias_maps      = proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_maps.cf,
+                          proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf,
+                          proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
+
+virtual_uid_maps = static:@@VMAIL_UID@@
+virtual_gid_maps = static:@@VMAIL_GID@@
+
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+
+# SASL via Dovecot
+smtpd_sasl_type        = dovecot
+smtpd_sasl_path        = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination
+
+# TLS (self-signed for lab)
+smtpd_tls_cert_file = @@SSL_CERT@@
+smtpd_tls_key_file  = @@SSL_KEY@@
+smtpd_use_tls       = yes
+smtpd_tls_auth_only = yes
+
+# Submission
+smtpd_tls_security_level = may
+smtp_tls_security_level  = may
+
+# Mynetworks — Docker bridge + lab network
+mynetworks = 127.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+
+# Disable local delivery to system users
+local_recipient_maps =
+mailbox_command =

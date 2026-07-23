@@ -1,0 +1,5 @@
+# Lab mail domains — one per line: domain<TAB>description
+test.local	Primary lab domain
+acme.local	Acme Corp sandbox
+demo.local	Demo tenant
+org.local	Organization tenant

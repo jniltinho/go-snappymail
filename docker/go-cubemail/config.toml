@@ -1,0 +1,53 @@
+[server]
+host           = "0.0.0.0"
+port           = 8080
+debug          = false
+secret_key     = "docker-lab-secret-key-32chars!"
+base_url       = "http://192.168.56.20:8080"
+tls_cert       = ""
+tls_key        = ""
+swagger_enable = true
+
+[imap]
+host            = "mailserver"
+port            = 993
+tls             = true
+timeout_sec     = 30
+show_host_input = false
+
+[smtp]
+host        = "mailserver"
+port        = 25
+starttls    = false
+timeout_sec = 30
+
+[database]
+driver = "sqlite"
+dsn    = "/app/data/app.db"
+debug  = false
+
+[session]
+name      = "gorc_session"
+max_age   = 86400
+secure    = false
+http_only = true
+
+[ui]
+theme           = "larry"
+rows_per_page   = 50
+timezone        = "America/Sao_Paulo"
+date_format     = "02/01/2006"
+datetime_format = "02/01/2006 15:04"
+compose_html    = true
+
+[upload]
+max_size_mb = 25
+temp_dir    = "/app/tmp/uploads"
+
+[activesync]
+enabled = false
+
+[push]
+vapid_public_key  = ""
+vapid_private_key = ""
+vapid_contact     = "mailto:admin@test.local"

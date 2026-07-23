@@ -1,0 +1,21 @@
+{
+    "IMAP": {
+        "host": "mailserver",
+        "port": 993,
+        "secure": 1,
+        "shortLogin": 0,
+        "ssl": {
+            "verify_peer": false,
+            "verify_peer_name": false,
+            "allow_self_signed": true
+        }
+    },
+    "SMTP": {
+        "host": "mailserver",
+        "port": 25,
+        "secure": 0,
+        "shortLogin": 0,
+        "useAuth": true
+    },
+    "whiteList": ""
+}

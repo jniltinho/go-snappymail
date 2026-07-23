@@ -1,0 +1,47 @@
+[database]
+host   = "mariadb"
+port   = "3306"
+user   = "postfix"
+pass   = "postfixPassword"
+name   = "postfix"
+driver = "mysql"
+debug  = false
+
+[server]
+port            = 8080
+cleanup_maildir = false
+ssl_enable      = false
+session_secret  = "docker-lab-postfixadmin-session-secret-32chars-min"
+swagger_enable  = true
+jwt_access_ttl  = "15m"
+jwt_refresh_ttl = "168h"
+
+[quota]
+enabled      = false
+domain_quota = true
+multiplier   = 1048576
+
+[vacation]
+enabled = true
+
+[alias]
+edit_alias   = true
+alias_domain = true
+
+[transport]
+host          = "0.0.0.0:12221"
+cache         = "10m"
+hostname      = "mail.test.local"
+localdelivery = "smtp:mail.test.local"
+delivery      = "lmtp:unix:private/dovecot-lmtp"
+
+[features]
+fetchmail = false
+
+[rbac]
+enabled = false
+
+[smtp]
+server = "mailserver"
+port   = 25
+type   = "plain"
