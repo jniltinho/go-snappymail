@@ -20,14 +20,14 @@
 
 ## 2. Frontend Scaffold (after P1 backend — section 4–6)
 
-- [x] 2.5 Build placeholder login page (`web/dist/index.html`) — temporary until Vue P2
-- [ ] 2.1 Initialize Vue 3 + TypeScript + Vite project in `frontend/`
-- [ ] 2.2 Configure Tailwind CSS v4 with dark mode support
-- [ ] 2.3 Set up Pinia stores skeleton: `auth`, `mail`, `settings`
-- [ ] 2.4 Create API client utility with CSRF token handling and cookie credentials
-- [ ] 2.5 Build placeholder `LoginView.vue` and `App.vue` shell
-- [ ] 2.6 Configure Vite build output to `web/dist/`
-- [ ] 2.7 Verify `make all` produces working binary serving the SPA
+- [x] 2.1 Initialize Vue 3 + TypeScript + Vite project in `frontend/`
+- [x] 2.2 Configure Tailwind CSS v4 with dark mode support
+- [x] 2.3 Set up Pinia stores skeleton: `auth`, `mail`, `settings`
+- [x] 2.4 Create API client utility with CSRF token handling and cookie credentials
+- [x] 2.5 Build `LoginView.vue` and `App.vue` shell (3-column inbox layout)
+- [x] 2.6 Configure Vite build output to `web/dist/`
+- [x] 2.7 Verify `make all` produces working binary serving the SPA
+- [ ] 2.5 Build placeholder `LoginView.vue` and `App.vue` shell (superseded by Vue app)
 
 ## 3. Auth & Session (P0)
 

@@ -16,10 +16,17 @@
 ## Build & run
 
 ```bash
-make build-prod
+make build-prod          # builds Vue → web/dist, then Go binary
 ./dist/go-snappymail init
 ./dist/go-snappymail migrate
 ./dist/go-snappymail serve
+```
+
+Frontend dev (API proxy to :8082):
+
+```bash
+make run                 # terminal 1 — backend
+make frontend-dev        # terminal 2 — Vite on :5173
 ```
 
 ## CLI
