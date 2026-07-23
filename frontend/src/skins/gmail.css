@@ -1,0 +1,34 @@
+/* Gmail skin — placeholder tokens for future full layout */
+
+[data-skin='gmail'] {
+  --color-accent: #c5221f;
+  --color-accent-2: #ea4335;
+  --color-accent-bar: #b31412;
+  --color-line: #dadce0;
+  --color-panel: #ffffff;
+  --color-panel-2: #f6f8fc;
+  --color-app-bg: #f6f8fc;
+  --color-ink: #202124;
+  --color-ink-sub: #5f6368;
+  --color-ink-mute: #80868b;
+  --color-row-selected: #fce8e6;
+  --skin-login-bg: #f6f8fc;
+  --skin-login-card: #ffffff;
+  --skin-login-input-bg: #ffffff;
+  --skin-login-input-border: #dadce0;
+  --skin-layout: gmail;
+  --font-sans: 'Google Sans', Roboto, Arial, sans-serif;
+}
+
+[data-skin='gmail'].dark {
+  --color-panel: #2d2e30;
+  --color-panel-2: #35363a;
+  --color-app-bg: #202124;
+  --color-ink: #e8eaed;
+  --color-ink-sub: #bdc1c6;
+  --color-line: #3c4043;
+  --color-row-selected: #41331c;
+  --skin-login-bg: #202124;
+  --skin-login-card: #2d2e30;
+  --skin-login-input-bg: #202124;
+}

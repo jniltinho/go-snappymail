@@ -19,6 +19,8 @@ func registerAPIRoutes(g *echo.Group, h *handler.Handlers, authMiddleware, authR
 		return c.JSON(http.StatusOK, map[string]string{"version": AppVersion, "app": "go-snappymail"})
 	})
 
+	g.GET("/ui/config", h.UI.Config)
+
 	auth := g.Group("/auth")
 	auth.POST("/login", h.Auth.DoLogin, authRateLimit)
 	auth.POST("/logout", h.Auth.DoLogout)

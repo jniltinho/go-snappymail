@@ -97,6 +97,24 @@ Current session (requires `gsn_session`).
 
 ---
 
+### GET /api/v1/ui/config
+
+Public UI defaults from `config.toml` (no auth required — used before login).
+
+**Response 200**
+
+```json
+{
+  "skin": "snappymail",
+  "available_skins": ["snappymail", "gmail", "outlook"],
+  "rows_per_page": 50,
+  "datetime_format": "02/01/2006 15:04",
+  "compose_html": true
+}
+```
+
+---
+
 ### GET /api/v1/auth/quota
 
 IMAP storage quota for the current user.

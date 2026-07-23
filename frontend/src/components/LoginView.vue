@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores/auth'
 import { useMailStore } from '../stores/mail'
+import { useSettingsStore } from '../stores/settings'
 
 const auth = useAuthStore()
 const mail = useMailStore()
+const settings = useSettingsStore()
 
 async function onSubmit() {
   const ok = await auth.login()
@@ -12,20 +14,20 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div
-    class="min-h-full flex flex-col items-center pt-24 px-6 pb-10"
-    style="background-color:#48525c"
-  >
+  <div class="min-h-full flex flex-col items-center pt-24 px-6 pb-10 login-page">
     <form
-      class="w-full max-w-md bg-accent border border-accent-bar text-white login-shadow rounded-sm"
+      class="w-full max-w-md login-card border login-shadow rounded-sm"
+      :class="settings.skin === 'snappymail' ? 'text-white' : 'text-ink'"
       @submit.prevent="onSubmit"
     >
-      <div class="flex items-center gap-3 px-5 py-3 bg-accent-bar border-b border-accent-2">
+      <div
+        class="flex items-center gap-3 px-5 py-3 border-b"
+        :class="settings.skin === 'snappymail' ? 'bg-accent-bar border-accent-2' : 'bg-panel-2 border-line'"
+      >
         <div class="text-lg font-bold tracking-tight">
           go-snappymail
-          <span v-if="auth.appVersion" class="ml-2 text-xs font-normal opacity-70 font-mono">
-            {{ auth.appVersion }}
-          </span>
+          <span class="ml-2 text-xs font-normal opacity-70 font-mono">{{ settings.skinLabel(settings.skin) }}</span>
+          <span v-if="auth.appVersion" class="ml-1 text-xs font-normal opacity-60 font-mono">{{ auth.appVersion }}</span>
         </div>
       </div>
 
@@ -59,7 +61,8 @@ async function onSubmit() {
 
         <button
           type="submit"
-          class="mt-2 h-9 bg-[#f5f7fa] text-accent-bar font-semibold disabled:opacity-60"
+          class="mt-2 h-9 font-semibold disabled:opacity-60"
+          :class="settings.skin === 'snappymail' ? 'bg-[#f5f7fa] text-accent-bar' : 'bg-accent text-white'"
           :disabled="auth.loginBusy"
         >
           {{ auth.loginBusy ? 'Signing in…' : 'Sign in' }}

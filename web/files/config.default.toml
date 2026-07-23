@@ -33,6 +33,9 @@ secure    = false
 http_only = true
 
 [ui]
+# Layout skin: snappymail | gmail | outlook (gmail/outlook are stubs for now)
+skin            = "snappymail"
+# Deprecated alias for skin — use skin instead
 theme           = "snappymail-default"
 rows_per_page   = 50
 timezone        = "UTC"

@@ -125,6 +125,7 @@ func (h *AuthHandler) Me(c *echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{
 		"username":        s.Username,
 		"datetime_format": h.cfg.UI.DatetimeFormat,
+		"skin":            h.cfg.UI.ResolvedSkin(),
 	})
 }
 

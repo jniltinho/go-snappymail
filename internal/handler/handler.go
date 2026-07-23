@@ -9,6 +9,7 @@ type Handlers struct {
 	Message *MessageHandler
 	Compose *ComposeHandler
 	Search  *SearchHandler
+	UI      *UIHandler
 }
 
 // New creates application HTTP handlers.
@@ -19,5 +20,6 @@ func New(cfg *config.Config) *Handlers {
 		Message: &MessageHandler{cfg: cfg},
 		Compose: &ComposeHandler{cfg: cfg},
 		Search:  &SearchHandler{cfg: cfg},
+		UI:      &UIHandler{cfg: cfg},
 	}
 }

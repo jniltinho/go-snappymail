@@ -2,6 +2,7 @@
 import { onMounted, onBeforeUnmount, watch } from 'vue'
 import { useAuthStore } from './stores/auth'
 import { useMailStore } from './stores/mail'
+import { useSettingsStore } from './stores/settings'
 import LoginView from './components/LoginView.vue'
 import FolderSidebar from './components/FolderSidebar.vue'
 import MessageList from './components/MessageList.vue'
@@ -10,6 +11,7 @@ import AppToolbar from './components/AppToolbar.vue'
 
 const auth = useAuthStore()
 const mail = useMailStore()
+const settings = useSettingsStore()
 
 function onKey(e: KeyboardEvent) {
   if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return
@@ -45,6 +47,9 @@ onBeforeUnmount(() => {
   </div>
 
   <div v-else class="h-full flex flex-col">
+    <p v-if="!settings.skinReady(settings.skin)" class="skin-preview-banner">
+      Skin preview: {{ settings.skinLabel(settings.skin) }} — full layout coming soon (server: config.toml → ui.skin)
+    </p>
     <AppToolbar />
     <div class="grid flex-1 min-h-0 bg-app-bg" style="grid-template-columns: 220px 340px 1fr">
       <FolderSidebar />

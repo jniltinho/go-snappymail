@@ -1,0 +1,33 @@
+/* Outlook skin — placeholder tokens for future full layout */
+
+[data-skin='outlook'] {
+  --color-accent: #0078d4;
+  --color-accent-2: #106ebe;
+  --color-accent-bar: #005a9e;
+  --color-line: #edebe9;
+  --color-panel: #ffffff;
+  --color-panel-2: #faf9f8;
+  --color-app-bg: #faf9f8;
+  --color-ink: #323130;
+  --color-ink-sub: #605e5c;
+  --color-ink-mute: #8a8886;
+  --color-row-selected: #deecf9;
+  --skin-login-bg: #0078d4;
+  --skin-login-card: #ffffff;
+  --skin-login-input-bg: #ffffff;
+  --skin-login-input-border: #8a8886;
+  --skin-layout: outlook;
+  --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+[data-skin='outlook'].dark {
+  --color-panel: #292827;
+  --color-panel-2: #323130;
+  --color-app-bg: #201f1e;
+  --color-ink: #f3f2f1;
+  --color-ink-sub: #c8c6c4;
+  --color-line: #3b3a39;
+  --color-row-selected: #004578;
+  --skin-login-bg: #201f1e;
+  --skin-login-card: #292827;
+}

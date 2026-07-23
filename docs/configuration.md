@@ -45,6 +45,25 @@ GOSM_SERVER_PORT=9000 ./dist/go-snappymail serve
 
 `gsn_session` — HttpOnly, configurable `max_age`, set `secure=true` with HTTPS.
 
+### UI / skins
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `skin` | `snappymail` | Layout skin: `snappymail`, `gmail`, `outlook` |
+| `theme` | *(deprecated)* | Alias for `skin` (`snappymail-default` → snappymail) |
+| `rows_per_page` | `50` | Message list page size |
+| `datetime_format` | `02/01/2006 15:04` | Go time format for dates in API/SPA |
+| `compose_html` | `true` | Enable HTML compose |
+
+Example — Outlook look (placeholder skin until full layout ships):
+
+```toml
+[ui]
+skin = "outlook"
+```
+
+Env override: `GOSM_UI_SKIN=outlook`
+
 ## Docker secrets
 
 ```bash

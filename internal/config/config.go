@@ -2,7 +2,10 @@
 // that populates them from Viper (config.toml + GORC_* environment variables).
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+	"go-snappymail/internal/ui"
+)
 
 // Config is the root configuration object passed throughout the application.
 type Config struct {
@@ -90,12 +93,24 @@ type SessionConfig struct {
 
 // UIConfig contains default UI preferences applied to all users.
 type UIConfig struct {
+	// Skin selects the webmail layout/visual identity (snappymail, gmail, outlook).
+	Skin string `mapstructure:"skin"`
+	// Theme is deprecated; use Skin. Kept for backward-compatible config.toml.
 	Theme          string
 	RowsPerPage    int    `mapstructure:"rows_per_page"`
 	Timezone       string
 	DateFormat     string `mapstructure:"date_format"`
 	DatetimeFormat string `mapstructure:"datetime_format"`
 	ComposeHTML    bool   `mapstructure:"compose_html"`
+}
+
+// ResolvedSkin returns the normalized skin id from Skin or legacy Theme.
+func (u UIConfig) ResolvedSkin() string {
+	raw := u.Skin
+	if raw == "" {
+		raw = u.Theme
+	}
+	return ui.NormalizeSkin(raw)
 }
 
 // UploadConfig configures attachment upload limits and temporary storage.
@@ -139,6 +154,7 @@ func Load() *Config {
 	cfg.Session.Secure = viper.GetBool("session.secure")
 	cfg.Session.HTTPOnly = viper.GetBool("session.http_only")
 
+	cfg.UI.Skin = viper.GetString("ui.skin")
 	cfg.UI.Theme = viper.GetString("ui.theme")
 	cfg.UI.RowsPerPage = viper.GetInt("ui.rows_per_page")
 	cfg.UI.Timezone = viper.GetString("ui.timezone")
