@@ -55,7 +55,9 @@ GOSM_SERVER_PORT=9000 ./dist/go-snappymail serve
 | `datetime_format` | `02/01/2006 15:04` | Go time format for dates in API/SPA |
 | `compose_html` | `true` | Enable HTML compose |
 
-Example — Outlook look (placeholder skin until full layout ships):
+Full skin guide (create custom themes): **[skins.md](skins.md)**
+
+Quick switch:
 
 ```toml
 [ui]
@@ -63,6 +65,8 @@ skin = "outlook"
 ```
 
 Env override: `GOSM_UI_SKIN=outlook`
+
+Scaffold a new skin: `make new-skin ID=mybrand` — see [skins.md](skins.md).
 
 ## Docker secrets
 

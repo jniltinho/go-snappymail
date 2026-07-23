@@ -23,7 +23,7 @@ LDFLAGS := -trimpath -ldflags "-s -w \
 	-X $(CMD_PKG).GitCommit=$(GIT_COMMIT)"
 
 .PHONY: all build build-prod release run migrate clean tidy deps frontend frontend-dev dev \
-        install-upx test test-integration test-short check-git help
+        install-upx test test-integration test-short check-git new-skin help
 
 ## Default: build binary into dist/
 all: build
@@ -93,6 +93,11 @@ test-short:
 check-git:
 	@bash scripts/check-git-clean.sh
 
+## Scaffold a new UI skin (see docs/skins.md)
+new-skin:
+	@test -n "$(ID)" || { echo "Usage: make new-skin ID=mybrand"; exit 1; }
+	@bash scripts/new-skin.sh "$(ID)"
+
 clean:
 	@echo "Removing binaries from $(DIST_DIR)/"
 	rm -rf $(DIST_DIR)/$(APP) $(DIST_DIR)/$(APP)_*
@@ -123,6 +128,7 @@ help:
 	@echo "  test         Run unit tests with race and coverage"
 	@echo "  test-integration  Run IMAP login integration test (Docker lab)"
 	@echo "  check-git    Fail if base/ or dist/ binaries are tracked"
+	@echo "  new-skin     Scaffold skin CSS — make new-skin ID=mybrand (see docs/skins.md)"
 	@echo "  frontend     Build Vue SPA to web/dist/ (when frontend/ exists)"
 	@echo "  clean        Remove dist/$(APP)* binaries"
 	@echo "  tidy         go mod tidy"

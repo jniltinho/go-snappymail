@@ -29,6 +29,14 @@ make run                 # terminal 1 — backend
 make frontend-dev        # terminal 2 — Vite on :5173
 ```
 
+## UI skins
+
+Skins (SnappyMail, Gmail, Outlook, custom) are configured in `config.toml` → `[ui] skin`.
+
+- **Guide:** [skins.md](skins.md)
+- **Scaffold:** `make new-skin ID=mybrand`
+- **Preview:** set `skin = "mybrand"` in config, run `make frontend-dev` + `make run`
+
 ## CLI
 
 | Command | Description |
@@ -54,4 +62,4 @@ make check-git          # before every push
 - Logging: `log/slog`
 - Docs/code: English
 
-See [configuration.md](configuration.md) and [security.md](security.md).
+See [configuration.md](configuration.md), [skins.md](skins.md), and [security.md](security.md).

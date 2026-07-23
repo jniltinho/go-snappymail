@@ -1,3 +1,7 @@
+/**
+ * Skin registry — see docs/skins.md to add a new skin.
+ * Run: make new-skin ID=<name>
+ */
 import type { SkinId, SkinMeta } from './types'
 
 export const SKIN_REGISTRY: Record<SkinId, SkinMeta> = {

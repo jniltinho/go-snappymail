@@ -10,6 +10,7 @@ Guides for **go-snappymail** — SnappyMail UX webmail in Go.
 | [lab.md](lab.md) | Local mail lab (Docker / Vagrant) |
 | [development.md](development.md) | Contributors — build, test, workflow |
 | [configuration.md](configuration.md) | Operators — `config.toml`, env vars |
+| [skins.md](skins.md) | UI skins — create SnappyMail / Gmail / Outlook / custom |
 
 ## Design & API
 

@@ -1,37 +1,27 @@
-# Skins (layout themes)
+# Skins — developer quick reference
 
-Skins control colors, typography, and future layout variants (SnappyMail, Gmail, Outlook).
+**Full guide:** [docs/skins.md](../../../docs/skins.md)
 
-## Server config (`config.toml`)
+## New skin in one command
 
-```toml
-[ui]
-skin = "snappymail"   # snappymail | gmail | outlook
+```bash
+make new-skin ID=acme
 ```
 
-Legacy alias: `theme = "snappymail-default"` maps to `snappymail`.
+Then complete the printed checklist (Go registry, TypeScript, `@import`, `config.toml`).
 
-The SPA loads the active skin from `GET /api/v1/ui/config` on startup.
+## Files in this folder
 
-## Frontend structure
+| File | Role |
+|------|------|
+| `_template.css` | Copy-paste starter (all CSS variables) |
+| `*.css` | One file per skin — `[data-skin='id']` tokens |
+| `registry.ts` | Labels + `ready` flag for SPA |
+| `bootstrap.ts` | Loads skin from `GET /api/v1/ui/config` |
+| `apply.ts` | Sets `data-skin` on `<html>` |
 
-```
-frontend/src/skins/
-├── types.ts          # SkinId, UIConfigResponse
-├── registry.ts       # metadata + normalizeSkinId()
-├── apply.ts          # sets data-skin on <html>
-├── bootstrap.ts      # fetch server config before mount
-├── snappymail.css    # active skin (full)
-├── gmail.css         # placeholder tokens
-└── outlook.css       # placeholder tokens
-```
+## Rules
 
-## Adding a new skin
-
-1. Add id in `internal/ui/skins.go` (`AvailableSkins`, `NormalizeSkin`)
-2. Create `frontend/src/skins/<id>.css` with `[data-skin='<id>']` CSS variables
-3. Register in `frontend/src/skins/registry.ts` (`SKIN_REGISTRY`, set `ready: true` when layout is done)
-4. Import CSS in `frontend/src/style.css`
-5. Optionally add skin-specific Vue layout components under `frontend/src/skins/<id>/`
-
-Dark mode is client-side (`localStorage`) and combines with `[data-skin].dark` CSS blocks.
+- Use **CSS variables only** for colors in shared Vue components.
+- Add **`.dark`** block for each skin.
+- Set `ready: false` until layout components exist (shows preview banner).

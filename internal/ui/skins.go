@@ -3,6 +3,7 @@ package ui
 import "strings"
 
 // Known skin identifiers (layout + visual identity).
+// To add a skin: docs/skins.md  ·  make new-skin ID=<name>
 const (
 	SkinSnappyMail = "snappymail"
 	SkinGmail      = "gmail"

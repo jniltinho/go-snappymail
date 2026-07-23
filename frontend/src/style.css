@@ -5,6 +5,7 @@
 @import "./skins/snappymail.css";
 @import "./skins/gmail.css";
 @import "./skins/outlook.css";
+/* Add new skins here — see docs/skins.md and: make new-skin ID=<name> */
 
 @theme {
   --color-accent: #1b3a6b;

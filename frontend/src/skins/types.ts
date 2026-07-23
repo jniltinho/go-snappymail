@@ -1,4 +1,4 @@
-/** Known layout skin identifiers (must match server internal/ui/skins.go). */
+/** Known layout skin identifiers — extend when adding skins (docs/skins.md). */
 export type SkinId = 'snappymail' | 'gmail' | 'outlook'
 
 export interface SkinMeta {
