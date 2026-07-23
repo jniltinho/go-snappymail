@@ -1,4 +1,4 @@
-module github.com/jniltinho/go-snappymail
+module go-snappymail
 
 go 1.26.0
 

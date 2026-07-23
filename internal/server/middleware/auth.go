@@ -1,11 +1,11 @@
-// Package middleware provides Echo middleware functions for github.com/jniltinho/go-snappymail:
+// Package middleware provides Echo middleware functions for go-snappymail:
 // authentication, CSRF protection, rate limiting, and security headers.
 package middleware
 
 import (
 	"net/http"
 
-	"github.com/jniltinho/go-snappymail/internal/session"
+	"go-snappymail/internal/session"
 	"github.com/labstack/echo/v5"
 )
 

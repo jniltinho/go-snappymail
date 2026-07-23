@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
+	"go-snappymail/internal/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

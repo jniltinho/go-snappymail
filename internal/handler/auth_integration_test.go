@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	appMiddleware "github.com/jniltinho/go-snappymail/internal/server/middleware"
+	appMiddleware "go-snappymail/internal/server/middleware"
 	"github.com/labstack/echo/v5"
 )
 

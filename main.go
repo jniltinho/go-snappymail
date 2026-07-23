@@ -4,7 +4,7 @@ package main
 import (
 	"embed"
 
-	"github.com/jniltinho/go-snappymail/cmd"
+	"go-snappymail/cmd"
 )
 
 //go:embed all:web/dist

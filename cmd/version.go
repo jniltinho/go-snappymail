@@ -12,7 +12,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Show version and build information",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("github.com/jniltinho/go-snappymail %s (commit: %s, built: %s)\n", Version, GitCommit, BuildDate)
+		fmt.Printf("go-snappymail %s (commit: %s, built: %s)\n", Version, GitCommit, BuildDate)
 	},
 }
 

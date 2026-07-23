@@ -7,7 +7,7 @@ UPX_URL     := https://github.com/upx/upx/releases/download/v$(UPX_VERSION)/$(UP
 
 ## Application
 APP         := go-snappymail
-MODULE      := github.com/jniltinho/go-snappymail
+MODULE      := go-snappymail
 CMD_PKG     := $(MODULE)/cmd
 DIST_DIR    := dist
 BIN         := $(DIST_DIR)/$(APP)

@@ -219,7 +219,7 @@ Not applicable — greenfield project. Deployment:
 
 ## Resolved Decisions (formerly Open Questions)
 
-1. **Module name**: `github.com/jniltinho/go-snappymail`
+1. **Module name**: `go-snappymail`
 2. **Config prefix**: `GOSM_` environment variables
 3. **Contacts storage**: DB-only (like go-cubemail); no CardDAV read in v1
 4. **Admin panel scope**: defer entirely to P4

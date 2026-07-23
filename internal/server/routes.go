@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/handler"
-	appMiddleware "github.com/jniltinho/go-snappymail/internal/server/middleware"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/handler"
+	appMiddleware "go-snappymail/internal/server/middleware"
 	"github.com/labstack/echo/v5"
 )
 

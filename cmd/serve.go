@@ -8,9 +8,9 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/database"
-	"github.com/jniltinho/go-snappymail/internal/server"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/database"
+	"go-snappymail/internal/server"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

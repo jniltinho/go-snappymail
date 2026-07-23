@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/database"
-	"github.com/jniltinho/go-snappymail/internal/model"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/database"
+	"go-snappymail/internal/model"
 	"github.com/spf13/cobra"
 )
 

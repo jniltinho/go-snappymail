@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/session"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/session"
 	"github.com/labstack/echo/v5"
 )
 

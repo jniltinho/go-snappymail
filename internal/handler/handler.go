@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/jniltinho/go-snappymail/internal/config"
+import "go-snappymail/internal/config"
 
 // Handlers groups HTTP handler instances for go-snappymail.
 type Handlers struct {

@@ -1,6 +1,6 @@
 ## 1. Project Scaffold (P0)
 
-- [x] 1.1 Initialize Go module `github.com/jniltinho/go-snappymail` with go.mod (Go 1.26+, Echo v5, Cobra, Viper, GORM, go-imap/v2)
+- [x] 1.1 Initialize Go module `go-snappymail` with go.mod (Go 1.26+, Echo v5, Cobra, Viper, GORM, go-imap/v2)
 - [x] 1.2 Create `main.go` with `go:embed web/dist` and delegate to `cmd` package
 - [x] 1.3 Implement Cobra root command with subcommands: `init`, `migrate`, `serve`, `version`
 - [x] 1.4 Implement `internal/config` with TOML loading and `GOSM_` env overrides

@@ -3,8 +3,8 @@ package database
 import (
 	"testing"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/model"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/model"
 )
 
 func TestOpenSQLite(t *testing.T) {

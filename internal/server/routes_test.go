@@ -8,8 +8,8 @@ import (
 	"testing"
 	"testing/fstest"
 
-	"github.com/jniltinho/go-snappymail/internal/config"
-	"github.com/jniltinho/go-snappymail/internal/handler"
+	"go-snappymail/internal/config"
+	"go-snappymail/internal/handler"
 	"github.com/labstack/echo/v5"
 )
 

@@ -27,9 +27,9 @@ If a file with the same name already exists, the command will fail.
 This is the recommended way to bootstrap a new installation.
 
 Examples:
-  github.com/jniltinho/go-snappymail init
-  github.com/jniltinho/go-snappymail init -o config.toml
-  github.com/jniltinho/go-snappymail init -o my-server-config.toml`,
+  go-snappymail init
+  go-snappymail init -o config.toml
+  go-snappymail init -o my-server-config.toml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cwd, err := os.Getwd()
 		if err != nil {

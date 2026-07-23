@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jniltinho/go-snappymail/internal/model"
+	"go-snappymail/internal/model"
 	"gorm.io/gorm"
 )
 
