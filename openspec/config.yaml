@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  Project: go-snappymail — Golang reimplementation of SnappyMail webmail (PHP/RainLoop fork).
+  Reference architecture: github.com/jniltinho/go-cubemail (single binary, Echo v5, Vue 3, Tailwind CSS v4, embed SPA).
+  Reference UI/UX: SnappyMail (base/snappymail/) — 3-column layout, folder tree, message list, reading pane, composer, dark mode, PGP, Sieve filters, contacts, admin panel.
+  Backend: Go 1.26+, Echo v5, Cobra CLI, Viper config, GORM (SQLite/MySQL/PostgreSQL), emersion/go-imap/v2, wneessen/go-mail.
+  Frontend: Vue 3 + TypeScript + Vite, Pinia, Vue Router, Tailwind CSS v4, TipTap (rich text), Lucide icons — embedded via go:embed.
+  Deployment: single binary (no PHP, no separate web server at runtime). Commands: init, migrate, serve, version. Default port 8082.
+  Lab stack (Docker on 192.168.56.20): go-cubemail :8080, go-snappymail :8082, SnappyMail :8888, PostfixAdmin :8081.
+  Go standards: log/slog, fmt.Errorf %w wrapping, table-driven tests, bluemonday HTML sanitization, AES-GCM sessions.
+  Language: code, comments, and specs in English. User-facing docs may be bilingual.
+  Non-goals for v1: ActiveSync/EAS, CalDAV/CardDAV servers (defer to later phases; go-cubemail already has these).
+
+rules:
+  proposal:
+    - Include a Non-goals section
+    - Reference go-cubemail patterns where applicable
+  design:
+    - Include architecture diagram (mermaid)
+    - Map SnappyMail features to Go/Vue components
+  tasks:
+    - Break into phases: foundation, core-mail, ui-parity, advanced
+    - Each task chunk max 2 hours
