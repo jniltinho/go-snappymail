@@ -33,7 +33,7 @@
 
 # Agent / IDE tooling (local only)
 /.agents/
-/.claude/
+/.claude
 /.cursor/
 .idea/
 .vscode/
