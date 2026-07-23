@@ -137,16 +137,23 @@ All endpoints below require authentication (`gsn_session`).
 | DELETE | `/mail/:mailbox/:uid` | Move to trash (or expunge if already in trash) |
 | DELETE | `/mail/:mailbox` | Empty trash or move all messages to trash |
 
----
-
-## Planned (P1 compose + search)
+### Compose
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/compose/send` | Send message |
-| POST | `/compose/draft` | Save draft |
-| POST | `/compose/upload` | Upload attachment |
-| GET | `/search` | IMAP search |
+| POST | `/compose/send` | Send email (`to`, `subject`, `body_html`, attachments) |
+| POST | `/compose/draft` | Save draft to IMAP Drafts folder |
+| POST | `/compose/upload` | Upload temp attachment (`file` field) |
+
+### Search
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/search` | Search mailbox (`q`, optional `mailbox`, `unseen`) |
+
+---
+
+## Planned (P2 frontend)
 
 See [OpenSpec](../openspec/changes/go-snappymail-foundation/) for full API design.
 

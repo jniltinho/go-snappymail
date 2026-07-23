@@ -7,6 +7,8 @@ type Handlers struct {
 	Auth    *AuthHandler
 	Mailbox *MailboxHandler
 	Message *MessageHandler
+	Compose *ComposeHandler
+	Search  *SearchHandler
 }
 
 // New creates application HTTP handlers.
@@ -15,5 +17,7 @@ func New(cfg *config.Config) *Handlers {
 		Auth:    &AuthHandler{cfg: cfg},
 		Mailbox: &MailboxHandler{cfg: cfg},
 		Message: &MessageHandler{cfg: cfg},
+		Compose: &ComposeHandler{cfg: cfg},
+		Search:  &SearchHandler{cfg: cfg},
 	}
 }

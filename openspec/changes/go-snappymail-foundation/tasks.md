@@ -54,16 +54,16 @@
 
 ## 5. Compose & Send (P1)
 
-- [ ] 5.1 Implement `internal/smtp/sender.go` using wneessen/go-mail
-- [ ] 5.2 Implement `POST /api/v1/compose/send` with HTML body, attachments, threading headers
-- [ ] 5.3 Implement `POST /api/v1/compose/draft` saving to IMAP Drafts folder
-- [ ] 5.4 Implement `POST /api/v1/compose/upload` for temporary attachment storage
+- [x] 5.1 Implement `internal/smtp/sender.go` using wneessen/go-mail
+- [x] 5.2 Implement `POST /api/v1/compose/send` with HTML body, attachments, threading headers
+- [x] 5.3 Implement `POST /api/v1/compose/draft` saving to IMAP Drafts folder
+- [x] 5.4 Implement `POST /api/v1/compose/upload` for temporary attachment storage
 - [ ] 5.5 Build `ComposerModal.vue` with TipTap rich-text editor
 - [ ] 5.6 Add reply, reply-all, and forward actions in mail store
 
 ## 6. Search (P1)
 
-- [ ] 6.1 Implement `GET /api/v1/search` using IMAP SEARCH with field filters (subject, from, body)
+- [x] 6.1 Implement `GET /api/v1/search` using IMAP SEARCH with field filters (subject, from, body)
 - [ ] 6.2 Add search bar in `AppToolbar.vue` with results display in message list
 
 ## 7. UI — SnappyMail Layout (P2)

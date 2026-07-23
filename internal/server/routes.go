@@ -42,6 +42,12 @@ func registerAPIRoutes(g *echo.Group, h *handler.Handlers, authMiddleware, authR
 	api.DELETE("/mail/:mailbox/:uid", h.Message.Delete)
 	api.DELETE("/mail/:mailbox", h.Message.EmptyTrash)
 	api.GET("/mail/:mailbox/:uid/attachment/:part", h.Message.Attachment)
+
+	api.POST("/compose/send", h.Compose.Send)
+	api.POST("/compose/draft", h.Compose.SaveDraft)
+	api.POST("/compose/upload", h.Compose.UploadAttachment)
+
+	api.GET("/search", h.Search.Results)
 }
 
 func registerRoutes(e *echo.Echo, cfg *config.Config, h *handler.Handlers, distFS fs.FS) {
