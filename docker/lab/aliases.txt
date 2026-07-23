@@ -1,0 +1,21 @@
+# Lab aliases — one per line: alias<TAB>goto (mailbox destino)
+postmaster@linuxpro.com.br	ti@linuxpro.com.br
+abuse@linuxpro.com.br	ti@linuxpro.com.br
+admin@linuxpro.com.br	ti@linuxpro.com.br
+info@linuxpro.com.br	contato@linuxpro.com.br
+atendimento@linuxpro.com.br	suporte@linuxpro.com.br
+postmaster@criare-net.com.br	ti@criare-net.com.br
+abuse@criare-net.com.br	ti@criare-net.com.br
+admin@criare-net.com.br	ti@criare-net.com.br
+info@criare-net.com.br	contato@criare-net.com.br
+atendimento@criare-net.com.br	suporte@criare-net.com.br
+postmaster@uol.com.br	ti@uol.com.br
+abuse@uol.com.br	ti@uol.com.br
+admin@uol.com.br	ti@uol.com.br
+info@uol.com.br	contato@uol.com.br
+atendimento@uol.com.br	suporte@uol.com.br
+postmaster@criarenet.com	ti@criarenet.com
+abuse@criarenet.com	ti@criarenet.com
+admin@criarenet.com	ti@criarenet.com
+info@criarenet.com	contato@criarenet.com
+atendimento@criarenet.com	suporte@criarenet.com

@@ -14,6 +14,8 @@ port            = 993
 tls             = true
 timeout_sec     = 30
 show_host_input = false
+# Lab: mailserver cert is self-signed
+insecure_skip_verify = true
 
 [smtp]
 host        = "mailserver"

@@ -17,5 +17,12 @@
         "shortLogin": 0,
         "useAuth": true
     },
+    "Sieve": {
+        "enabled": false,
+        "host": "mailserver",
+        "port": 4190,
+        "secure": 0,
+        "shortLogin": 0
+    },
     "whiteList": ""
 }

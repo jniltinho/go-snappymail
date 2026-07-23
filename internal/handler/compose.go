@@ -58,10 +58,11 @@ func (h *ComposeHandler) Send(c *echo.Context) error {
 	}
 
 	smtpCfg := smtppkg.Config{
-		Host:       h.cfg.SMTP.Host,
-		Port:       h.cfg.SMTP.Port,
-		StartTLS:   h.cfg.SMTP.StartTLS,
-		TimeoutSec: h.cfg.SMTP.TimeoutSec,
+		Host:               h.cfg.SMTP.Host,
+		Port:               h.cfg.SMTP.Port,
+		StartTLS:           h.cfg.SMTP.StartTLS,
+		TimeoutSec:         h.cfg.SMTP.TimeoutSec,
+		InsecureSkipVerify: h.cfg.SMTP.InsecureSkipVerify,
 	}
 
 	raw, err := smtppkg.Send(smtpCfg, s.Username, pass, msg)

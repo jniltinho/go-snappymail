@@ -1,5 +1,5 @@
 user     = @@DB_USER@@
 password = @@DB_PASS@@
-hosts    = localhost
+hosts    = @@DB_HOST@@
 dbname   = @@DB_NAME@@
 query    = SELECT domain FROM domain WHERE domain='%s' AND active='1'

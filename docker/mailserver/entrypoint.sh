@@ -34,7 +34,8 @@ mkdir -p "$SSL_DIR"
 if [[ ! -f "$SSL_CERT" ]]; then
   openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
     -keyout "$SSL_KEY" -out "$SSL_CERT" \
-    -subj "/CN=${MAIL_FQDN}/O=go-snappymail-docker/C=BR"
+    -subj "/CN=${MAIL_FQDN}/O=go-snappymail-docker/C=BR" \
+    -addext "subjectAltName=DNS:${MAIL_FQDN},DNS:mailserver,DNS:localhost"
 fi
 
 echo "Waiting for MariaDB at ${DB_HOST}:${DB_PORT}..."

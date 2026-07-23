@@ -3,6 +3,7 @@ package smtp
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	netmail "net/mail"
@@ -40,6 +41,8 @@ type Config struct {
 	Port       int
 	StartTLS   bool
 	TimeoutSec int
+	// InsecureSkipVerify disables TLS certificate verification (lab/dev only).
+	InsecureSkipVerify bool
 }
 
 var dataURIRe = regexp.MustCompile(`src="data:([^;]+);base64,([^"]+)"`)
@@ -211,6 +214,9 @@ func Send(cfg Config, user, pass string, msg *Message) ([]byte, error) {
 		opts = append(opts, mail.WithTLSPolicy(mail.TLSMandatory))
 	} else {
 		opts = append(opts, mail.WithTLSPolicy(mail.TLSOpportunistic))
+	}
+	if cfg.InsecureSkipVerify {
+		opts = append(opts, mail.WithTLSConfig(&tls.Config{InsecureSkipVerify: true})) //nolint:gosec // lab/dev opt-in
 	}
 
 	client, err := mail.NewClient(cfg.Host, opts...)

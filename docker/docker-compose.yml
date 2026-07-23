@@ -96,6 +96,7 @@ services:
       - "8080:8080"
     volumes:
       - cubemail_data:/app/data
+      - mail_ssl:/etc/ssl/mail:ro
     networks:
       - gosm
 

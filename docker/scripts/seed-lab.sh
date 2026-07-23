@@ -40,6 +40,19 @@ while IFS= read -r line; do
   echo "    mailbox: ${line}"
 done < "${MAILBOXES_FILE}"
 
+echo "==> Creating lab aliases..."
+ALIASES_FILE="${LAB_DIR}/aliases.txt"
+if [[ -f "${ALIASES_FILE}" ]]; then
+  while IFS=$'\t' read -r addr goto _; do
+    [[ -z "${addr}" || "${addr}" =~ ^# ]] && continue
+    dom="${addr#*@}"
+    docker compose exec -T mariadb mysql -upostfix -ppostfixPassword postfix -e \
+      "INSERT IGNORE INTO alias (address, goto, domain, created, modified, active) VALUES ('${addr}', '${goto}', '${dom}', NOW(), NOW(), 1);" \
+      < /dev/null 2>/dev/null || true
+    echo "    alias: ${addr} -> ${goto}"
+  done < "${ALIASES_FILE}"
+fi
+
 echo "==> Ensuring local transport..."
 pfa transport --add "local:lmtp:unix:private/dovecot-lmtp" 2>/dev/null || true
 

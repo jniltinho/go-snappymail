@@ -69,6 +69,8 @@ type SMTPConfig struct {
 	Port       int
 	StartTLS   bool `mapstructure:"starttls"`
 	TimeoutSec int  `mapstructure:"timeout_sec"`
+	// InsecureSkipVerify disables TLS certificate verification (lab/dev only).
+	InsecureSkipVerify bool `mapstructure:"insecure_skip_verify"`
 }
 
 // DatabaseConfig selects the database driver and connection string.
@@ -144,6 +146,7 @@ func Load() *Config {
 	cfg.SMTP.Port = viper.GetInt("smtp.port")
 	cfg.SMTP.StartTLS = viper.GetBool("smtp.starttls")
 	cfg.SMTP.TimeoutSec = viper.GetInt("smtp.timeout_sec")
+	cfg.SMTP.InsecureSkipVerify = viper.GetBool("smtp.insecure_skip_verify")
 
 	cfg.Database.Driver = viper.GetString("database.driver")
 	cfg.Database.DSN = viper.GetString("database.dsn")

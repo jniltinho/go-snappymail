@@ -3,3 +3,7 @@ test.local	Primary lab domain
 acme.local	Acme Corp sandbox
 demo.local	Demo tenant
 org.local	Organization tenant
+linuxpro.com.br	Dominio linuxpro
+criare-net.com.br	Dominio Criare Net BR
+uol.com.br	Dominio UOL
+criarenet.com	Dominio Criarenet
