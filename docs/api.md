@@ -97,15 +97,55 @@ Current session (requires `gsn_session`).
 
 ---
 
-## Planned (P1+)
+### GET /api/v1/auth/quota
+
+IMAP storage quota for the current user.
+
+**Response 200**
+
+```json
+{"used": 1024, "limit": 1048576}
+```
+
+---
+
+## Implemented (P1 — mail)
+
+All endpoints below require authentication (`gsn_session`).
+
+### Folders
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/auth/quota` | IMAP storage quota (handler exists, route pending) |
-| GET | `/folders` | List IMAP folders |
-| GET | `/folders/{name}/messages` | Message list |
-| GET | `/messages/{uid}` | Fetch message |
-| POST | `/messages/send` | Compose / send |
+| GET | `/folders` | Folder tree with unread counts |
+| POST | `/folders` | Create subfolder (`name`, optional `parent`, `delim`) |
+| POST | `/folders/rename` | Rename folder (`name`, `newname`) |
+| POST | `/folders/delete` | Delete folder (`name`; blocks system folders) |
+| GET | `/folders/:name/count` | Unread count for one folder |
+
+### Messages
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/mail/:mailbox` | Paginated list (`page`, `limit`, `q`, `unseen`, `flagged`) |
+| GET | `/mail/:mailbox/:uid` | Full message (sanitized HTML, plain, attachments) |
+| GET | `/mail/:mailbox/:uid/download` | Download as `.eml` |
+| GET | `/mail/:mailbox/:uid/raw` | Raw RFC822 source |
+| GET | `/mail/:mailbox/:uid/attachment/:part` | Download attachment by MIME part |
+| POST | `/mail/:mailbox/:uid/flag` | Set flag (`seen`, `flagged`, `answered`; `value=1\|0`) |
+| POST | `/mail/:mailbox/:uid/move` | Move to folder (`dest`) |
+| DELETE | `/mail/:mailbox/:uid` | Move to trash (or expunge if already in trash) |
+| DELETE | `/mail/:mailbox` | Empty trash or move all messages to trash |
+
+---
+
+## Planned (P1 compose + search)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/compose/send` | Send message |
+| POST | `/compose/draft` | Save draft |
+| POST | `/compose/upload` | Upload attachment |
 | GET | `/search` | IMAP search |
 
 See [OpenSpec](../openspec/changes/go-snappymail-foundation/) for full API design.

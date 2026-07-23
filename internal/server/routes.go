@@ -23,6 +23,25 @@ func registerAPIRoutes(g *echo.Group, h *handler.Handlers, authMiddleware, authR
 	auth.POST("/login", h.Auth.DoLogin, authRateLimit)
 	auth.POST("/logout", h.Auth.DoLogout)
 	auth.GET("/me", h.Auth.Me, authMiddleware)
+	auth.GET("/quota", h.Auth.Quota, authMiddleware)
+
+	api := g.Group("", authMiddleware)
+
+	api.GET("/folders", h.Mailbox.FoldersJSON)
+	api.POST("/folders", h.Mailbox.CreateSubfolder)
+	api.POST("/folders/rename", h.Mailbox.RenameFolder)
+	api.POST("/folders/delete", h.Mailbox.DeleteFolder)
+	api.GET("/folders/:name/count", h.Mailbox.UnreadCountJSON)
+
+	api.GET("/mail/:mailbox", h.Mailbox.List)
+	api.GET("/mail/:mailbox/:uid", h.Message.Read)
+	api.GET("/mail/:mailbox/:uid/download", h.Message.Download)
+	api.GET("/mail/:mailbox/:uid/raw", h.Message.Raw)
+	api.POST("/mail/:mailbox/:uid/flag", h.Message.Flag)
+	api.POST("/mail/:mailbox/:uid/move", h.Message.Move)
+	api.DELETE("/mail/:mailbox/:uid", h.Message.Delete)
+	api.DELETE("/mail/:mailbox", h.Message.EmptyTrash)
+	api.GET("/mail/:mailbox/:uid/attachment/:part", h.Message.Attachment)
 }
 
 func registerRoutes(e *echo.Echo, cfg *config.Config, h *handler.Handlers, distFS fs.FS) {

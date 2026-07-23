@@ -42,15 +42,15 @@
 
 ## 4. IMAP Mailbox — Core Mail (P1)
 
-- [ ] 4.1 Implement `GET /api/v1/folders` returning nested folder tree with unread counts
-- [ ] 4.2 Implement folder CRUD: create, rename, delete endpoints
-- [ ] 4.3 Implement `GET /api/v1/mail/:mailbox` with pagination, sort, and search params
-- [ ] 4.4 Implement `GET /api/v1/mail/:mailbox/:uid` with MIME parsing (HTML, plain, attachments)
-- [ ] 4.5 Implement `POST /api/v1/mail/:mailbox/:uid/flag` for seen/flagged/answered
-- [ ] 4.6 Implement `POST /api/v1/mail/:mailbox/:uid/move` and `DELETE` for single message
-- [ ] 4.7 Implement `DELETE /api/v1/mail/:mailbox` for empty trash
-- [ ] 4.8 Implement attachment download endpoint with streaming
-- [ ] 4.9 Implement `GET /api/v1/folders/:name/count` for unread badge updates
+- [x] 4.1 Implement `GET /api/v1/folders` returning nested folder tree with unread counts
+- [x] 4.2 Implement folder CRUD: create, rename, delete endpoints
+- [x] 4.3 Implement `GET /api/v1/mail/:mailbox` with pagination, sort, and search params
+- [x] 4.4 Implement `GET /api/v1/mail/:mailbox/:uid` with MIME parsing (HTML, plain, attachments)
+- [x] 4.5 Implement `POST /api/v1/mail/:mailbox/:uid/flag` for seen/flagged/answered
+- [x] 4.6 Implement `POST /api/v1/mail/:mailbox/:uid/move` and `DELETE` for single message
+- [x] 4.7 Implement `DELETE /api/v1/mail/:mailbox` for empty trash
+- [x] 4.8 Implement attachment download endpoint with streaming
+- [x] 4.9 Implement `GET /api/v1/folders/:name/count` for unread badge updates
 
 ## 5. Compose & Send (P1)
 
