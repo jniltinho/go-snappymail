@@ -13,34 +13,55 @@ async function onSearch() {
 </script>
 
 <template>
-  <header class="flex items-center gap-2 px-3 py-2 border-b border-line bg-panel-2 shrink-0">
-    <button type="button" class="tbtn" @click="mail.refresh">Refresh</button>
-    <button
-      type="button"
-      class="tbtn"
-      :disabled="!mail.selectedUid"
-      @click="mail.selectedUid && mail.toggleFlag(mail.selectedUid, !mail.selectedMessage?.flagged)"
-    >
-      Flag
-    </button>
-    <button type="button" class="tbtn tbtn-danger" :disabled="!mail.selectedUid" @click="mail.deleteSelected">
-      Delete
-    </button>
+  <header class="shrink-0">
+    <div class="topbar flex items-center gap-3 px-3">
+      <div class="font-bold text-base tracking-tight whitespace-nowrap">go-snappymail</div>
 
-    <form class="flex-1 flex gap-2 max-w-md ml-4" @submit.prevent="onSearch">
-      <input
-        v-model="mail.searchQuery"
-        type="search"
-        placeholder="Search this folder…"
-        class="flex-1 h-[26px] px-2 border border-line bg-panel text-sm"
-      />
-      <button type="submit" class="tbtn">Search</button>
-    </form>
+      <form class="flex-1 flex justify-center gap-2 max-w-xl mx-auto" @submit.prevent="onSearch">
+        <input
+          v-model="mail.searchQuery"
+          type="search"
+          placeholder="Search"
+          class="topbar-search flex-1 h-[26px] px-2 text-sm"
+        />
+        <button type="submit" class="tbtn">Search</button>
+      </form>
 
-    <button type="button" class="tbtn ml-auto" @click="settings.toggleDark">
-      {{ settings.darkMode ? 'Light' : 'Dark' }}
-    </button>
-    <span class="text-xs text-ink-mute hidden md:inline">{{ auth.username }}</span>
-    <button type="button" class="tbtn" @click="auth.logout">Logout</button>
+      <button type="button" class="topbar-link" @click="settings.toggleDark">
+        {{ settings.darkMode ? 'Light' : 'Dark' }}
+      </button>
+      <span class="text-xs hidden md:inline opacity-90">{{ auth.username }}</span>
+      <button type="button" class="topbar-link" @click="auth.logout">Logout</button>
+    </div>
+
+    <div class="tabstrip">
+      <span class="tab">Mail</span>
+    </div>
+
+    <div class="actionbar flex items-center gap-2 px-3 py-2 border-b border-line">
+      <button type="button" class="tbtn" @click="mail.refresh">Refresh</button>
+      <button
+        type="button"
+        class="tbtn"
+        :disabled="!mail.selectedUid"
+        @click="mail.selectedUid && mail.toggleFlag(mail.selectedUid, !mail.selectedMessage?.flagged)"
+      >
+        Flag
+      </button>
+      <button
+        type="button"
+        class="tbtn"
+        :disabled="!mail.selectedUid"
+        @click="mail.selectedUid && mail.setSeen(mail.selectedUid, !mail.selectedMessage?.seen)"
+      >
+        {{ mail.selectedMessage?.seen ? 'Mark unread' : 'Mark read' }}
+      </button>
+      <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="mail.archiveSelected">
+        Archive
+      </button>
+      <button type="button" class="tbtn tbtn-danger" :disabled="!mail.selectedUid" @click="mail.deleteSelected">
+        Delete
+      </button>
+    </div>
   </header>
 </template>

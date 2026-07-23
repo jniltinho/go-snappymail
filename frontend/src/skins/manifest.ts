@@ -29,6 +29,12 @@ export const SKIN_MANIFEST = [
     ready: true,
     aliases: ['zextras'],
   },
+  {
+    id: 'zimbra',
+    label: 'Zimbra',
+    ready: true,
+    aliases: ['classic'],
+  },
 ] as const // manifest-end
 
 export type SkinId = (typeof SKIN_MANIFEST)[number]['id']
@@ -55,7 +61,7 @@ export interface UIConfigResponse {
   compose_html: boolean
 }
 
-export const DEFAULT_SKIN: SkinId = 'snappymail'
+export const DEFAULT_SKIN: SkinId = 'zimbra'
 
 function buildRegistry(): Record<SkinId, SkinMeta> {
   const out = {} as Record<SkinId, SkinMeta>

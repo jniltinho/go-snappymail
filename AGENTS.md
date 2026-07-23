@@ -57,9 +57,9 @@ make new-skin ID=x REGISTER=1   # scaffold de skin nova
 
 ## Skins (resumo — guia completo em docs/skins.md)
 
-- Server-side: `config.toml` → `[ui] skin` (snappymail | gmail | outlook | carbonio). Exposto em `GET /api/v1/ui/config`.
+- Server-side: `config.toml` → `[ui] skin` (zimbra | snappymail | gmail | outlook | carbonio). Exposto em `GET /api/v1/ui/config`.
 - 100% token-driven: cada skin define `--color-*` e `--skin-login-*` em `[data-skin='<id>']` (+ variante `.dark`). Consumidos por `frontend/src/style.css` e pelo `@theme` do Tailwind.
-- `ready: false` exibe banner de preview na UI. `snappymail` (default), `outlook` (Fluent minimalista) e `carbonio` (Zextras) estão `ready`.
+- `ready: false` exibe banner de preview na UI. `zimbra` (default, Zimbra 8 Classic), `snappymail`, `outlook` (Fluent minimalista) e `carbonio` (Zextras) estão `ready`.
 - Regra global de UI: layout quadrado — sem `border-radius`/`rounded-*`.
 - Dark mode é client-side (`localStorage` `gsn_dark`, classe `.dark` no `<html>`).
 

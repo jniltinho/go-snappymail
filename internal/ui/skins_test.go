@@ -7,14 +7,16 @@ func TestNormalizeSkin(t *testing.T) {
 		in   string
 		want string
 	}{
-		{"", "snappymail"},
+		{"", "zimbra"},
 		{"snappymail", "snappymail"},
 		{"snappymail-default", "snappymail"},
 		{"Gmail", "gmail"},
 		{"google", "gmail"},
 		{"outlook", "outlook"},
 		{"microsoft", "outlook"},
-		{"unknown-brand", "snappymail"},
+		{"zimbra", "zimbra"},
+		{"classic", "zimbra"},
+		{"unknown-brand", "zimbra"},
 	}
 	for _, tt := range tests {
 		if got := NormalizeSkin(tt.in); got != tt.want {

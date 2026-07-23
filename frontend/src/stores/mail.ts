@@ -125,6 +125,46 @@ export const useMailStore = defineStore('mail', () => {
     if (msg) msg.flagged = flagged
   }
 
+  async function setSeen(uid: number, seen: boolean): Promise<void> {
+    const body = new URLSearchParams()
+    body.set('flag', 'seen')
+    body.set('value', seen ? '1' : '0')
+    await axios.post(
+      `${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${uid}/flag`,
+      body,
+    )
+    const msg = messages.value.find((m) => m.uid === uid)
+    if (msg) msg.seen = seen
+    await loadFolders()
+  }
+
+  async function moveMessage(uid: number, dest: string): Promise<void> {
+    const body = new URLSearchParams()
+    body.set('dest', dest)
+    await axios.post(
+      `${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${uid}/move`,
+      body,
+    )
+    messages.value = messages.value.filter((m) => m.uid !== uid)
+    if (selectedUid.value === uid) selectedUid.value = messages.value[0]?.uid ?? null
+    await loadFolders()
+  }
+
+  async function archiveSelected(): Promise<void> {
+    if (!selectedUid.value) return
+    let dest =
+      folders.value.find((f) => f.iconType === 'archive')?.name ??
+      folders.value.find((f) => f.name.toLowerCase() === 'archive')?.name
+    if (!dest) {
+      const body = new URLSearchParams()
+      body.set('parent', '')
+      body.set('name', 'Archive')
+      await axios.post(`${API_BASE}/folders`, body)
+      dest = 'Archive'
+    }
+    await moveMessage(selectedUid.value, dest)
+  }
+
   async function deleteSelected(): Promise<void> {
     if (!selectedUid.value) return
     await axios.delete(
@@ -148,6 +188,9 @@ export const useMailStore = defineStore('mail', () => {
     refresh,
     search,
     toggleFlag,
+    setSeen,
+    moveMessage,
+    archiveSelected,
     deleteSelected,
   }
 })

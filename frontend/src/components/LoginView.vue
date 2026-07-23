@@ -29,8 +29,8 @@ async function onSubmit() {
           {{ auth.loginErr }}
         </p>
 
-        <label class="text-sm opacity-90">
-          Email
+        <label class="text-sm login-row">
+          <span class="login-label">Email</span>
           <input
             v-model="auth.loginUser"
             type="email"
@@ -41,8 +41,8 @@ async function onSubmit() {
           />
         </label>
 
-        <label class="text-sm opacity-90">
-          Password
+        <label class="text-sm login-row">
+          <span class="login-label">Password</span>
           <input
             v-model="auth.loginPwd"
             type="password"
@@ -53,7 +53,7 @@ async function onSubmit() {
         </label>
 
         <button type="submit" class="login-btn mt-2 h-9 font-semibold disabled:opacity-60" :disabled="auth.loginBusy">
-          {{ auth.loginBusy ? 'Signing in…' : 'Sign in' }}
+          {{ auth.loginBusy ? 'Signing in…' : 'Login' }}
         </button>
       </div>
     </form>

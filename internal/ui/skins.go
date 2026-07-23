@@ -42,9 +42,15 @@ var catalog = []Skin{
 		Ready:   true,
 		Aliases: []string{"zextras"},
 	},
+	{
+		ID:      "zimbra",
+		Label:   "Zimbra",
+		Ready:   true,
+		Aliases: []string{"classic"},
+	},
 } // catalog-end
 
-const defaultSkinID = "snappymail"
+const defaultSkinID = "zimbra"
 
 // Catalog returns skin metadata for API consumers.
 func Catalog() []Skin {

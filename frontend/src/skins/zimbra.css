@@ -1,0 +1,205 @@
+/*
+ * Zimbra skin — Zimbra 8.8.15 Classic (Harmony) look.
+ * Blue #007cc3 chrome, white panels, #99cae7 selection, Segoe UI 12px, squared.
+ * Reference: docs/prints/zimbra/ (live capture of webmail.criarenet.com, 2026-07-23).
+ * Measured values: see openspec/changes/add-zimbra-skin/design.md palette table.
+ */
+
+[data-skin='zimbra'] {
+  /* ── Brand ───────────────────────────────────── */
+  --color-accent: #007cc3;
+  --color-accent-2: #0087c3;
+  --color-accent-bar: #005f96;
+
+  /* ── Surfaces ────────────────────────────────── */
+  --color-line: #d3d3d3;
+  --color-panel: #ffffff;
+  --color-panel-2: #f2f2f2;
+  --color-app-bg: #ffffff;
+
+  /* ── Text ──────────────────────────────────── */
+  --color-ink: #333333;
+  --color-ink-sub: #656565;
+  --color-ink-mute: #999999;
+  --color-row-selected: #99cae7;
+
+  /* ── Top bar (blue band with brand/search/user) ─ */
+  --color-topbar-bg: #007cc3;
+  --color-topbar-ink: #ffffff;
+
+  /* ── Login page (blue card on white fade) ────── */
+  --skin-login-bg: #ffffff;
+  --skin-login-card: #007cc3;
+  --skin-login-header-bg: #007cc3;
+  --skin-login-header-border: transparent;
+  --skin-login-text: #ffffff;
+  --skin-login-input-bg: #ffffff;
+  --skin-login-input-border: #ffffff;
+  --skin-login-input-text: #333333;
+  --skin-login-btn-bg: #007cc3;
+  --skin-login-btn-text: #ffffff;
+  --skin-login-error-bg: #fbe9eb;
+  --skin-login-error-text: #d74942;
+  --skin-login-error-border: #efb1ad;
+
+  --skin-layout: zimbra;
+  --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+[data-skin='zimbra'].dark {
+  --color-accent: #3399d6;
+  --color-accent-2: #47a5dd;
+  --color-panel: #232629;
+  --color-panel-2: #2b2f33;
+  --color-app-bg: #1b1e21;
+  --color-ink: #eeeff3;
+  --color-ink-sub: #b6bcc4;
+  --color-ink-mute: #82878d;
+  --color-line: #3a3f44;
+  --color-row-selected: #1f4e73;
+
+  --color-topbar-bg: #0b3a5c;
+  --color-topbar-ink: #eeeff3;
+
+  --skin-login-bg: #1b1e21;
+  --skin-login-card: #0b3a5c;
+  --skin-login-header-bg: #0b3a5c;
+  --skin-login-header-border: transparent;
+  --skin-login-text: #eeeff3;
+  --skin-login-input-bg: #232629;
+  --skin-login-input-border: #4a4f55;
+  --skin-login-input-text: #eeeff3;
+  --skin-login-btn-bg: #0b3a5c;
+  --skin-login-error-bg: #3b2023;
+  --skin-login-error-text: #f08a84;
+  --skin-login-error-border: #6e3034;
+}
+
+/* ── Zimbra chrome (scoped, squared) ─────────────────────────── */
+
+/* Zimbra UI density: 12px everywhere */
+[data-skin='zimbra'] body {
+  font-size: 12px;
+}
+
+/* Login: white page fading to #ededed, flat blue card */
+[data-skin='zimbra'] .login-page {
+  background: linear-gradient(to bottom, #ffffff, #ededed);
+}
+
+[data-skin='zimbra'] .login-card {
+  border-color: var(--skin-login-card);
+}
+
+[data-skin='zimbra'] .login-shadow {
+  box-shadow: none;
+}
+
+[data-skin='zimbra'] .login-btn {
+  border: 1px solid #ffffff;
+}
+
+[data-skin='zimbra'].dark .login-btn {
+  border-color: #4a4f55;
+}
+
+/* Login form: Zimbra row layout — label left, field right, small Login button */
+[data-skin='zimbra'] .login-row {
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+[data-skin='zimbra'] .login-label {
+  width: 110px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+[data-skin='zimbra'] .login-input {
+  margin-top: 0;
+}
+
+[data-skin='zimbra'] .login-btn {
+  width: auto;
+  align-self: flex-end;
+  padding: 0 18px;
+  height: 26px;
+  font-weight: 400;
+}
+
+/* App tab strip: blue band with white active tab (Zimbra app chooser) */
+[data-skin='zimbra'] .topbar {
+  border-bottom: none;
+}
+
+[data-skin='zimbra'] .tabstrip {
+  display: flex;
+  gap: 4px;
+  padding: 5px 10px 0;
+  background: var(--color-topbar-bg);
+}
+
+[data-skin='zimbra'] .tabstrip .tab {
+  background: var(--color-panel);
+  color: var(--color-ink);
+  padding: 4px 20px;
+  font-size: 12px;
+}
+
+/* Folder icons: gray like Zimbra's, not colored emoji */
+[data-skin='zimbra'] .side-item > span:first-child {
+  filter: grayscale(1);
+  opacity: 0.75;
+}
+
+/* Toolbar buttons: white with 1px #bfbfbf border */
+[data-skin='zimbra'] .tbtn {
+  border-color: #bfbfbf;
+}
+
+[data-skin='zimbra'].dark .tbtn {
+  border-color: #4a4f55;
+}
+
+/* Yellow focus fill on text inputs (Zimbra signature) */
+[data-skin='zimbra'] input[type='search']:focus,
+[data-skin='zimbra'] input[type='text']:focus,
+[data-skin='zimbra'] input[type='email']:focus,
+[data-skin='zimbra'] input[type='password']:focus {
+  background-color: #ffffcc;
+  color: #333333;
+}
+
+/* Selected folder: solid #99cae7 block */
+[data-skin='zimbra'] .side-item.active {
+  background: var(--color-row-selected);
+  font-weight: 700;
+}
+
+/* Message rows: unread indicator + bold sender/subject */
+[data-skin='zimbra'] .msg-row {
+  position: relative;
+  padding-left: 24px;
+}
+
+[data-skin='zimbra'] .msg-row::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #bfbfbf;
+  background: var(--color-panel);
+}
+
+[data-skin='zimbra'] .msg-row.unread::before {
+  background: var(--color-accent-2);
+  border-color: var(--color-accent-2);
+}
+
+[data-skin='zimbra'] .msg-row.unread > div:first-child {
+  font-weight: 700;
+}

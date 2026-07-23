@@ -35,8 +35,8 @@ secure    = false
 http_only = true
 
 [ui]
-# Layout skin: snappymail | gmail | outlook | carbonio (gmail is a stub for now)
-skin            = "snappymail"
+# Layout skin: zimbra | snappymail | gmail | outlook | carbonio (gmail is a stub for now)
+skin            = "zimbra"
 # Deprecated alias for skin — use skin instead
 theme           = "snappymail-default"
 rows_per_page   = 50

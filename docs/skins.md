@@ -61,7 +61,7 @@ A skin ativa é **server-side**: todos os usuários veem a mesma, salvo override
 ```toml
 # config.toml ou web/files/config.default.toml
 [ui]
-skin = "snappymail"   # snappymail | gmail | outlook | seu-id
+skin = "zimbra"   # zimbra | snappymail | gmail | outlook | carbonio | seu-id
 ```
 
 ```bash
@@ -73,10 +73,11 @@ Reinicie o servidor e recarregue o browser.
 
 | Skin | `ready` | Observação |
 |------|---------|------------|
-| `snappymail` | ✅ | Padrão — azul inspirado no SnappyMail |
+| `snappymail` | ✅ | Azul inspirado no SnappyMail |
 | `gmail` | ❌ | Paleta vermelha; layout completo TBD |
 | `outlook` | ✅ | Fluent 2 minimalista (light/dark), cantos quadrados |
 | `carbonio` | ✅ | Zextras Carbonio (light/dark); referência em `docs/prints/carbonio/` |
+| `zimbra` | ✅ | **Padrão** — Zimbra 8 Classic/Harmony (light/dark); referência em `docs/prints/zimbra/` |
 
 Alias legado: `[ui] theme = "snappymail-default"` → `snappymail`.
 
@@ -456,7 +457,7 @@ Permite valores legados ou nomes comerciais:
 [ui]
 skin = "google"    # → gmail
 skin = "microsoft" # → outlook
-skin = "default"   # → snappymail
+skin = "classic"   # → zimbra
 ```
 
 Implementação:
@@ -464,7 +465,7 @@ Implementação:
 - **Servidor:** `ui.NormalizeSkin()` em `skins.go`
 - **Cliente:** `normalizeSkinId()` em `manifest.ts`
 
-Valores desconhecidos caem no default `snappymail`.
+Valores desconhecidos caem no default `zimbra`.
 
 ---
 
@@ -484,9 +485,9 @@ Verifica:
 Saída esperada:
 
 ```
-Go catalog:  gmail outlook snappymail
-TS manifest: gmail outlook snappymail
-CSS imports: gmail outlook snappymail
+Go catalog:  carbonio gmail outlook snappymail zimbra
+TS manifest: carbonio gmail outlook snappymail zimbra
+CSS imports: carbonio gmail outlook snappymail zimbra
 OK — skin catalog, manifest, and CSS are in sync.
 ```
 
@@ -547,13 +548,13 @@ Até lá: skins são **CSS-only** sobre o layout SnappyMail padrão.
 
 ```json
 {
-  "skin": "snappymail",
+  "skin": "zimbra",
   "skins": [
     {"id": "snappymail", "label": "SnappyMail", "ready": true},
     {"id": "gmail", "label": "Gmail", "ready": false},
     {"id": "outlook", "label": "Outlook", "ready": false}
   ],
-  "available_skins": ["snappymail", "gmail", "outlook"],
+  "available_skins": ["snappymail", "gmail", "outlook", "carbonio", "zimbra"],
   "rows_per_page": 50,
   "datetime_format": "02/01/2006 15:04",
   "compose_html": true
