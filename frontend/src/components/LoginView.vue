@@ -15,15 +15,8 @@ async function onSubmit() {
 
 <template>
   <div class="min-h-full flex flex-col items-center pt-24 px-6 pb-10 login-page">
-    <form
-      class="w-full max-w-md login-card border login-shadow rounded-sm"
-      :class="settings.skin === 'snappymail' ? 'text-white' : 'text-ink'"
-      @submit.prevent="onSubmit"
-    >
-      <div
-        class="flex items-center gap-3 px-5 py-3 border-b"
-        :class="settings.skin === 'snappymail' ? 'bg-accent-bar border-accent-2' : 'bg-panel-2 border-line'"
-      >
+    <form class="w-full max-w-md login-card border login-shadow rounded-sm" @submit.prevent="onSubmit">
+      <div class="login-header flex items-center gap-3 px-5 py-3 border-b">
         <div class="text-lg font-bold tracking-tight">
           go-snappymail
           <span class="ml-2 text-xs font-normal opacity-70 font-mono">{{ settings.skinLabel(settings.skin) }}</span>
@@ -32,7 +25,7 @@ async function onSubmit() {
       </div>
 
       <div class="px-6 py-5 flex flex-col gap-3">
-        <p v-if="auth.loginErr" class="text-sm text-red-200 bg-red-950/40 border border-red-300/40 px-3 py-2">
+        <p v-if="auth.loginErr" class="login-error text-sm px-3 py-2">
           {{ auth.loginErr }}
         </p>
 
@@ -59,12 +52,7 @@ async function onSubmit() {
           />
         </label>
 
-        <button
-          type="submit"
-          class="mt-2 h-9 font-semibold disabled:opacity-60"
-          :class="settings.skin === 'snappymail' ? 'bg-[#f5f7fa] text-accent-bar' : 'bg-accent text-white'"
-          :disabled="auth.loginBusy"
-        >
+        <button type="submit" class="login-btn mt-2 h-9 font-semibold disabled:opacity-60" :disabled="auth.loginBusy">
           {{ auth.loginBusy ? 'Signing in…' : 'Sign in' }}
         </button>
       </div>

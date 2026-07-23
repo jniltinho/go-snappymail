@@ -58,7 +58,7 @@ Login uses **rate limiting** (10 requests/minute per IP).
 |-------|---------|----------|
 | P0 ✅ | Auth API, Echo, GORM, tests | `index.html` placeholder |
 | P1 | Folders, messages, compose | Deferred |
-| P2 | SSE, sanitization | Vue 3 SnappyMail layout |
+| P2 | SSE, sanitization | Vue 3 SnappyMail layout (desktop 3-column; mobile deferred to skin layouts) |
 | P3+ | Contacts, PGP, Sieve | Matching UI |
 
 **Backend first, frontend second** for every feature slice.

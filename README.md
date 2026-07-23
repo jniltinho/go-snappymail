@@ -30,7 +30,7 @@ Open http://localhost:8082
 | [Architecture](docs/architecture.md) | Components, project layout, delivery phases |
 | [Development](docs/development.md) | Build, test, backend-first workflow |
 | [Configuration](docs/configuration.md) | `config.toml` and `GOSM_*` environment variables |
-| [Skins / themes](docs/skins.md) | UI skins — SnappyMail, Gmail, Outlook, custom |
+| [Skins / themes](docs/skins.md) | **Guia de implementação** — criar skins custom (CSS, registro, validação) |
 | [API](docs/api.md) | REST endpoints |
 | [Security](docs/security.md) | Secrets, `.env`, git hygiene |
 | [Lab environment](docs/lab.md) | Docker + Vagrant comparison stack |

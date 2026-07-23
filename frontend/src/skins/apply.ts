@@ -1,4 +1,5 @@
-import type { SkinId } from './types'
+import { normalizeSkinId, isSkinId, DEFAULT_SKIN } from './manifest'
+import type { SkinId } from './manifest'
 
 const SKIN_ATTR = 'data-skin'
 
@@ -9,6 +10,9 @@ export function applySkin(skinId: SkinId): void {
 
 export function currentSkin(): SkinId {
   const v = document.documentElement.getAttribute(SKIN_ATTR)
-  if (v === 'gmail' || v === 'outlook' || v === 'snappymail') return v
-  return 'snappymail'
+  if (v && isSkinId(v)) return v
+  return DEFAULT_SKIN
 }
+
+/** Re-export for callers that resolve raw server strings. */
+export { normalizeSkinId }

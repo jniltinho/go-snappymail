@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { applySkin } from '../skins/apply'
-import { DEFAULT_SKIN, SKIN_REGISTRY, normalizeSkinId } from '../skins/registry'
-import type { SkinId, UIConfigResponse } from '../skins/types'
+import { DEFAULT_SKIN, SKIN_REGISTRY, SKIN_MANIFEST, normalizeSkinId } from '../skins/registry'
+import type { SkinId, UIConfigResponse, SkinInfo } from '../skins/manifest'
 
 export const useSettingsStore = defineStore('settings', () => {
   const darkMode = ref(localStorage.getItem('gsn_dark') === '1')
   const skin = ref<SkinId>(DEFAULT_SKIN)
-  const availableSkins = ref<string[]>(['snappymail', 'gmail', 'outlook'])
+  const availableSkins = ref<SkinInfo[]>([])
   const rowsPerPage = ref(50)
   const composeHTML = ref(true)
 
@@ -30,9 +30,17 @@ export const useSettingsStore = defineStore('settings', () => {
 
   function initFromServer(config: UIConfigResponse): void {
     skin.value = normalizeSkinId(config.skin)
-    availableSkins.value = config.available_skins?.length
-      ? config.available_skins
-      : Object.keys(SKIN_REGISTRY)
+    if (config.skins?.length) {
+      availableSkins.value = config.skins
+    } else if (config.available_skins?.length) {
+      availableSkins.value = config.available_skins.map((id) => ({
+        id,
+        label: SKIN_REGISTRY[normalizeSkinId(id)]?.label ?? id,
+        ready: SKIN_REGISTRY[normalizeSkinId(id)]?.ready ?? false,
+      }))
+    } else {
+      availableSkins.value = SKIN_MANIFEST.map(({ id, label, ready }) => ({ id, label, ready }))
+    }
     rowsPerPage.value = config.rows_per_page || 50
     composeHTML.value = config.compose_html ?? true
     applySkin(skin.value)

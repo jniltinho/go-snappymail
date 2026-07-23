@@ -2,10 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import "./skins/snappymail.css";
-@import "./skins/gmail.css";
-@import "./skins/outlook.css";
-/* Add new skins here — see docs/skins.md and: make new-skin ID=<name> */
+@import "./skins/index.css";
 
 @theme {
   --color-accent: #1b3a6b;
@@ -36,6 +33,8 @@ body {
   background: var(--color-app-bg);
 }
 
+/* ── Login (all tokens from skin CSS) ───────────────────────────── */
+
 .login-page {
   background-color: var(--skin-login-bg);
 }
@@ -43,6 +42,12 @@ body {
 .login-card {
   background-color: var(--skin-login-card);
   border-color: var(--color-accent-bar);
+  color: var(--skin-login-text);
+}
+
+.login-header {
+  background-color: var(--skin-login-header-bg);
+  border-color: var(--skin-login-header-border);
 }
 
 .login-input {
@@ -51,20 +56,29 @@ body {
   padding: 0 8px;
   border: 1px solid var(--skin-login-input-border);
   background: var(--skin-login-input-bg);
-  color: var(--color-ink);
-}
-
-[data-skin='snappymail'] .login-input {
-  color: #fff;
+  color: var(--skin-login-input-text);
 }
 
 .login-input.bad {
-  border-color: #ff8a8a;
+  border-color: var(--skin-login-error-border);
+}
+
+.login-btn {
+  background: var(--skin-login-btn-bg);
+  color: var(--skin-login-btn-text);
+}
+
+.login-error {
+  color: var(--skin-login-error-text);
+  background: var(--skin-login-error-bg);
+  border: 1px solid var(--skin-login-error-border);
 }
 
 .login-shadow {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
+
+/* ── Inbox chrome ─────────────────────────────────────────────── */
 
 .tbtn {
   height: 26px;

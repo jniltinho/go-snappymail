@@ -1,4 +1,4 @@
-/* Gmail skin — placeholder tokens for future full layout */
+/* Gmail skin — color tokens (full layout: future) */
 
 [data-skin='gmail'] {
   --color-accent: #c5221f;
@@ -14,10 +14,19 @@
   --color-row-selected: #fce8e6;
   --skin-login-bg: #f6f8fc;
   --skin-login-card: #ffffff;
+  --skin-login-header-bg: var(--color-panel-2);
+  --skin-login-header-border: var(--color-line);
+  --skin-login-text: var(--color-ink);
   --skin-login-input-bg: #ffffff;
   --skin-login-input-border: #dadce0;
+  --skin-login-input-text: var(--color-ink);
+  --skin-login-btn-bg: var(--color-accent);
+  --skin-login-btn-text: #ffffff;
+  --skin-login-error-bg: #fce8e6;
+  --skin-login-error-text: #c5221f;
+  --skin-login-error-border: #ea4335;
   --skin-layout: gmail;
-  --font-sans: 'Google Sans', Roboto, Arial, sans-serif;
+  --font-sans: Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 [data-skin='gmail'].dark {

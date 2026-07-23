@@ -1,39 +1,49 @@
 /*
- * Skin template — copy to <your-id>.css and replace MY_SKIN_ID.
- * Guide: docs/skins.md  ·  scaffold: make new-skin ID=<your-id>
+ * Skin template — scaffold: make new-skin ID=<name> [REGISTER=1]
+ * Implementation guide: docs/skins.md (tutorial, tokens, validation)
+ * Replace __SKIN_ID__ in selectors only (used by scripts/new-skin.sh).
  */
 
-[data-skin='MY_SKIN_ID'] {
-  /* Brand */
+[data-skin='__SKIN_ID__'] {
+  /* ── Brand ───────────────────────────────────── */
   --color-accent: #1b3a6b;
   --color-accent-2: #2a5599;
   --color-accent-bar: #14305a;
 
-  /* Surfaces */
+  /* ── Surfaces ────────────────────────────────── */
   --color-line: #c9d1dc;
   --color-panel: #ffffff;
   --color-panel-2: #f5f7fa;
   --color-app-bg: #eceff3;
 
-  /* Text */
+  /* ── Text ──────────────────────────────────── */
   --color-ink: #1a1f2a;
   --color-ink-sub: #5a6473;
   --color-ink-mute: #8a93a1;
   --color-row-selected: #dce5f2;
 
-  /* Login page */
+  /* ── Login page ─────────────────────────────── */
   --skin-login-bg: #48525c;
   --skin-login-card: #1b3a6b;
+  --skin-login-header-bg: var(--color-accent-bar);
+  --skin-login-header-border: var(--color-accent-2);
+  --skin-login-text: #ffffff;
   --skin-login-input-bg: #0f2344;
   --skin-login-input-border: #2a4978;
+  --skin-login-input-text: #ffffff;
+  --skin-login-btn-bg: #f5f7fa;
+  --skin-login-btn-text: var(--color-accent-bar);
+  --skin-login-error-bg: rgba(42, 31, 47, 0.85);
+  --skin-login-error-text: #ffd9d9;
+  --skin-login-error-border: #ff8a8a;
 
-  /* Optional layout hint for future shell components */
+  /* ── Layout hint (future AppShell per skin) ─── */
   --skin-layout: three-column;
 
   --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-[data-skin='MY_SKIN_ID'].dark {
+[data-skin='__SKIN_ID__'].dark {
   --color-panel: #2a3038;
   --color-panel-2: #343b44;
   --color-app-bg: #1e2329;
@@ -42,6 +52,7 @@
   --color-ink-mute: #8a93a1;
   --color-line: #3d4654;
   --color-row-selected: #3a4a62;
+
   --skin-login-bg: #1e2329;
   --skin-login-card: #2a3038;
   --skin-login-input-bg: #1e2329;

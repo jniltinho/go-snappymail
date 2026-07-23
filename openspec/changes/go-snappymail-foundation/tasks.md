@@ -71,7 +71,7 @@
 - [ ] 7.2 Build `MessageList.vue` with sender, subject, date, flag indicators, and selection
 - [ ] 7.3 Build `ReadingPane.vue` with HTML rendering, attachment list, and action toolbar
 - [ ] 7.4 Build `AppToolbar.vue` with search, refresh, compose, and settings buttons
-- [ ] 7.5 Implement responsive layout: 3-column desktop, single-column mobile with navigation
+- [ ] 7.5 ~~Implement responsive layout: 3-column desktop, single-column mobile with navigation~~ — **deferred**: mobile/responsive layout comes later with per-skin layouts (`--skin-layout`, AppShell per skin)
 - [ ] 7.6 Apply SnappyMail-inspired color palette (Default + NightShine themes) via Tailwind
 - [ ] 7.7 Implement dark/light mode toggle with CSS variables and Tailwind `dark:` variants
 - [ ] 7.8 Implement keyboard shortcuts (j/k/r/c/e/#) in App.vue

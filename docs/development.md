@@ -33,9 +33,12 @@ make frontend-dev        # terminal 2 — Vite on :5173
 
 Skins (SnappyMail, Gmail, Outlook, custom) are configured in `config.toml` → `[ui] skin`.
 
-- **Guide:** [skins.md](skins.md)
-- **Scaffold:** `make new-skin ID=mybrand`
+- **Implementation guide:** [skins.md](skins.md) — start here to create a new skin
+- **Scaffold + register:** `make new-skin ID=mybrand REGISTER=1`
+- **Validate sync:** `make validate-skins`
 - **Preview:** set `skin = "mybrand"` in config, run `make frontend-dev` + `make run`
+
+Quick checklist when adding a skin: CSS file → Go catalog → TS manifest → `index.css` import → `make validate-skins`. Details in [skins.md#checklist-final](skins.md#checklist-final).
 
 ## CLI
 

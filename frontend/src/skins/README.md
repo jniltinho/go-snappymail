@@ -1,27 +1,47 @@
-# Skins — developer quick reference
+# Skins — referência rápida (dev)
 
-**Full guide:** [docs/skins.md](../../../docs/skins.md)
+**Guia completo de implementação:** [docs/skins.md](../../../docs/skins.md)
 
-## New skin in one command
+## Nova skin (recomendado)
 
 ```bash
-make new-skin ID=acme
+make new-skin ID=acme REGISTER=1   # scaffold + Go + manifest + CSS import
+make validate-skins
+# editar frontend/src/skins/acme.css
+# config.toml → [ui] skin = "acme"
+make frontend-dev && make run
 ```
 
-Then complete the printed checklist (Go registry, TypeScript, `@import`, `config.toml`).
+## Arquivos
 
-## Files in this folder
+| Arquivo | O que fazer |
+|---------|-------------|
+| `<id>.css` | Tokens `[data-skin='id']` + `.dark` |
+| `manifest.ts` | Entrada com `id`, `label`, `ready`, `aliases` |
+| `internal/ui/skins.go` | Mesmo id/label/ready/aliases (servidor) |
+| `index.css` | `@import "./<id>.css";` |
+| `_template.css` | Base para novas skins — não editar |
 
-| File | Role |
-|------|------|
-| `_template.css` | Copy-paste starter (all CSS variables) |
-| `*.css` | One file per skin — `[data-skin='id']` tokens |
-| `registry.ts` | Labels + `ready` flag for SPA |
-| `bootstrap.ts` | Loads skin from `GET /api/v1/ui/config` |
-| `apply.ts` | Sets `data-skin` on `<html>` |
+## Variáveis obrigatórias
 
-## Rules
+**Inbox:** `--color-accent`, `--color-accent-2`, `--color-accent-bar`, `--color-line`, `--color-panel`, `--color-panel-2`, `--color-app-bg`, `--color-ink`, `--color-ink-sub`, `--color-ink-mute`, `--color-row-selected`, `--font-sans`
 
-- Use **CSS variables only** for colors in shared Vue components.
-- Add **`.dark`** block for each skin.
-- Set `ready: false` until layout components exist (shows preview banner).
+**Login:** `--skin-login-bg`, `--skin-login-card`, `--skin-login-header-bg`, `--skin-login-header-border`, `--skin-login-text`, `--skin-login-input-bg`, `--skin-login-input-border`, `--skin-login-input-text`, `--skin-login-btn-bg`, `--skin-login-btn-text`, `--skin-login-error-bg`, `--skin-login-error-text`, `--skin-login-error-border`
+
+Lista completa + exemplos Gmail/SnappyMail: [docs/skins.md](../../../docs/skins.md#variáveis-css--referência-completa)
+
+## Regras
+
+1. **Sem hex em `.vue`** — só classes Tailwind / tokens CSS
+2. **Sem `if (skin === 'gmail')`** — use `--skin-login-*` e `--color-*`
+3. **Sempre bloco `.dark`** por skin
+4. **`ready: false`** até layout completo (banner em App.vue)
+5. **`make validate-skins`** após qualquer mudança no catálogo
+
+## Exemplos no repo
+
+| Skin | Arquivo | Estilo login |
+|------|---------|--------------|
+| SnappyMail | `snappymail.css` | Escuro, card azul |
+| Gmail | `gmail.css` | Claro, botão vermelho |
+| Outlook | `outlook.css` | Fundo azul MS, card branco |

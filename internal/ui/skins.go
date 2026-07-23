@@ -2,34 +2,84 @@ package ui
 
 import "strings"
 
-// Known skin identifiers (layout + visual identity).
-// To add a skin: docs/skins.md  ·  make new-skin ID=<name>
-const (
-	SkinSnappyMail = "snappymail"
-	SkinGmail      = "gmail"
-	SkinOutlook    = "outlook"
-)
+// Skin describes a webmail UI skin exposed to the SPA and config.toml.
+type Skin struct {
+	ID      string   `json:"id"`
+	Label   string   `json:"label"`
+	Ready   bool     `json:"ready"`
+	Aliases []string `json:"-"`
+}
 
-var available = []string{SkinSnappyMail, SkinGmail, SkinOutlook}
+// catalog is the authoritative skin list (server + docs + validate-skins.sh).
+// To add a skin: make new-skin ID=<name> --register
+//
+// catalog-begin
+var catalog = []Skin{
+	{
+		ID:      "snappymail",
+		Label:   "SnappyMail",
+		Ready:   true,
+		Aliases: []string{"default", "snappymail-default", "theme-default"},
+	},
+	{
+		ID:      "gmail",
+		Label:   "Gmail",
+		Ready:   false,
+		Aliases: []string{"google"},
+	},
+	{
+		ID:      "outlook",
+		Label:   "Outlook",
+		Ready:   false,
+		Aliases: []string{"office", "microsoft"},
+	},
+} // catalog-end
 
-// AvailableSkins returns skin IDs the frontend may offer (some may be stubs until implemented).
-func AvailableSkins() []string {
-	out := make([]string, len(available))
-	copy(out, available)
+const defaultSkinID = "snappymail"
+
+// Catalog returns skin metadata for API consumers.
+func Catalog() []Skin {
+	out := make([]Skin, len(catalog))
+	copy(out, catalog)
 	return out
 }
 
-// NormalizeSkin maps config values to a known skin id; unknown values fall back to snappymail.
+// AvailableSkins returns skin ids only (backward compatible).
+func AvailableSkins() []string {
+	ids := make([]string, len(catalog))
+	for i, s := range catalog {
+		ids[i] = s.ID
+	}
+	return ids
+}
+
+// NormalizeSkin maps config.toml values and aliases to a catalog id.
+// Unknown values fall back to the default skin.
 func NormalizeSkin(raw string) string {
 	s := strings.ToLower(strings.TrimSpace(raw))
-	switch s {
-	case "", "snappymail", "snappymail-default", "default":
-		return SkinSnappyMail
-	case "gmail", "google":
-		return SkinGmail
-	case "outlook", "office", "microsoft":
-		return SkinOutlook
-	default:
-		return SkinSnappyMail
+	if s == "" {
+		return defaultSkinID
 	}
+	for _, skin := range catalog {
+		if s == skin.ID {
+			return skin.ID
+		}
+		for _, alias := range skin.Aliases {
+			if s == alias {
+				return skin.ID
+			}
+		}
+	}
+	return defaultSkinID
+}
+
+// SkinByID returns catalog entry or false.
+func SkinByID(id string) (Skin, bool) {
+	id = NormalizeSkin(id)
+	for _, s := range catalog {
+		if s.ID == id {
+			return s, true
+		}
+	}
+	return Skin{}, false
 }

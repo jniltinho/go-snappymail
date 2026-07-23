@@ -23,7 +23,7 @@ LDFLAGS := -trimpath -ldflags "-s -w \
 	-X $(CMD_PKG).GitCommit=$(GIT_COMMIT)"
 
 .PHONY: all build build-prod release run migrate clean tidy deps frontend frontend-dev dev \
-        install-upx test test-integration test-short check-git new-skin help
+        install-upx test test-integration test-short check-git new-skin validate-skins help
 
 ## Default: build binary into dist/
 all: build
@@ -95,8 +95,12 @@ check-git:
 
 ## Scaffold a new UI skin (see docs/skins.md)
 new-skin:
-	@test -n "$(ID)" || { echo "Usage: make new-skin ID=mybrand"; exit 1; }
-	@bash scripts/new-skin.sh "$(ID)"
+	@test -n "$(ID)" || { echo "Usage: make new-skin ID=mybrand [REGISTER=1]"; exit 1; }
+	@REGISTER=$(REGISTER) bash scripts/new-skin.sh "$(ID)" $(if $(filter 1,$(REGISTER)),--register,)
+
+## Verify Go catalog ↔ TS manifest ↔ CSS imports
+validate-skins:
+	@bash scripts/validate-skins.sh
 
 clean:
 	@echo "Removing binaries from $(DIST_DIR)/"
@@ -128,7 +132,8 @@ help:
 	@echo "  test         Run unit tests with race and coverage"
 	@echo "  test-integration  Run IMAP login integration test (Docker lab)"
 	@echo "  check-git    Fail if base/ or dist/ binaries are tracked"
-	@echo "  new-skin     Scaffold skin CSS — make new-skin ID=mybrand (see docs/skins.md)"
+	@echo "  new-skin     Scaffold skin — make new-skin ID=mybrand [REGISTER=1]"
+	@echo "  validate-skins  Check Go catalog, TS manifest, CSS imports are in sync"
 	@echo "  frontend     Build Vue SPA to web/dist/ (when frontend/ exists)"
 	@echo "  clean        Remove dist/$(APP)* binaries"
 	@echo "  tidy         go mod tidy"

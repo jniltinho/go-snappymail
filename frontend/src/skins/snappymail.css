@@ -14,8 +14,17 @@
   --color-row-selected: #dce5f2;
   --skin-login-bg: #48525c;
   --skin-login-card: #1b3a6b;
+  --skin-login-header-bg: var(--color-accent-bar);
+  --skin-login-header-border: var(--color-accent-2);
+  --skin-login-text: #ffffff;
   --skin-login-input-bg: #0f2344;
   --skin-login-input-border: #2a4978;
+  --skin-login-input-text: #ffffff;
+  --skin-login-btn-bg: #f5f7fa;
+  --skin-login-btn-text: var(--color-accent-bar);
+  --skin-login-error-bg: rgba(42, 31, 47, 0.85);
+  --skin-login-error-text: #ffd9d9;
+  --skin-login-error-border: #ff8a8a;
   --skin-layout: three-column;
   --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

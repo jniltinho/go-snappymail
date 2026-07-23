@@ -106,12 +106,26 @@ Public UI defaults from `config.toml` (no auth required — used before login).
 ```json
 {
   "skin": "snappymail",
+  "skins": [
+    {"id": "snappymail", "label": "SnappyMail", "ready": true},
+    {"id": "gmail", "label": "Gmail", "ready": false},
+    {"id": "outlook", "label": "Outlook", "ready": false}
+  ],
   "available_skins": ["snappymail", "gmail", "outlook"],
   "rows_per_page": 50,
   "datetime_format": "02/01/2006 15:04",
   "compose_html": true
 }
 ```
+
+| Field | Description |
+|-------|-------------|
+| `skin` | Active skin id (from `config.toml` → `[ui] skin`, normalized) |
+| `skins` | Full catalog with labels and `ready` flag |
+| `available_skins` | Skin ids only (backward compatible) |
+| `rows_per_page` | Default message list page size |
+| `datetime_format` | Go time format string for display |
+| `compose_html` | Whether HTML compose is enabled |
 
 ---
 

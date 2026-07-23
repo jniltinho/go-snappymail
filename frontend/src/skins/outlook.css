@@ -1,4 +1,4 @@
-/* Outlook skin — placeholder tokens for future full layout */
+/* Outlook skin — color tokens (full layout: future) */
 
 [data-skin='outlook'] {
   --color-accent: #0078d4;
@@ -14,8 +14,17 @@
   --color-row-selected: #deecf9;
   --skin-login-bg: #0078d4;
   --skin-login-card: #ffffff;
+  --skin-login-header-bg: var(--color-panel-2);
+  --skin-login-header-border: var(--color-line);
+  --skin-login-text: var(--color-ink);
   --skin-login-input-bg: #ffffff;
   --skin-login-input-border: #8a8886;
+  --skin-login-input-text: var(--color-ink);
+  --skin-login-btn-bg: var(--color-accent);
+  --skin-login-btn-text: #ffffff;
+  --skin-login-error-bg: #fde7e9;
+  --skin-login-error-text: #a4262c;
+  --skin-login-error-border: #d13438;
   --skin-layout: outlook;
   --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
