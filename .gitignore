@@ -1,0 +1,52 @@
+# Binaries
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go
+*.test
+*.out
+/vendor/
+
+# Embedded SPA build output is tracked; Vue build artifacts are not
+/frontend/node_modules/
+/frontend/dist/
+
+# Local runtime / secrets
+/data/
+/tmp/
+/config.toml
+/config_*.toml
+/docker/.env
+*.pem
+*.key
+*.crt
+!docker/mailserver/templates/**
+
+# UPX download artifacts
+/upx-*
+
+# Reference tree (read-only SnappyMail PHP — not part of this repo)
+/base/
+
+# Agent / IDE tooling (local only)
+/.agents/
+/.claude/
+/.cursor/
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Vagrant machine state
+/vagrant/.vagrant/
+
+# Generated screenshots (keep README)
+/docs/prints/*.png
+
+# Empty placeholder dirs in vagrant (sources live elsewhere)
+/vagrant/go-cubemail/
+/vagrant/go-postfixadmin/
+/vagrant/go-snappymail/

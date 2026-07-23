@@ -1,0 +1,8 @@
+.git
+.vagrant
+base/
+docs/prints/
+frontend/node_modules/
+**/*.md
+openspec/
+vagrant/
