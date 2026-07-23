@@ -27,7 +27,6 @@
 - [x] 2.5 Build `LoginView.vue` and `App.vue` shell (3-column inbox layout)
 - [x] 2.6 Configure Vite build output to `web/dist/`
 - [x] 2.7 Verify `make all` produces working binary serving the SPA
-- [ ] 2.5 Build placeholder `LoginView.vue` and `App.vue` shell (superseded by Vue app)
 
 ## 3. Auth & Session (P0)
 
