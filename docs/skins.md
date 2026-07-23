@@ -75,7 +75,8 @@ Reinicie o servidor e recarregue o browser.
 |------|---------|------------|
 | `snappymail` | ✅ | Padrão — azul inspirado no SnappyMail |
 | `gmail` | ❌ | Paleta vermelha; layout completo TBD |
-| `outlook` | ❌ | Paleta Microsoft; layout completo TBD |
+| `outlook` | ✅ | Fluent 2 minimalista (light/dark), cantos quadrados |
+| `carbonio` | ✅ | Zextras Carbonio (light/dark); referência em `docs/prints/carbonio/` |
 
 Alias legado: `[ui] theme = "snappymail-default"` → `snappymail`.
 
@@ -185,7 +186,7 @@ Ready: true,
 ready: true,
 ```
 
-Skins Gmail/Outlook ficam `ready: false` até terem layout próprio.
+A skin Gmail fica `ready: false` até ter layout próprio; Outlook já é `ready: true` (paleta Fluent completa sobre o layout padrão).
 
 ### Passo 6 — Build de produção
 

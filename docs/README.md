@@ -11,6 +11,7 @@ Guides for **go-snappymail** — SnappyMail UX webmail in Go.
 | [development.md](development.md) | Contributors — build, test, workflow |
 | [configuration.md](configuration.md) | Operators — `config.toml`, env vars |
 | [skins.md](skins.md) | **Implementar skins** — tutorial completo, CSS tokens, validação |
+| [validation-summary.md](validation-summary.md) | **Handoff para revisão** — resumo do que foi feito + checklist |
 
 ## Design & API
 
