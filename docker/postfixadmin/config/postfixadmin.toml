@@ -2,7 +2,7 @@
 host   = "mariadb"
 port   = "3306"
 user   = "postfix"
-pass   = "postfixPassword"
+pass   = "@@DB_PASS@@"
 name   = "postfix"
 driver = "mysql"
 debug  = false
@@ -11,7 +11,7 @@ debug  = false
 port            = 8080
 cleanup_maildir = false
 ssl_enable      = false
-session_secret  = "docker-lab-postfixadmin-session-secret-32chars-min"
+session_secret  = "@@SESSION_SECRET@@"
 swagger_enable  = true
 jwt_access_ttl  = "15m"
 jwt_refresh_ttl = "168h"

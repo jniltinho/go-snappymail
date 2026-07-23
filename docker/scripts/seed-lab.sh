@@ -8,6 +8,15 @@ DOMAINS_FILE="${LAB_DIR}/domains.txt"
 MAILBOXES_FILE="${LAB_DIR}/mailboxes.txt"
 SNAPPY_TEMPLATE="${SCRIPT_DIR}/../snappymail/domains/_default.json"
 
+# Load secrets from local .env (never committed)
+if [[ -f "${SCRIPT_DIR}/../.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${SCRIPT_DIR}/../.env"
+  set +a
+fi
+MAIL_PASS="${MAIL_PASS:-Password1@}"
+
 pfa() {
   docker compose exec -T postfixadmin ./postfixadmin "$@" < /dev/null
 }
@@ -27,8 +36,8 @@ while IFS= read -r line; do
   line="${line%%#*}"
   line="$(echo "${line}" | xargs)"
   [[ -z "${line}" ]] && continue
-  pfa mailbox --add "${line}" 2>/dev/null || true
-  echo "    mailbox: ${line%%:*}"
+  pfa mailbox --add "${line}:${MAIL_PASS}" 2>/dev/null || true
+  echo "    mailbox: ${line}"
 done < "${MAILBOXES_FILE}"
 
 echo "==> Ensuring local transport..."
@@ -39,9 +48,8 @@ while IFS= read -r line; do
   line="${line%%#*}"
   line="$(echo "${line}" | xargs)"
   [[ -z "${line}" ]] && continue
-  email="${line%%:*}"
   docker compose exec -T mailserver bash -c \
-    "echo 'Welcome to the go-snappymail lab' | mail -s 'Lab mailbox ready' '${email}'" \
+    "echo 'Welcome to the go-snappymail lab' | mail -s 'Lab mailbox ready' '${line}'" \
     < /dev/null 2>/dev/null || true
 done < "${MAILBOXES_FILE}"
 

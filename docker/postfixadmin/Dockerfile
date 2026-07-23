@@ -14,7 +14,7 @@ RUN wget -q -O /tmp/pfa.tar.gz \
     && chmod +x /app/postfixadmin \
     && rm /tmp/pfa.tar.gz
 
-COPY config/postfixadmin.toml /app/config.toml
+COPY config/postfixadmin.toml /app/config.toml.in
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 

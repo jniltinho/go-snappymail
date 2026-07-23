@@ -12,15 +12,17 @@ Self-hosted webmail in Go with SnappyMail-inspired UX. Single binary, IMAP/SMTP 
 
 ## Git hygiene
 
-**Never commit `base/` or compiled binaries** (`dist/go-snappymail`, UPX output, `*.db`).
+**Never commit:** `base/`, `dist/`, **`.env`**, local `config.toml`, private keys, GitHub/AWS tokens, `.agents/`, `.cursor/`, `vagrant/.vagrant/`.
 
-`base/snappymail/` is a **local-only** SnappyMail PHP reference (~100 MB). Clone or copy it on your machine; it is not in this repository.
-
-Do **not** commit: `dist/`, `docker/.env`, local `config.toml`, `.agents/`, `.claude/`, `.cursor/`, `vagrant/.vagrant/`, `docs/prints/*.png`, `coverage.out`, `node_modules/`.
+| Secret | Where it lives |
+|--------|----------------|
+| Mail/DB passwords | `docker/.env` or `vagrant/.env` (copy from `.env.example`) |
+| `server.secret_key` | `config.toml` local or `GOSM_SERVER_SECRET_KEY` env |
+| Session/JWT secrets | `SESSION_SECRET` in `docker/.env` |
 
 Before push: `make check-git`
 
-Lab credentials live in `docker/.env.example` and `docker/lab/` only. Copy `.env.example` → `.env` locally; keep `.env` untracked.
+Lab docs may mention default passwords (`Password1@`) — those are **local lab only**, not production. Override via `.env`.
 
 ## Development
 

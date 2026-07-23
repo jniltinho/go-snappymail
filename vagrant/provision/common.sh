@@ -2,20 +2,28 @@
 # Shared environment for go-snappymail lab VM
 set -euo pipefail
 
-export MAIL_DOMAIN="test.local"
-export MAIL_HOST="mail.test.local"
-export MAIL_FQDN="mail.test.local"
-export VM_IP="192.168.56.20"
+_VAGRANT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [[ -f "${_VAGRANT_DIR}/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${_VAGRANT_DIR}/.env"
+  set +a
+fi
 
-export DB_NAME="postfix"
-export DB_USER="postfix"
-export DB_PASS="postfixPassword"
-export MARIADB_ROOT_PASS="rootpassword"
+export MAIL_DOMAIN="${MAIL_DOMAIN:-test.local}"
+export MAIL_HOST="${MAIL_HOST:-mail.test.local}"
+export MAIL_FQDN="${MAIL_FQDN:-mail.test.local}"
+export VM_IP="${VM_IP:-192.168.56.20}"
 
-export MAIL_USER="user@test.local"
-export MAIL_PASS="Password1@"
-export ADMIN_EMAIL="admin@test.local"
-export ADMIN_PASS="Password1@"
+export DB_NAME="${DB_NAME:-postfix}"
+export DB_USER="${DB_USER:-postfix}"
+export DB_PASS="${DB_PASS:-postfixPassword}"
+export MARIADB_ROOT_PASS="${MARIADB_ROOT_PASS:-rootpassword}"
+
+export MAIL_USER="${MAIL_USER:-user@test.local}"
+export MAIL_PASS="${MAIL_PASS:-Password1@}"
+export ADMIN_EMAIL="${ADMIN_EMAIL:-admin@test.local}"
+export ADMIN_PASS="${ADMIN_PASS:-Password1@}"
 
 export VMAIL_UID=1001
 export VMAIL_GID=1001

@@ -1,6 +1,6 @@
 # Lab Test Accounts
 
-All mailboxes use password **`Password1@`** unless noted. IMAP host: `mailserver` (Docker) or `mail.test.local` (host/VM). Port **993** (TLS).
+All mailboxes share the password set in **`MAIL_PASS`** inside `docker/.env` (default in `.env.example`: `Password1@` — lab only).
 
 ## Domains
 
