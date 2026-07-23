@@ -118,5 +118,5 @@
 - [ ] 13.1 Add Swagger annotations to all API handlers and generate docs
 - [ ] 13.2 Write `DOCUMENTS/docs/DEVELOPMENT.md` with local dev setup
 - [ ] 13.3 Write `DOCUMENTS/setup/README.md` with production deployment guide (systemd + MariaDB)
-- [ ] 13.4 Add table-driven tests for auth, IMAP wrapper, and compose handlers
+- [x] 13.4 Add table-driven tests for auth, session crypto, middleware, routes, and database
 - [ ] 13.5 Add GitHub Actions CI workflow (go test, golangci-lint, frontend build)

@@ -1,5 +1,6 @@
 # Binaries
 /dist/
+/coverage.out
 *.exe
 *.dll
 *.so

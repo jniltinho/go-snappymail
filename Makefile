@@ -23,7 +23,7 @@ LDFLAGS := -trimpath -ldflags "-s -w \
 	-X $(CMD_PKG).GitCommit=$(GIT_COMMIT)"
 
 .PHONY: all build build-prod release run migrate clean tidy deps frontend frontend-dev dev \
-        install-upx help
+        install-upx test test-integration test-short help
 
 ## Default: build binary into dist/
 all: build
@@ -76,6 +76,19 @@ migrate:
 	@test -x $(BIN) || $(MAKE) build
 	./$(BIN) migrate
 
+## Unit tests (race + coverage)
+test:
+	go test -v -race -coverprofile=coverage.out ./...
+
+## Integration tests (IMAP lab — optional)
+test-integration:
+	IMAP_TEST_HOST=mailserver IMAP_TEST_USER=user@test.local IMAP_TEST_PASS='Password1@' \
+	IMAP_TEST_INSECURE=1 IMAP_TEST_TLS_SERVER_NAME=mail.test.local \
+	go test -v -tags=integration ./internal/handler/...
+
+test-short:
+	go test -v -short ./...
+
 clean:
 	@echo "Removing binaries from $(DIST_DIR)/"
 	rm -rf $(DIST_DIR)/$(APP) $(DIST_DIR)/$(APP)_*
@@ -103,6 +116,8 @@ help:
 	@echo "  release      Cross-compile + UPX → dist/$(APP)_VERSION_GOOS_GOARCH"
 	@echo "  run          Run dist/$(APP) serve"
 	@echo "  migrate      Run dist/$(APP) migrate"
+	@echo "  test         Run unit tests with race and coverage"
+	@echo "  test-integration  Run IMAP login integration test (Docker lab)"
 	@echo "  frontend     Build Vue SPA to web/dist/ (when frontend/ exists)"
 	@echo "  clean        Remove dist/$(APP)* binaries"
 	@echo "  tidy         go mod tidy"
