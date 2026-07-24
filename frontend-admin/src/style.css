@@ -108,6 +108,9 @@ a:hover {
 .grid .email {
   color: var(--accent);
 }
+.grid td.muted {
+  color: var(--txt-muted);
+}
 
 /* Count badge in the nav / headers */
 .badge {

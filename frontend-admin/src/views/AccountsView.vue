@@ -60,7 +60,8 @@ onMounted(load)
           <th>Email Address</th>
           <th>Display Name</th>
           <th>Status</th>
-          <th>Quota (MB)</th>
+          <th>Last Login</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -74,10 +75,11 @@ onMounted(load)
           <td class="email">{{ m.username }}</td>
           <td>{{ m.name }}</td>
           <td>{{ m.active ? 'Active' : 'Inactive' }}</td>
-          <td>{{ m.quota }}</td>
+          <td class="muted">Never signed in</td>
+          <td></td>
         </tr>
         <tr v-if="!rows.length">
-          <td colspan="4" class="empty">No accounts.</td>
+          <td colspan="5" class="empty">No accounts.</td>
         </tr>
       </tbody>
     </table>
