@@ -255,6 +255,15 @@ export const useMailStore = defineStore('mail', () => {
     return folders.value.find((f) => f.name === folder)?.label ?? folder
   }
 
+  // Optimistically adjust a folder's counts so the header/tree update instantly,
+  // before loadFolders() reconciles with the server (which can lag on STATUS).
+  function bumpFolderCount(name: string, deltaTotal: number, deltaUnseen: number): void {
+    const f = folders.value.find((x) => x.name === name)
+    if (!f) return
+    f.messages = Math.max(0, f.messages + deltaTotal)
+    f.unseen = Math.max(0, f.unseen + deltaUnseen)
+  }
+
   async function moveByUid(source: string, uid: number, dest: string): Promise<void> {
     const body = new URLSearchParams()
     body.set('dest', dest)
@@ -281,6 +290,9 @@ export const useMailStore = defineStore('mail', () => {
     await moveByUid(source, uid, dest)
     messages.value = messages.value.filter((m) => m.uid !== uid)
     if (selectedUid.value === uid) selectedUid.value = null
+    const wasUnseen = snap && !snap.seen ? -1 : 0
+    bumpFolderCount(source, -1, wasUnseen)
+    bumpFolderCount(dest, 1, snap && !snap.seen ? 1 : 0)
     await loadFolders()
     if (!quiet && snap) {
       showToast(`1 message moved to "${displayName(dest)}"`, () => void undoMove(dest, source, snap))
@@ -404,11 +416,18 @@ export const useMailStore = defineStore('mail', () => {
 
   async function deleteSelected(): Promise<void> {
     if (!selectedUid.value) return
-    await axios.delete(
-      `${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${selectedUid.value}`,
-    )
-    messages.value = messages.value.filter((m) => m.uid !== selectedUid.value)
-    selectedUid.value = messages.value[0]?.uid ?? null
+    const uid = selectedUid.value
+    const snap = messages.value.find((m) => m.uid === uid)
+    const unseen = snap && !snap.seen ? 1 : 0
+    const trash = folders.value.find((f) => f.iconType === 'trash')?.name
+    const inTrash = currentFolder.value === trash
+    await axios.delete(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${uid}`)
+    messages.value = messages.value.filter((m) => m.uid !== uid)
+    selectedUid.value = null
+    bumpFolderCount(currentFolder.value, -1, -unseen)
+    if (!inTrash && trash) bumpFolderCount(trash, 1, unseen)
+    await loadFolders()
+    if (!inTrash) showToast('1 message moved to "Trash"')
   }
 
   return {
