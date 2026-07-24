@@ -21,6 +21,12 @@ do go-snappymail e como servidor de e-mail de laboratório.
 | Admin | `admin@zimbra.test` / `Password1@` |
 | Conta de teste | `nilton@linuxpro.com.br` / `Password1@` (domínio `linuxpro.com.br`) |
 
+Estado atual do lab (após seed): domínios `linuxpro.com.br` (34 contas) e
+`criarenet.com` (20 contas), todas com senha `Password1@`; caixa do
+`nilton@linuxpro.com.br` com 230 mensagens de teste (pequenas, ~100KB,
+anexos ~1MB e HTML); proxy em modo `both` (http **e** https) via
+`zmprov ms mail.zimbra.test zimbraReverseProxyMailMode both`.
+
 Arquivos: [`vagrant/zimbra/`](../vagrant/zimbra/) — `Vagrantfile`,
 `provision/01-dns.sh`, `provision/02-zimbra.sh`.
 
