@@ -15,7 +15,7 @@ const mail = useMailStore()
           Cancel
         </button>
         <button type="button" class="tbtn" :disabled="mail.composeBusy" @click="mail.saveDraftCompose">
-          Save draft
+          Save Draft
         </button>
         <span v-if="mail.composeErr" class="text-sm login-error px-2 py-0.5 ml-2">{{ mail.composeErr }}</span>
       </div>

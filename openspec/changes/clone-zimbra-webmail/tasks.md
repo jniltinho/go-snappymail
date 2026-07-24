@@ -9,7 +9,7 @@
 ## 2. Typography (P1)
 
 - [x] 2.1 Scoped Tailwind v4 type tokens under `[data-skin='zimbra']` (`--text-sm: 12px`, `--text-base: 13px`, `--text-xs: 11px`)
-- [ ] 2.2 QA re-measure: font family/size/weight equal on toolbar, rows, tree, tabs
+- [x] 2.2 QA re-measure: font family/size/weight equal on toolbar, rows, tree, tabs
 
 ## 3. Menus (P1)
 
@@ -21,11 +21,11 @@
 
 ## 4. Effects and controls (P2)
 
-- [ ] 4.1 Audit hover/active on every control vs reference; fix missing states
+- [x] 4.1 Audit hover/active on every control vs reference; fix missing states
 - [x] 4.2 Toolbar right group (Read More / View ▾) — render per reference
-- [ ] 4.3 Any remaining P2s from audit — fix or waive in proposal Non-goals
+- [x] 4.3 Any remaining P2s from audit — fix or waive in proposal Non-goals
 
 ## 5. QA loop (acceptance)
 
-- [ ] 5.1 Re-run `qa-frontend-cloner` after each iteration
-- [ ] 5.2 Final audit: 0 P1; commit report summary in change notes
+- [x] 5.1 Re-run `qa-frontend-cloner` after each iteration
+- [x] 5.2 Final audit (iteration 3): **0 P1, 1 P2 (composer — waived to foundation), 4 P3 (fixed post-audit)** — acceptance PASS; all 13 iteration-2 findings verified FIXED

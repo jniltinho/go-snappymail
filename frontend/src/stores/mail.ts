@@ -89,6 +89,7 @@ export const useMailStore = defineStore('mail', () => {
   async function loadMessageBody(uid: number): Promise<void> {
     const msg = messages.value.find((m) => m.uid === uid)
     if (!msg || msg.htmlBody !== undefined) return
+    const wasSeen = msg.seen
 
     const res = await axios.get(
       `${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${uid}`,
@@ -101,6 +102,10 @@ export const useMailStore = defineStore('mail', () => {
       sizeLabel: String(a.size_label || ''),
       contentType: String(a.content_type || ''),
     }))
+    if (!wasSeen) {
+      const f = folders.value.find((x) => x.name === currentFolder.value)
+      if (f && f.unseen > 0) f.unseen--
+    }
     msg.seen = true
   }
 

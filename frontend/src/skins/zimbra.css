@@ -46,8 +46,8 @@
   --skin-login-error-border: #efb1ad;
 
   --skin-layout: zimbra;
-  /* harmony FontFamily-default, with Segoe UI first (matches ZWC 'system font' pref) */
-  --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, 'Nimbus Sans L', Arial,
+  /* harmony FontFamily-default order (reference declares Helvetica Neue first) */
+  --font-sans: 'Helvetica Neue', 'Segoe UI', Helvetica, 'Nimbus Sans L', Arial,
     'Liberation Sans', sans-serif;
 
   /* Zimbra Classic type scale: 12px chrome (Tailwind v4 utilities read these vars) */
@@ -216,6 +216,7 @@
 
 [data-skin='zimbra'] .login-heading {
   display: block;
+  font-size: 20px;
 }
 
 /* Toolbar buttons: white, 1px #bfbfbf; hover/active from harmony ButtonHov/Act */

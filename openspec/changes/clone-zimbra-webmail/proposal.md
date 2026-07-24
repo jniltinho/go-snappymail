@@ -28,6 +28,7 @@ The client asked to port the Zimbra (Java) web client layout to the Golang webma
 - Features the Go backend doesn't have yet: Briefcase, Tasks, Calendar, Preferences content (tabs stay visual-only), conversation threading, tags/saved searches, mini-calendar, Zimlets.
 - Zimbra logo/trademark assets (text branding stays), rounded corners (project squared rule).
 - Print flow behind the print dropdown (button may render, action deferred).
+- Rich composer (full Compose tab with formatting toolbar, attach row, spell-check, Options) — the clone ships a basic modal composer; the rich composer (TipTap) is tracked in `go-snappymail-foundation`. Recorded as the single remaining P2 in the final audit.
 
 ## Impact
 

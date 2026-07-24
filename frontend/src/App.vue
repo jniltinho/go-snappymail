@@ -49,7 +49,12 @@ function onKey(e: KeyboardEvent) {
 watch(
   () => auth.isAuthenticated,
   async (authed) => {
-    if (authed) await mail.loadMailbox()
+    if (authed) {
+      await mail.loadMailbox()
+    } else {
+      mail.selectedUid = null
+      mail.messages = []
+    }
   },
 )
 
