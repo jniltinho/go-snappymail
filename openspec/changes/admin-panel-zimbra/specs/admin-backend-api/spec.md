@@ -51,6 +51,17 @@ O admin SHALL persistir no banco Postfix/Dovecot em MariaDB ou PostgreSQL via GO
 - **WHEN** `[database] driver` muda entre `mysql` e `postgres` com DSN válido
 - **THEN** o painel funciona sem alteração de código (só config/migração)
 
+### Requirement: Cobertura total de testes do backend admin
+**Toda** rota `/api/v1/admin/*` SHALL ter testes automatizados cobrindo sucesso, validação, erro e permissão — nenhum endpoint sem teste. `go test -race ./...` SHALL passar; a suíte cobre CRUD de domains/mailboxes/aliases/admins, overview, auth/RBAC, isolamento de superfície e persistência (MariaDB e PostgreSQL). Regra do projeto: backend-first, cada rota entra com seu teste.
+
+#### Scenario: Rota sem teste bloqueia
+- **WHEN** um endpoint admin é adicionado/alterado sem teste correspondente
+- **THEN** o CI falha (cobertura/lint) e o merge é bloqueado
+
+#### Scenario: Suíte verde
+- **WHEN** `go test -race ./...` roda no CI
+- **THEN** todas as rotas admin passam (sucesso, validação, 401/403, not-found, erro de banco)
+
 ### Requirement: Auth admin (JWT/RBAC granular real)
 O painel SHALL usar o RBAC existente com papéis reais (`superadmin`/`domain_admin`/…) e permissões granulares (`domains:read`, `mailboxes:write`, …). Cada rota/nó exige a permissão correspondente; sem ela → 403. Um `domain_admin` acessa Manage dos seus domínios mas não Configure (Servers/Global Settings).
 

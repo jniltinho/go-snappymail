@@ -6,6 +6,10 @@ Este projeto (**go-snappymail**) é o **binário único** do ecossistema "Zimbra
 
 **go-postfixadmin = referência apenas.** Não é alterado nem importado; serve de exemplo do backend (schema Postfix/Dovecot, handlers `*V1`, GORM, RBAC granular). Portamos os padrões para o go-snappymail.
 
+## Ordem de trabalho (regra do projeto)
+
+**Sempre começar pelo backend** (API Go + testes) antes da UI — regra 1 do AGENTS.md. Sequência: modelos GORM + `/api/v1/admin/*` + auth/RBAC + testes → só então o `frontend-admin/`. Antes da UI, capturar **todos os prints do ZimbraAdmin** e os **tokens de tema** (já extraídos em [`zimbra-admin-theme.md`](zimbra-admin-theme.md), do skin `serenity` real).
+
 ## Goals / Non-Goals
 
 **Goals**
@@ -66,6 +70,13 @@ Tailwind utility-first para estrutura + camada de tokens ZimbraAdmin (`@theme`/C
 **Antes de codar a UI:** capturar **todos os prints do ZimbraAdmin** (`192.168.56.30:7071`) em `docs/prints/zimbra-admin/` — login, Home, cada nó da árvore, telas de Domains/Accounts/Aliases/Admins com seus modais, toolbars e toasts — e extrair deles os tokens (paleta harmony, tipografia Helvetica/Arial, cantos 3px). O tema Tailwind do admin é derivado desses prints para ficar **idêntico** ao legado. Tirar novos prints sempre que precisar comparar (convenção do projeto: prints só em `docs/prints/`). **Toda a UI em inglês** (o console legado está em pt-BR por locale da VM; o clone usa inglês).
 
 **Organização Vue (nos dois frontends):** **um modal por arquivo** em `components/modals/` (`DomainModal.vue`, `MailboxModal.vue`, …) — nunca vários modais no mesmo arquivo. Estrutura consistente: `layouts/` (shell), `views/` (uma tela por arquivo), `components/` (reuso), `components/modals/` (modais), `stores/`, `api/`, `theme/`. O webmail (`frontend/`) segue o mesmo padrão (organizar modais existentes, ex. composer, em `components/modals/`).
+
+### D3b — Multi-skin nos DOIS frontends (deixar pronto para trocar de skin)
+Ambos os frontends são **multi-skin**, cada um com seu próprio catálogo (não compartilham skins entre si):
+- **Webmail** (`frontend/`): já é multi-skin — `[ui] skin` = `zimbra` (default) | `snappymail` | `gmail` | `outlook` | `carbonio`, com o catálogo Go (`internal/ui/skins.go`) + manifest TS + CSS por skin e `make validate-skins`. **Manter e deixar extensível** para novas skins.
+- **Admin** (`frontend-admin/`): **espelhar a mesma arquitetura** — catálogo de skins do admin, tokens por skin em `[data-skin='<id>']`/`@theme`, flag `ready`, config `[admin] skin`. Skins iniciais extraídas do ZimbraAdmin real: **`serenity`** (default) e **`carbon`** (2º), com espaço para `vami2`/outras. Tokens em [`zimbra-admin-theme.md`](zimbra-admin-theme.md).
+  - Mesma disciplina do webmail: um `validate-skins` do admin (catálogo ↔ manifest ↔ CSS) e dark mode client-side por skin quando fizer sentido.
+- **Cada frontend tem seu conjunto de skins** — o webmail não usa skins do admin e vice-versa; cada catálogo vive na sua pasta.
 
 ### D4 — Backend admin novo aqui (telas ↔ endpoints), go-postfixadmin como referência
 Novos modelos GORM do schema Postfix/Dovecot + handlers no go-snappymail.

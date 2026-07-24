@@ -31,6 +31,7 @@
 - [ ] 3.3 Árvore de navegação (Home/Monitor/Manage/Configure/Tools/Search)
 - [ ] 3.4 Home (Overview + cards de setup) ligada ao `/api/v1/admin/overview`
 - [ ] 3.5 List view + toolbar (colunas, seleção com outline, paginação)
+- [ ] 3.6 **Multi-skin do admin** (espelhar o webmail): catálogo de skins do admin (`serenity` default + `carbon`), tokens por `[data-skin='<id>']`/`@theme`, `[admin] skin` na config, `validate-skins` do admin; cada frontend com seu próprio conjunto de skins
 
 ## 3b. Organização do Vue — um modal por arquivo (nos DOIS frontends)
 
@@ -46,12 +47,21 @@
 - [ ] 4.3 Aliases — `views/Aliases.vue` + `components/modals/AliasModal.vue` (Distribution Lists: stub)
 - [ ] 4.4 Admins — `views/Admins.vue` + `components/modals/AdminModal.vue` (papéis RBAC)
 
-## 5. Testes de backend (obrigatório — backend first)
+## 5. Testes de backend — COBRIR TODAS as rotas admin (obrigatório, backend-first)
 
-- [ ] 5.1 Testes do `GET /api/v1/admin/overview` (agregados corretos; papel admin exigido; 403 sem papel) — table-driven, `-race`
-- [ ] 5.2 Testes dos handlers reusados nas telas: domains/mailboxes/aliases/admins/transports (CRUD, validação, erros) — cobrir casos de sucesso e falha
-- [ ] 5.3 Testes de auth/RBAC do painel (JWT válido/expirado/sem papel → 401/403)
-- [ ] 5.3b Teste de **isolamento de superfície**: rota `/api/v1/admin/*` na porta do webmail (:8082) → 404; rota do webmail na porta do admin (:7071) → 404 (instâncias Echo separadas, sem fallback cruzado)
+> Meta: **nenhum endpoint admin sem teste**. Cada rota `/api/v1/admin/*` tem testes de
+> sucesso, validação, erro e permissão. `go test -race ./...` verde; cobertura reportada.
+
+- [ ] 5.1 `GET /api/v1/admin/overview` (agregados corretos; permissão exigida; 403 sem permissão) — table-driven, `-race`
+- [ ] 5.2 **Domains** — GET list, GET by id, POST create, PUT update, DELETE: sucesso + validação + duplicado + not-found + erro de banco
+- [ ] 5.3 **Mailboxes/Accounts** — list/get/create/update/delete + validação de e-mail/senha/quota + domínio inexistente
+- [ ] 5.4 **Aliases** — list/get/create/update/delete + destino inválido + loop/duplicado
+- [ ] 5.5 **Admins** — list/get/create/update/delete + atribuição de papel RBAC
+- [ ] 5.6 **Auth/RBAC** — JWT válido/expirado/ausente → 401; sem permissão → 403; superadmin × domain_admin (escopo por domínio)
+- [ ] 5.7 **Isolamento de superfície** — rota `/api/v1/admin/*` na porta do webmail (:8082) → 404; rota do webmail na porta do admin (:7071) → 404
+- [ ] 5.8 **Config multi-serviço** — blocos enabled/disabled → portas/bind certos; `[admin] host` restrito; parsing TOML/env
+- [ ] 5.9 **Persistência GORM** — MariaDB **e** PostgreSQL (matrix; sqlmock para unit); migrações aplicam limpo; transações/rollback
+- [ ] 5.10 Cobertura mínima acordada por pacote admin e CI verde bloqueando merge
 - [ ] 5.4 Testes de config multi-serviço (blocos enabled/disabled → portas certas; parsing TOML/env)
 - [ ] 5.5 Testes de persistência GORM em MariaDB **e** PostgreSQL (matrix; sqlmock para unit — ConnectDB não tem SQLite), migrações aplicam limpo
 - [ ] 5.6 Cobertura mínima acordada e `go test -race ./...` verde no CI
