@@ -29,6 +29,7 @@ async function submit() {
 
 <template>
   <div class="login-page">
+    <div class="login-center">
     <div class="login-wrap">
       <div class="login-card">
         <div class="login-banner">
@@ -51,6 +52,7 @@ async function submit() {
       </div>
       <div class="login-reflection"></div>
     </div>
+    </div>
     <footer class="login-footer">
       <p>
         Zimbra :: the leader in open source messaging and collaboration ::
@@ -66,13 +68,19 @@ async function submit() {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background: linear-gradient(to bottom, var(--login-page-top), var(--login-page-bottom));
+}
+
+/* Vertically center the card in the space above the footer, like the legacy. */
+.login-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-wrap {
   width: 500px;
-  margin-top: 72px;
 }
 
 .login-card {
