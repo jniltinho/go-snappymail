@@ -75,3 +75,4 @@ Thumbs.db
 /docs/prints/
 vagrant/zimbra/cache/
 .vagrant/
+/*.png

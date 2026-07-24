@@ -13,6 +13,7 @@ Binário único (Go embute a SPA Vue 3 via `go:embed web/dist`), IMAP/SMTP passt
 2. **Sync de skins é obrigatório** — catálogo Go (`internal/ui/skins.go`), manifest TS (`frontend/src/skins/manifest.ts`) e imports CSS (`frontend/src/skins/index.css`) devem bater. Sempre rode `make validate-skins` após mexer em skins.
 3. **`web/dist/` é gerado** (gitignored) — nunca edite; `go build` sem `make frontend` antes embute SPA desatualizada.
 4. **Nunca commite segredos** — veja `docs/security.md`. `docs/prints/` também é gitignored (screenshots locais).
+7. **Screenshots sempre em `docs/prints/`** — ao validar UI/paridade, tire prints e salve **somente** em `docs/prints/` (subpasta por contexto, ex. `docs/prints/zimbra/`, `docs/prints/zimbra/qaN/`). Nunca em `/tmp` ou na raiz. Tire prints sempre que precisar comparar com a referência (webmail `192.168.56.30`, admin `192.168.56.30:7071`); o `agent-browser` grava com caminho absoluto para essa pasta. É gitignored — servem de evidência local do QA.
 5. **Tasks oficiais** em `openspec/changes/go-snappymail-foundation/tasks.md` — marque `[x]` ao concluir; use as skills OpenSpec (`opsx:*`) para propostas/arquivo.
 6. **Go idiomático** — erros com `fmt.Errorf("...: %w", err)`, `log/slog` para logs, testes table-driven com `-race`. Skills `samber/cc-skills-golang@*` disponíveis via CLAUDE/Skill.
 
@@ -83,10 +84,73 @@ Prefixo `/api/v1`. Público: `/version`, `/ui/config`. Auth: `/auth/login|logout
 | `docs/skins.md` | criar/implementar skins |
 | `docs/lab.md` | lab Docker/Vagrant |
 | `docs/deployment-dev.md` | VM Vagrant híbrida: Go via systemd, MariaDB/SnappyMail via docker compose, Postfix/Dovecot nativos |
+| `docs/dev-environment.md` | subir todo o ambiente de dev (webmail + admin + Zimbra por snapshot) |
 | `docs/zimbra-vagrant-foss.md` | VM Zimbra FOSS 10.1.17 (referência da skin zimbra): instalação, domínios, contas |
 | `docs/security.md` | higiene de segredos |
 | `docs/validation-summary.md` | estado atual do projeto (handoff) |
 
+## Subir o ambiente de desenvolvimento
+
+Guia completo em [`docs/dev-environment.md`](docs/dev-environment.md). Resumo:
+
+### 1. Servidor de e-mail (Zimbra FOSS — já instalado, via snapshot)
+
+A VM `vagrant/zimbra` roda **Zimbra FOSS 10.1.17.p2** e serve de referência do webmail e de servidor IMAP/SMTP real. **Não reinstale do zero** (leva 20-40 min) — restaure o snapshot `zimbra-installed`:
+
+```bash
+cd vagrant/zimbra
+vagrant snapshot restore zimbra-installed   # sobe a VM já instalada em ~1-2 min
+# 1ª vez (sem a VM criada): vagrant up  → depois  vagrant snapshot save zimbra-installed
+```
+
+- IP `192.168.56.30` · FQDN `mail.zimbra.test` (adicione no `/etc/hosts` do host)
+- Webmail `https://192.168.56.30/` · Admin console `https://mail.zimbra.test:7071/`
+- Contas: `admin@zimbra.test`, `nilton@linuxpro.com.br` (+53 outras), senha `Password1@`
+- Domínios: `zimbra.test`, `linuxpro.com.br`, `criarenet.com`
+- Caixa `nilton@linuxpro.com.br` tem ~500 mensagens de teste (com anexos) para dev
+- Detalhes/administração (`zmprov`): [`docs/zimbra-vagrant-foss.md`](docs/zimbra-vagrant-foss.md)
+
+### 2. go-snappymail (webmail Go)
+
+```bash
+make run                       # serve :8082 (dev, config.toml local)
+# ou apontando para a VM Zimbra (mesma caixa do webmail de referência):
+#   [imap] host=192.168.56.30 port=993 tls=true insecure_skip_verify=true tls_server_name="mail.zimbra.test"
+#   [smtp] host=192.168.56.30 port=587 starttls=true insecure_skip_verify=true
+make frontend-dev              # Vite :5173 (HMR, proxy → :8082)
+```
+
+Login de teste: `nilton@linuxpro.com.br` / `Password1@`.
+
+### 3. Lab Docker alternativo (mailserver local)
+
+`docker/docker-compose.yml`: mailserver IMAP `:143/:993`, app `:8082`, usuário `user@test.local` / `Password1@`. Ver [`docs/lab.md`](docs/lab.md).
+
+### Portas do ecossistema "Zimbra em Go"
+
+| Serviço | Porta | Repo |
+|---|---|---|
+| go-snappymail (webmail) | 8082 | este |
+| **painel-admin (ZimbraAdmin-like)** | **7071 (http/https)** | go-postfixadmin (backend) |
+| Zimbra webmail (referência) | 443 (VM) | vagrant/zimbra |
+| Zimbra admin console (referência) | 7071 (VM) | vagrant/zimbra |
+
+## Arquitetura do ecossistema (recriar o Zimbra em Go + Vue)
+
+O projeto é um **guarda-chuva** de binários Go independentes, cada um com seu Vue 3 embutido, todos usando o mesmo servidor Postfix/Dovecot + banco (MariaDB/PostgreSQL via GORM). Cada peça tem seu próprio repo/escopo e **não interfere** nos outros:
+
+```
+Zimbra-em-Go
+├── go-snappymail      webmail (este repo)          — porta 8082 — clone do Zimbra Web
+├── go-postfixadmin    backend admin + painel :7071 — clone do ZimbraAdmin (fase atual)
+│   ├── internal/      API Go (GORM → MariaDB/PostgreSQL), JWT/RBAC
+│   └── frontend/      Vue 3 (layout idêntico ao ZimbraAdmin)
+├── mailserver         Postfix + Dovecot            — VM/Docker
+└── vagrant/zimbra     Zimbra FOSS instalado        — referência visual/funcional
+```
+
+Padrão de cada peça: **single binary** (Go `embed` da SPA Vue), config TOML + env, GORM, testes `-race`, skins/layout clonados da UI legada correspondente do Zimbra. Roadmap detalhado da fase admin: proposta OpenSpec `admin-panel-zimbra` em `go-postfixadmin/openspec/`.
+
 ## Estado atual (jul/2026)
 
-P0 (foundation) e P1 (mail API) completos. P2 (frontend) parcial: layout 3 colunas, login, pastas/mensagens, dark mode, skins ok; **pendentes**: ComposerModal (TipTap), sanitização HTML (bluemonday), SSE, settings/contacts (P3). Detalhe: `docs/validation-summary.md` §9.
+P0 (foundation) e P1 (mail API) completos. P2 (frontend) do webmail: layout Zimbra Classic clonado e validado (skin `zimbra` default, abas Contacts/Calendar/Tasks/Preferences, composer, DnD, toast). **Próxima fase**: painel admin `:7071` (go-postfixadmin + frontend ZimbraAdmin). Detalhe: `docs/validation-summary.md`.
