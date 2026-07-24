@@ -63,6 +63,8 @@ frontend-admin/           # NOVO painel ZimbraAdmin → web/admin-dist  (embed 2
 ```
 Tailwind utility-first para estrutura + camada de tokens ZimbraAdmin (`@theme`/CSS vars) para paleta harmony, cantos 3px, tipografia Helvetica/Arial (reaproveitar valores medidos no webmail).
 
+**Antes de codar a UI:** capturar **todos os prints do ZimbraAdmin** (`192.168.56.30:7071`) em `docs/prints/zimbra-admin/` — login, Home, cada nó da árvore, telas de Domains/Accounts/Aliases/Admins com seus modais, toolbars e toasts — e extrair deles os tokens (paleta harmony, tipografia Helvetica/Arial, cantos 3px). O tema Tailwind do admin é derivado desses prints para ficar **idêntico** ao legado. Tirar novos prints sempre que precisar comparar (convenção do projeto: prints só em `docs/prints/`). **Toda a UI em inglês** (o console legado está em pt-BR por locale da VM; o clone usa inglês).
+
 **Organização Vue (nos dois frontends):** **um modal por arquivo** em `components/modals/` (`DomainModal.vue`, `MailboxModal.vue`, …) — nunca vários modais no mesmo arquivo. Estrutura consistente: `layouts/` (shell), `views/` (uma tela por arquivo), `components/` (reuso), `components/modals/` (modais), `stores/`, `api/`, `theme/`. O webmail (`frontend/`) segue o mesmo padrão (organizar modais existentes, ex. composer, em `components/modals/`).
 
 ### D4 — Backend admin novo aqui (telas ↔ endpoints), go-postfixadmin como referência

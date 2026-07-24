@@ -24,7 +24,8 @@
 
 ## 3. Frontend admin DO ZERO (Vue 3 + TailwindCSS) — pasta `frontend-admin/`
 
-- [ ] 3.0 Scaffold `frontend-admin/` novo (Vue 3 + TS + Vite + **TailwindCSS** + PostCSS): `base:'/admin/'`, `outDir:'../web/admin-dist'`, package.json/tsconfig/tailwind.config próprios; adicionar `web/admin-dist` ao `//go:embed` e `make frontend-admin` (não usar nada do `frontend/` antigo)
+- [ ] 3.-1 **Capturar TODOS os prints do ZimbraAdmin** (`192.168.56.30:7071`, login `admin@zimbra.test`/`Password1@`) ANTES de codar a UI, salvando em `docs/prints/zimbra-admin/`: login, Home, cada nó da árvore, Domains (list+modal New/Edit), Accounts, Aliases, Admins, toolbars, toasts, dark se houver. Extrair tokens (paleta/tipografia/cantos) desses prints — o tema tem que ficar **igual**. Tirar novos prints sempre que precisar comparar.
+- [ ] 3.0 Scaffold `frontend-admin/` novo (Vue 3 + TS + Vite + **TailwindCSS** + PostCSS): `base:'/admin/'`, `outDir:'../web/admin-dist'`, package.json/tsconfig/tailwind.config próprios; adicionar `web/admin-dist` ao `//go:embed` e `make frontend-admin` (não usar nada do `frontend/` antigo). **Toda a UI em inglês.**
 - [ ] 3.1 Tema ZimbraAdmin em Tailwind: tokens harmony (paleta, cantos 3px, tipografia Helvetica/Arial) via `@theme`/CSS vars
 - [ ] 3.2 Top bar (marca textual, busca, `admin@… ▾`, refresh)
 - [ ] 3.3 Árvore de navegação (Home/Monitor/Manage/Configure/Tools/Search)
