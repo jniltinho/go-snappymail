@@ -203,10 +203,26 @@ body {
   background: var(--color-app-bg);
   border-left: 1px solid var(--color-line);
   border-right: 1px solid var(--color-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-sash::after {
+  content: '⋮⋮';
+  font-size: 9px;
+  letter-spacing: -3px;
+  color: var(--color-ink-mute);
+  transform: scaleY(1.4);
 }
 
 .col-sash:hover {
   background: var(--color-row-selected);
+}
+
+.tbtn-icon {
+  filter: grayscale(1);
+  opacity: 0.85;
 }
 
 .toolbar-sep {
@@ -448,6 +464,203 @@ body {
 
 .hdr-label {
   color: var(--color-ink-sub);
+  font-size: 12px;
+}
+
+/* ── Tab pages: contacts / calendar / tasks / preferences ─────── */
+
+.new-btn-slot {
+  width: var(--side-w, 190px);
+}
+
+.alpha-bar {
+  display: flex;
+  gap: 1px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel);
+}
+
+.alpha-item {
+  flex: 1;
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+  color: var(--color-accent);
+  font-size: 11px;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+.alpha-item.active {
+  background: var(--color-row-selected);
+  color: var(--color-ink);
+}
+
+.empty-box {
+  display: inline-block;
+  border: 1px solid var(--color-ink);
+  padding: 14px 28px;
+  font-size: 13px;
+  color: var(--color-ink);
+}
+
+.cal-headrow {
+  display: grid;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel-2);
+  flex-shrink: 0;
+}
+
+.cal-dayhead {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-left: 1px solid var(--color-line);
+}
+
+.cal-dayhead.today {
+  font-weight: 700;
+}
+
+.cal-row {
+  display: grid;
+  min-height: 42px;
+}
+
+.cal-hour {
+  font-size: 11px;
+  color: var(--color-ink-sub);
+  text-align: right;
+  padding: 2px 6px 0 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.cal-cell {
+  border-left: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.cal-cell.off {
+  background: #eeeade;
+}
+
+.dark .cal-cell.off {
+  background: #26292c;
+}
+
+.cal-cell.today {
+  background: color-mix(in srgb, var(--color-row-selected) 18%, transparent);
+}
+
+.cal-mode-active {
+  background: var(--color-row-selected) !important;
+}
+
+.pref-bar {
+  background: #6b6b6b;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  margin: 14px 0 8px;
+}
+
+.pref-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 4px 20px;
+}
+
+.pref-label {
+  width: 160px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-ink);
+  flex-shrink: 0;
+}
+
+.pref-select {
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+  color: var(--color-ink);
+  font-size: 12px;
+  height: 24px;
+  padding: 0 4px;
+}
+
+/* ── Mini calendar (sidebar bottom, Zimbra style) ─────────────── */
+
+.mini-cal {
+  border-top: 1px solid var(--color-line);
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--color-ink-sub);
+  margin-top: auto;
+}
+
+.mini-cal-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.mini-cal-head button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink-sub);
+  padding: 0 3px;
+  font-size: 11px;
+}
+
+.mini-cal-title {
+  flex: 1;
+  text-align: center;
+  color: var(--color-accent);
+}
+
+.mini-cal-grid {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.mini-cal-grid th {
+  font-weight: 400;
+  color: var(--color-ink-mute);
+  padding: 1px 0;
+}
+
+.mini-cal-grid td {
+  padding: 2px 0;
+  cursor: default;
+  color: var(--color-accent);
+}
+
+.mini-cal-grid td.dim {
+  color: var(--color-ink-mute);
+}
+
+.mini-cal-grid td.today {
+  background: var(--color-row-selected);
+  font-weight: 700;
+}
+
+/* Sidebar auxiliary sections (Searches/Tags/Zimlets) */
+.side-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--color-ink);
+  cursor: default;
+}
+
+.side-gear {
+  color: var(--color-ink-mute);
   font-size: 12px;
 }
 

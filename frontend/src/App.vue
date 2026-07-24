@@ -9,6 +9,10 @@ import MessageList from './components/MessageList.vue'
 import ReadingPane from './components/ReadingPane.vue'
 import AppToolbar from './components/AppToolbar.vue'
 import ComposerModal from './components/ComposerModal.vue'
+import ContactsView from './components/ContactsView.vue'
+import CalendarView from './components/CalendarView.vue'
+import TasksView from './components/TasksView.vue'
+import PreferencesView from './components/PreferencesView.vue'
 
 const auth = useAuthStore()
 const mail = useMailStore()
@@ -82,12 +86,13 @@ onBeforeUnmount(() => {
     Loading mailbox…
   </div>
 
-  <div v-else class="h-full flex flex-col">
+  <div v-else class="h-full flex flex-col" :style="{ '--side-w': `${sideWidth}px` }">
     <p v-if="!settings.skinReady(settings.skin)" class="skin-preview-banner">
       Skin preview: {{ settings.skinLabel(settings.skin) }} — full layout coming soon (server: config.toml → ui.skin)
     </p>
     <AppToolbar />
     <div
+      v-if="settings.activeTab === 'mail'"
       class="grid flex-1 min-h-0 bg-app-bg"
       :style="{ gridTemplateColumns: `${sideWidth}px 6px ${listWidth}px 6px 1fr` }"
     >
@@ -97,6 +102,10 @@ onBeforeUnmount(() => {
       <div class="col-sash" title="Drag to resize" @mousedown="startListResize"></div>
       <ReadingPane />
     </div>
+    <ContactsView v-else-if="settings.activeTab === 'contacts'" />
+    <CalendarView v-else-if="settings.activeTab === 'calendar'" />
+    <TasksView v-else-if="settings.activeTab === 'tasks'" />
+    <PreferencesView v-else-if="settings.activeTab === 'preferences'" />
     <ComposerModal />
   </div>
 </template>

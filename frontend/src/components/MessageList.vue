@@ -16,7 +16,15 @@ const totalMessages = computed(
       <span>{{ totalMessages }} message{{ totalMessages === 1 ? '' : 's' }}</span>
     </div>
 
-    <div class="flex-1 overflow-y-auto min-h-0">
+    <div
+      class="flex-1 overflow-y-auto min-h-0"
+      @scroll="
+        (e: Event) => {
+          const el = e.target as HTMLElement
+          if (el.scrollTop + el.clientHeight > el.scrollHeight - 300) mail.loadMoreMessages()
+        }
+      "
+    >
       <div
         v-for="msg in mail.messages"
         :key="msg.uid"
@@ -60,6 +68,7 @@ const totalMessages = computed(
           </span>
         </div>
       </div>
+      <p v-if="mail.loadingMore" class="p-2 text-center text-xs text-ink-mute">Loading…</p>
       <p v-if="!mail.messages.length" class="p-4 text-sm text-ink-mute">No messages</p>
     </div>
   </section>

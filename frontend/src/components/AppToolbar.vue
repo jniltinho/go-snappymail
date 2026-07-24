@@ -10,6 +10,14 @@ const auth = useAuthStore()
 const mail = useMailStore()
 const settings = useSettingsStore()
 
+const tabs = [
+  { id: 'mail', label: 'Mail' },
+  { id: 'contacts', label: 'Contacts' },
+  { id: 'calendar', label: 'Calendar' },
+  { id: 'tasks', label: 'Tasks' },
+  { id: 'preferences', label: 'Preferences' },
+] as const
+
 const userLabel = computed(() => {
   const local = (auth.username || '').split('@')[0] || 'Account'
   return local.charAt(0).toUpperCase() + local.slice(1)
@@ -70,16 +78,21 @@ function editAsNew() {
     </div>
 
     <div class="tabstrip">
-      <span class="tab active">Mail</span>
-      <span class="tab disabled" title="Coming soon">Contacts</span>
-      <span class="tab disabled" title="Coming soon">Calendar</span>
-      <span class="tab disabled" title="Coming soon">Tasks</span>
-      <span class="tab disabled" title="Coming soon">Preferences</span>
+      <button
+        v-for="t in tabs"
+        :key="t.id"
+        type="button"
+        class="tab"
+        :class="{ active: settings.activeTab === t.id }"
+        @click="settings.activeTab = t.id"
+      >
+        {{ t.label }}
+      </button>
       <button type="button" class="tab-refresh ml-auto" title="Refresh" @click="mail.refresh">⟳</button>
     </div>
 
-    <div class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
-      <div class="w-[204px] shrink-0">
+    <div v-if="settings.activeTab === 'mail'" class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
+      <div class="new-btn-slot shrink-0">
         <DropdownMenu label="New Message" btn-class="btn-new" split @main="mail.openCompose('new')">
           <button type="button" class="dd-item" @click="mail.openCompose('new')">New Message</button>
         </DropdownMenu>
@@ -118,6 +131,11 @@ function editAsNew() {
         >
           {{ folder.label === 'INBOX' ? 'Inbox' : folder.label }}
         </button>
+      </DropdownMenu>
+
+      <DropdownMenu label="🏷" btn-class="tbtn tbtn-icon">
+        <button type="button" class="dd-item" disabled>New Tag…</button>
+        <button type="button" class="dd-item" disabled>No tags defined</button>
       </DropdownMenu>
 
       <span class="toolbar-sep"></span>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMailStore } from '../stores/mail'
+import MiniCalendar from './MiniCalendar.vue'
 
 const mail = useMailStore()
 
@@ -55,7 +56,7 @@ function prettyLabel(label: string): string {
 </script>
 
 <template>
-  <aside class="border-r border-line bg-panel overflow-y-auto min-h-0">
+  <aside class="border-r border-line bg-panel overflow-y-auto min-h-0 flex flex-col">
     <div class="side-header px-3 py-2">▼ Mail Folders</div>
     <button
       v-for="folder in ordered"
@@ -82,5 +83,11 @@ function prettyLabel(label: string): string {
         {{ prettyLabel(folder.label) }}<template v-if="folder.unseen"> ({{ folder.unseen }})</template>
       </span>
     </button>
+
+    <div class="side-section mt-2"><span>Searches</span><span class="side-gear">⚙</span></div>
+    <div class="side-section"><span>Tags</span><span class="side-gear">⚙</span></div>
+    <div class="side-section"><span>▸ Zimlets</span></div>
+
+    <MiniCalendar />
   </aside>
 </template>

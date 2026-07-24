@@ -74,14 +74,41 @@ export const useMailStore = defineStore('mail', () => {
     }
   }
 
+  const listPage = ref(1)
+  const listHasMore = ref(false)
+  const loadingMore = ref(false)
+
   async function loadMessages(): Promise<void> {
+    listPage.value = 1
     const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}`)
     messages.value = (res.data.messages as Record<string, unknown>[]).map(mapMessage)
+    const total = folders.value.find((f) => f.name === currentFolder.value)?.messages ?? 0
+    listHasMore.value = messages.value.length < total
     // Zimbra behavior: no auto-open — pane stays empty until the user clicks a row
     if (selectedUid.value && !messages.value.some((m) => m.uid === selectedUid.value)) {
       selectedUid.value = null
     }
     if (selectedUid.value) await loadMessageBody(selectedUid.value)
+  }
+
+  // Infinite scroll: append the next page until the whole folder is listed.
+  async function loadMoreMessages(): Promise<void> {
+    if (loadingMore.value || !listHasMore.value || searchQuery.value.trim()) return
+    loadingMore.value = true
+    try {
+      const next = listPage.value + 1
+      const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}`, {
+        params: { page: next },
+      })
+      const fresh = (res.data.messages as Record<string, unknown>[]).map(mapMessage)
+      const seen = new Set(messages.value.map((m) => m.uid))
+      messages.value.push(...fresh.filter((m) => !seen.has(m.uid)))
+      listPage.value = next
+      const total = folders.value.find((f) => f.name === currentFolder.value)?.messages ?? 0
+      listHasMore.value = fresh.length > 0 && messages.value.length < total
+    } finally {
+      loadingMore.value = false
+    }
   }
 
   async function loadMessageBody(uid: number): Promise<void> {
@@ -141,7 +168,7 @@ export const useMailStore = defineStore('mail', () => {
       await loadFolders()
       const cur = folders.value.find((f) => f.name === currentFolder.value)
       const curKey = cur ? `${cur.messages}:${cur.unseen}` : ''
-      if (curKey === prevKey || searchQuery.value.trim()) return
+      if (curKey === prevKey || searchQuery.value.trim() || listPage.value > 1) return
       const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}`)
       const old = new Map(messages.value.map((m) => [m.uid, m]))
       messages.value = (res.data.messages as Record<string, unknown>[]).map((raw) => {
@@ -348,6 +375,9 @@ export const useMailStore = defineStore('mail', () => {
     loadMailbox,
     selectFolder,
     selectMessage,
+    listHasMore,
+    loadingMore,
+    loadMoreMessages,
     readNextUnread,
     refresh,
     pollNewMail,
