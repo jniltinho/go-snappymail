@@ -104,7 +104,9 @@ func (h *Handlers) CreateAlias(c *echo.Context) error {
 		return fail(c, http.StatusBadRequest, "domain does not exist")
 	}
 	var acount int64
-	h.db.Model(&Alias{}).Where("address = ?", req.Address).Count(&acount)
+	if err := h.db.Model(&Alias{}).Where("address = ?", req.Address).Count(&acount).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "create alias failed")
+	}
 	if acount > 0 {
 		return fail(c, http.StatusConflict, "alias already exists")
 	}
@@ -154,7 +156,9 @@ func (h *Handlers) UpdateAlias(c *echo.Context) error {
 			return fail(c, http.StatusInternalServerError, "update alias failed")
 		}
 	}
-	h.db.First(&a, "address = ?", address)
+	if err := h.db.First(&a, "address = ?", address).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "update alias failed")
+	}
 	return ok(c, a)
 }
 

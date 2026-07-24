@@ -117,7 +117,9 @@ func (h *Handlers) UpdateDomain(c *echo.Context) error {
 	if err := h.db.Model(&d).Updates(updates).Error; err != nil {
 		return fail(c, http.StatusInternalServerError, "update domain failed")
 	}
-	h.db.First(&d, "domain = ?", name)
+	if err := h.db.First(&d, "domain = ?", name).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "update domain failed")
+	}
 	return ok(c, d)
 }
 

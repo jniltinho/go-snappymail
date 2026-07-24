@@ -480,3 +480,47 @@ func TestOverviewCounts(t *testing.T) {
 		t.Errorf("da overview = %+v, want 1/1/1 scoped", ov)
 	}
 }
+
+// TestLastSuperadminGuard ensures the panel can never be locked out by
+// demoting, deactivating, or deleting the last active superadmin.
+func TestLastSuperadminGuard(t *testing.T) {
+	env := newEnv(t)
+	super := superToken(t, env) // seeds sole active superadmin boss@x
+
+	t.Run("cannot delete last superadmin", func(t *testing.T) {
+		rec := env.do(t, http.MethodDelete, "/api/v1/admin/admins/boss@x", super, nil)
+		if rec.Code != http.StatusConflict {
+			t.Fatalf("status = %d, want 409 (body=%s)", rec.Code, rec.Body.String())
+		}
+	})
+
+	t.Run("cannot demote last superadmin", func(t *testing.T) {
+		no := false
+		rec := env.do(t, http.MethodPut, "/api/v1/admin/admins/boss@x", super,
+			adminUpdateRequest{Superadmin: &no})
+		if rec.Code != http.StatusConflict {
+			t.Fatalf("status = %d, want 409 (body=%s)", rec.Code, rec.Body.String())
+		}
+	})
+
+	t.Run("cannot deactivate last superadmin", func(t *testing.T) {
+		no := false
+		rec := env.do(t, http.MethodPut, "/api/v1/admin/admins/boss@x", super,
+			adminUpdateRequest{Active: &no})
+		if rec.Code != http.StatusConflict {
+			t.Fatalf("status = %d, want 409 (body=%s)", rec.Code, rec.Body.String())
+		}
+	})
+
+	t.Run("delete allowed once a second superadmin exists", func(t *testing.T) {
+		rec := env.do(t, http.MethodPost, "/api/v1/admin/admins", super,
+			adminCreateRequest{Username: "boss2@x", Password: "password1", Superadmin: true})
+		if rec.Code != http.StatusCreated {
+			t.Fatalf("create second superadmin status = %d (body=%s)", rec.Code, rec.Body.String())
+		}
+		rec = env.do(t, http.MethodDelete, "/api/v1/admin/admins/boss@x", super, nil)
+		if rec.Code != http.StatusOK {
+			t.Fatalf("delete status = %d, want 200 (body=%s)", rec.Code, rec.Body.String())
+		}
+	})
+}

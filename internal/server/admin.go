@@ -13,6 +13,7 @@ import (
 
 	"go-snappymail/internal/admin"
 	"go-snappymail/internal/config"
+	appMiddleware "go-snappymail/internal/server/middleware"
 
 	"github.com/labstack/echo/v5"
 	echoMiddleware "github.com/labstack/echo/v5/middleware"
@@ -32,6 +33,10 @@ func buildAdminServer(cfg *config.Config, adminDB *gorm.DB, embeddedFiles embed.
 	e := echo.New()
 	e.Use(echoMiddleware.Recover())
 	e.Use(echoMiddleware.RequestID())
+	// Defensive HTTP headers (X-Frame-Options, CSP, frame-ancestors none) on the
+	// admin listener too — the webmail port sets these and the panel must not be
+	// left more exposed to clickjacking/XSS.
+	e.Use(appMiddleware.SecurityHeaders())
 	// Admin auth is a stateless JWT Bearer flow (no session cookie), so cookie
 	// CSRF is not applicable; the JWT middleware guards every protected route.
 	e.Use(echoMiddleware.RequestLoggerWithConfig(echoMiddleware.RequestLoggerConfig{
@@ -51,6 +56,9 @@ func buildAdminServer(cfg *config.Config, adminDB *gorm.DB, embeddedFiles embed.
 	srv := &http.Server{
 		Addr:              cfg.Admin.AdminAddr(),
 		Handler:           e,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      0, // JSON responses are small; 0 avoids cutting slow clients on a shared listener
+		IdleTimeout:       120 * time.Second,
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 	return srv, nil

@@ -66,7 +66,7 @@ func TestAdminConfigValidate(t *testing.T) {
 	valid := AdminConfig{
 		Enabled:   true,
 		Port:      7071,
-		JWTSecret: "secret",
+		JWTSecret: "0123456789abcdef0123456789abcdef", // 32 bytes
 		Database:  DatabaseConfig{Driver: "mysql", DSN: "u:p@/mail"},
 	}
 
@@ -78,6 +78,7 @@ func TestAdminConfigValidate(t *testing.T) {
 		{"disabled skips all checks", func(a *AdminConfig) { *a = AdminConfig{Enabled: false} }, false},
 		{"valid", func(a *AdminConfig) {}, false},
 		{"missing jwt secret", func(a *AdminConfig) { a.JWTSecret = "" }, true},
+		{"weak jwt secret under 32 bytes", func(a *AdminConfig) { a.JWTSecret = "short-secret" }, true},
 		{"missing db driver", func(a *AdminConfig) { a.Database.Driver = "" }, true},
 		{"missing db dsn", func(a *AdminConfig) { a.Database.DSN = "" }, true},
 		{"port out of range low", func(a *AdminConfig) { a.Port = 0 }, true},

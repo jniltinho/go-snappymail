@@ -71,8 +71,8 @@ func (a AdminConfig) Validate() error {
 	if a.Port < 1 || a.Port > 65535 {
 		return fmt.Errorf("admin.port %d out of range 1-65535", a.Port)
 	}
-	if a.JWTSecret == "" {
-		return errors.New("admin.jwt_secret must be set when admin.enabled=true")
+	if len(a.JWTSecret) < 32 {
+		return errors.New("admin.jwt_secret must be at least 32 bytes when admin.enabled=true (HS256 with a weak secret is brute-forceable offline)")
 	}
 	if a.TLS && (a.TLSCert == "" || a.TLSKey == "") {
 		return errors.New("admin.tls=true requires admin.tls_cert and admin.tls_key")

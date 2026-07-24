@@ -99,7 +99,9 @@ func (h *Handlers) CreateMailbox(c *echo.Context) error {
 		return fail(c, http.StatusBadRequest, "domain does not exist")
 	}
 	var mcount int64
-	h.db.Model(&Mailbox{}).Where("username = ?", req.Username).Count(&mcount)
+	if err := h.db.Model(&Mailbox{}).Where("username = ?", req.Username).Count(&mcount).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "create mailbox failed")
+	}
 	if mcount > 0 {
 		return fail(c, http.StatusConflict, "mailbox already exists")
 	}
@@ -165,7 +167,9 @@ func (h *Handlers) UpdateMailbox(c *echo.Context) error {
 	if err := h.db.Model(&mb).Updates(updates).Error; err != nil {
 		return fail(c, http.StatusInternalServerError, "update mailbox failed")
 	}
-	h.db.First(&mb, "username = ?", username)
+	if err := h.db.First(&mb, "username = ?", username).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "update mailbox failed")
+	}
 	return ok(c, mb)
 }
 

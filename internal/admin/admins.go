@@ -60,6 +60,19 @@ func linkDomains(tx *gorm.DB, username string, domains []string) error {
 	return nil
 }
 
+// lastActiveSuperadmin reports whether username is the only active superadmin
+// left — used to refuse a demotion/deactivation/deletion that would lock every
+// superadmin out of the panel.
+func lastActiveSuperadmin(tx *gorm.DB, username string) (bool, error) {
+	var others int64
+	if err := tx.Model(&Admin{}).
+		Where("superadmin = ? AND active = ? AND username <> ?", true, true, username).
+		Count(&others).Error; err != nil {
+		return false, err
+	}
+	return others == 0, nil
+}
+
 func (h *Handlers) toAdminView(a Admin) adminView {
 	v := adminView{Username: a.Username, Superadmin: a.Superadmin, Active: a.Active}
 	if !a.Superadmin {
@@ -117,7 +130,9 @@ func (h *Handlers) CreateAdmin(c *echo.Context) error {
 		return fail(c, http.StatusBadRequest, "username and an 8+ char password are required")
 	}
 	var count int64
-	h.db.Model(&Admin{}).Where("username = ?", req.Username).Count(&count)
+	if err := h.db.Model(&Admin{}).Where("username = ?", req.Username).Count(&count).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "create admin failed")
+	}
 	if count > 0 {
 		return fail(c, http.StatusConflict, "admin already exists")
 	}
@@ -181,6 +196,18 @@ func (h *Handlers) UpdateAdmin(c *echo.Context) error {
 		}
 		updates["password"] = hash
 	}
+	// Refuse a change that would strip the last active superadmin of its access.
+	demote := req.Superadmin != nil && !*req.Superadmin
+	deactivate := req.Active != nil && !*req.Active
+	if a.Superadmin && a.Active && (demote || deactivate) {
+		last, err := lastActiveSuperadmin(h.db, username)
+		if err != nil {
+			return fail(c, http.StatusInternalServerError, "update admin failed")
+		}
+		if last {
+			return fail(c, http.StatusConflict, "cannot demote or deactivate the last active superadmin")
+		}
+	}
 	err := h.db.Transaction(func(tx *gorm.DB) error {
 		if len(updates) > 0 {
 			if err := tx.Model(&a).Updates(updates).Error; err != nil {
@@ -202,7 +229,9 @@ func (h *Handlers) UpdateAdmin(c *echo.Context) error {
 		}
 		return fail(c, http.StatusInternalServerError, "update admin failed")
 	}
-	h.db.First(&a, "username = ?", username)
+	if err := h.db.First(&a, "username = ?", username).Error; err != nil {
+		return fail(c, http.StatusInternalServerError, "update admin failed")
+	}
 	return ok(c, h.toAdminView(a))
 }
 
@@ -218,6 +247,15 @@ func (h *Handlers) DeleteAdmin(c *echo.Context) error {
 			return fail(c, http.StatusNotFound, "admin not found")
 		}
 		return fail(c, http.StatusInternalServerError, "delete admin failed")
+	}
+	if a.Superadmin && a.Active {
+		last, err := lastActiveSuperadmin(h.db, username)
+		if err != nil {
+			return fail(c, http.StatusInternalServerError, "delete admin failed")
+		}
+		if last {
+			return fail(c, http.StatusConflict, "cannot delete the last active superadmin")
+		}
 	}
 	err := h.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&DomainAdmin{}, "username = ?", username).Error; err != nil {

@@ -1,14 +1,21 @@
 package admin
 
-import "github.com/labstack/echo/v5"
+import (
+	"time"
+
+	appMiddleware "go-snappymail/internal/server/middleware"
+
+	"github.com/labstack/echo/v5"
+)
 
 // RegisterRoutes mounts the admin API under the given group (expected to be
 // "/api/v1/admin" on the ADMIN Echo instance only). The login route is public;
 // every other route is behind JWTMiddleware. This function must never be called
 // on the webmail Echo — that is what keeps the admin surface isolated.
 func (h *Handlers) RegisterRoutes(g *echo.Group) {
-	// Public: obtain a token.
-	g.POST("/auth/login", h.Login)
+	// Public: obtain a token. Rate-limited to blunt online brute-force of admin
+	// passwords (the webmail login has the same guard).
+	g.POST("/auth/login", h.Login, appMiddleware.NewRateLimit(10, time.Minute))
 
 	// Authenticated: everything else.
 	auth := g.Group("", JWTMiddleware(h.db, h.cfg.JWTSecret))

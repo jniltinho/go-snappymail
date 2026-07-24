@@ -114,9 +114,10 @@ func Start(cfg *config.Config, db *gorm.DB, embeddedFiles embed.FS) error {
 		if err != nil {
 			return err
 		}
-		if err := admin.Migrate(adminDB); err != nil {
-			return err
-		}
+		// Schema changes are an explicit, operator-run step (`migrate-admin`), not
+		// a startup side effect: the admin models map onto the shared Postfix/
+		// Dovecot database, and silent AutoMigrate there could alter production
+		// tables. serve only opens the DB and serves.
 		adminSrv, err = buildAdminServer(cfg, adminDB, embeddedFiles)
 		if err != nil {
 			return err
