@@ -11,6 +11,15 @@ const fromLabel = computed(() => {
   return m.fromEmail || m.from
 })
 
+// `Name <email>` → `"Name" <email>` (Zimbra chip format)
+const toLabel = computed(() =>
+  (mail.selectedMessage?.to || '').replace(/(^|, )([^"<,][^<,]*?) </g, '$1"$2" <'),
+)
+
+function fmtSize(label: string): string {
+  return label.replace(/(\d)([KMG]?B)$/, '$1 $2')
+}
+
 function attachmentURL(part: number): string {
   return `${API_BASE}/mail/${encodeURIComponent(mail.currentFolder)}/${mail.selectedUid}/attachment/${part}`
 }
@@ -28,9 +37,9 @@ function attachmentURL(part: number): string {
         <div class="flex gap-3">
           <div class="msg-avatar" aria-hidden="true">
             <svg viewBox="0 0 48 48" width="48" height="48">
-              <rect width="48" height="48" fill="#dbe9f5" />
-              <circle cx="24" cy="17" r="8" fill="#5b87b5" />
-              <path d="M8 44c1.5-10 8-15 16-15s14.5 5 16 15z" fill="#5b87b5" />
+              <rect width="48" height="48" fill="#d4e6f7" />
+              <circle cx="24" cy="17" r="8" fill="#4d82c3" />
+              <path d="M8 44c1.5-10 8-15 16-15s14.5 5 16 15z" fill="#4d82c3" />
             </svg>
           </div>
           <div class="flex-1 min-w-0">
@@ -45,7 +54,7 @@ function attachmentURL(part: number): string {
             </div>
             <div v-if="mail.selectedMessage.to" class="mt-1 flex items-center gap-2">
               <span class="hdr-label">To:</span>
-              <span class="addr-chip truncate">{{ mail.selectedMessage.to }}</span>
+              <span class="addr-chip truncate">{{ toLabel }}</span>
             </div>
           </div>
         </div>
@@ -56,7 +65,7 @@ function attachmentURL(part: number): string {
         class="attach-strip px-3 py-1.5 border-b border-line text-sm"
       >
         <span v-for="att in mail.selectedMessage.attachments" :key="att.part" class="mr-4">
-          📎 {{ att.filename }} ({{ att.sizeLabel }})
+          📎 {{ att.filename }} ({{ fmtSize(att.sizeLabel) }})
           <a class="attach-link ml-1" :href="attachmentURL(att.part)" target="_blank">Download</a>
         </span>
       </div>

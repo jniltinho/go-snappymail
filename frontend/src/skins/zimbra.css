@@ -204,9 +204,18 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Zimbra 10 uses colored folder sprites — keep emoji colored, slightly smaller */
-[data-skin='zimbra'] .side-item > span:first-child {
-  font-size: 12px;
+/* Login card typography per reference: 13.3px Helvetica Neue */
+[data-skin='zimbra'] .login-card {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+[data-skin='zimbra'] .login-label,
+[data-skin='zimbra'] .login-input {
+  font-size: 13.3px;
+}
+
+[data-skin='zimbra'] .login-heading {
+  display: block;
 }
 
 /* Toolbar buttons: white, 1px #bfbfbf; hover/active from harmony ButtonHov/Act */

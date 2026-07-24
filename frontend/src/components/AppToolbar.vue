@@ -19,12 +19,25 @@ async function onSearch() {
   await mail.search()
 }
 
-function readRaw() {
+function showOriginal() {
   if (!mail.selectedUid) return
   window.open(
     `${API_BASE}/mail/${encodeURIComponent(mail.currentFolder)}/${mail.selectedUid}/raw`,
     '_blank',
   )
+}
+
+function printMessage() {
+  window.print()
+}
+
+function editAsNew() {
+  const m = mail.selectedMessage
+  if (!m) return
+  mail.openCompose('new')
+  mail.cTo = m.to || ''
+  mail.cSubject = m.subject
+  mail.cBody = m.plainBody || ''
 }
 </script>
 
@@ -33,14 +46,14 @@ function readRaw() {
     <div class="topbar flex items-center gap-3 px-3">
       <div class="font-bold text-base tracking-tight whitespace-nowrap">go-snappymail</div>
 
-      <form class="ml-auto flex items-center gap-1" @submit.prevent="onSearch">
+      <form class="ml-auto relative" @submit.prevent="onSearch">
         <input
           v-model="mail.searchQuery"
           type="search"
           placeholder="Search"
-          class="topbar-search w-56 h-[24px] px-2 text-sm"
+          class="topbar-search w-56 h-[24px] pl-2 pr-7 text-sm"
         />
-        <button type="submit" class="topbar-link" title="Search">🔍</button>
+        <button type="submit" class="search-glass" title="Search">🔍</button>
       </form>
 
       <DropdownMenu :label="userLabel" btn-class="topbar-link font-bold" align-right>
@@ -62,8 +75,8 @@ function readRaw() {
 
     <div class="actionbar flex items-center gap-2 px-3 py-2 border-b border-line">
       <div class="w-[204px] shrink-0">
-        <DropdownMenu label="New message" btn-class="btn-new">
-          <button type="button" class="dd-item" @click="mail.openCompose('new')">New message</button>
+        <DropdownMenu label="New Message" btn-class="btn-new">
+          <button type="button" class="dd-item" @click="mail.openCompose('new')">New Message</button>
         </DropdownMenu>
       </div>
 
@@ -124,10 +137,19 @@ function readRaw() {
         <button type="button" class="dd-item" :disabled="!mail.selectedUid" @click="mail.spamSelected">
           Mark as spam
         </button>
+        <button type="button" class="dd-item" :disabled="!mail.selectedUid" @click="editAsNew">
+          Edit as New
+        </button>
+        <button type="button" class="dd-item" :disabled="!mail.selectedUid" @click="showOriginal">
+          Show Original
+        </button>
+        <button type="button" class="dd-item" :disabled="!mail.selectedUid" @click="printMessage">
+          Print
+        </button>
       </DropdownMenu>
 
       <div class="ml-auto flex items-center gap-2">
-        <button type="button" class="tbtn" :disabled="!mail.selectedUid" @click="readRaw">
+        <button type="button" class="tbtn" @click="mail.readNextUnread">
           Read More
         </button>
         <DropdownMenu label="View" btn-class="tbtn" align-right>

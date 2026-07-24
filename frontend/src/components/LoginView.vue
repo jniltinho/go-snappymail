@@ -24,6 +24,8 @@ async function onSubmit() {
         </div>
       </div>
 
+      <div class="login-heading px-6 pt-4 text-lg font-bold">Login</div>
+
       <div class="px-6 py-5 flex flex-col gap-3">
         <p v-if="auth.loginErr" class="login-error text-sm px-3 py-2">
           {{ auth.loginErr }}

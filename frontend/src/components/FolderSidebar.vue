@@ -4,16 +4,16 @@ import { useMailStore } from '../stores/mail'
 
 const mail = useMailStore()
 
-const icons: Record<string, string> = {
-  inbox: '📥',
-  sent: '📤',
-  drafts: '📝',
-  trash: '🗑',
-  junk: '⚠',
-  folder: '📁',
+// Monochrome line-art folder icons (Zimbra-style sprites), stroke inherits currentColor.
+const iconPaths: Record<string, string> = {
+  inbox: 'M2 9l3-6h6l3 6v4H2V9zm0 0h4l1 2h2l1-2h4',
+  sent: 'M2 8l12-5-4 11-3-4-5-2z',
+  drafts: 'M3 13h10M4 11l7-7 2 2-7 7H4v-2z',
+  junk: 'M8 2l6 11H2L8 2zm0 4v3m0 2v1',
+  trash: 'M3 5h10M6 5V3h4v2M4 5l1 8h6l1-8',
+  folder: 'M2 4h5l1 2h6v7H2V4z',
 }
 
-// Zimbra Classic folder order: Inbox, Sent, Drafts, Junk, Trash, then the rest.
 const rank: Record<string, number> = { inbox: 0, sent: 1, drafts: 2, junk: 3, trash: 4 }
 
 const ordered = computed(() =>
@@ -41,7 +41,16 @@ function prettyLabel(label: string): string {
       :style="{ paddingLeft: `${12 + folder.depth * 14}px` }"
       @click="mail.selectFolder(folder.name)"
     >
-      <span>{{ icons[folder.iconType] || icons.folder }}</span>
+      <svg class="side-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+        <path
+          :d="iconPaths[folder.iconType] || iconPaths.folder"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.3"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+      </svg>
       <span class="truncate" :class="{ 'font-bold': folder.unseen }">
         {{ prettyLabel(folder.label) }}<template v-if="folder.unseen"> ({{ folder.unseen }})</template>
       </span>

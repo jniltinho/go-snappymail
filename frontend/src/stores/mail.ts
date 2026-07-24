@@ -79,8 +79,9 @@ export const useMailStore = defineStore('mail', () => {
   async function loadMessages(): Promise<void> {
     const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}`)
     messages.value = (res.data.messages as Record<string, unknown>[]).map(mapMessage)
-    if (messages.value.length && !messages.value.some((m) => m.uid === selectedUid.value)) {
-      selectedUid.value = messages.value[0]?.uid ?? null
+    // Zimbra behavior: no auto-open — pane stays empty until the user clicks a row
+    if (selectedUid.value && !messages.value.some((m) => m.uid === selectedUid.value)) {
+      selectedUid.value = null
     }
     if (selectedUid.value) await loadMessageBody(selectedUid.value)
   }
@@ -114,6 +115,14 @@ export const useMailStore = defineStore('mail', () => {
     await loadMessageBody(uid)
   }
 
+  // Zimbra "Read More": advance to the next unread message in the list.
+  async function readNextUnread(): Promise<void> {
+    const start = messages.value.findIndex((m) => m.uid === selectedUid.value)
+    const ordered = [...messages.value.slice(start + 1), ...messages.value.slice(0, start + 1)]
+    const next = ordered.find((m) => !m.seen)
+    if (next) await selectMessage(next.uid)
+  }
+
   async function refresh(): Promise<void> {
     await loadFolders()
     await loadMessages()
@@ -128,8 +137,7 @@ export const useMailStore = defineStore('mail', () => {
       params: { q: searchQuery.value, mailbox: currentFolder.value },
     })
     messages.value = (res.data.messages as Record<string, unknown>[]).map(mapMessage)
-    selectedUid.value = messages.value[0]?.uid ?? null
-    if (selectedUid.value) await loadMessageBody(selectedUid.value)
+    selectedUid.value = null
   }
 
   async function loadMailbox(): Promise<void> {
@@ -312,6 +320,7 @@ export const useMailStore = defineStore('mail', () => {
     loadMailbox,
     selectFolder,
     selectMessage,
+    readNextUnread,
     refresh,
     search,
     toggleFlag,

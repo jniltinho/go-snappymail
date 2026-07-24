@@ -12,7 +12,7 @@ const totalMessages = computed(
 <template>
   <section class="bg-panel min-h-0 flex flex-col">
     <div class="sort-header">
-      <span>Sorted by Date</span>
+      <span>Sorted by Date ⌄</span>
       <span>{{ totalMessages }} message{{ totalMessages === 1 ? '' : 's' }}</span>
     </div>
 
