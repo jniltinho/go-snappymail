@@ -77,16 +77,18 @@ async function submit() {
 
 .login-card {
   background: linear-gradient(to bottom, var(--login-card-top), var(--login-card-bottom));
-  padding: 24px 40px 46px;
-  min-height: 276px;
+  /* top right bottom left — logo sits ~30px from the card's left edge (matches
+   * the reference), the form stays right-aligned via .login-form padding-right */
+  padding: 30px 40px 44px 30px;
+  min-height: 258px;
 }
 
 .login-banner {
-  margin-bottom: 30px;
+  margin-bottom: 26px;
 }
 .login-banner img {
   display: block;
-  height: 44px;
+  height: 46px;
   width: auto;
 }
 
