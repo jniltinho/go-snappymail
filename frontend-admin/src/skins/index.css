@@ -1,0 +1,5 @@
+/* Skin registry — one @import per skin theme. A skin is activated by the
+ * data-skin attribute on <html> (set from the server's [admin] skin config).
+ * Add a new skin: create src/skins/<id>/theme.css scoped to [data-skin='<id>']
+ * and import it here, then register it in manifest.ts. */
+@import './serenity/theme.css';

@@ -1,0 +1,45 @@
+/*
+ * Serenity — default admin skin, extracted from the real ZimbraAdmin
+ * skins/serenity/skin.properties (VM 192.168.56.30:7071).
+ * All values are scoped under [data-skin="serenity"] so additional skins
+ * (carbon, …) can override the same variable names without collision.
+ */
+[data-skin='serenity'] {
+  /* Palette */
+  --accent: #0095d3; /* SerenityAltC — login gradient top, active selection, links */
+  --accent-dark: #00649c; /* darken(accent, 33%) — login gradient bottom */
+  --sel: #c1dffe; /* row/tab selection */
+  --app-chrome: #cecece; /* AppC */
+  --alt: #dddddd;
+  --serenity-app: #eeeeee;
+  --app-bg: #e7e9ee; /* AppBg — nav/app background */
+  --view-bg: #fcfcfc; /* content/list background */
+  --panel: #ffffff;
+  --txt: #333333;
+  --txt-muted: #666666;
+  --panel-border: #aaaaaa;
+  --grid-line: #e4e4e4;
+  --col-header-bg: #f3f3f3;
+  --col-header-border: #d4d4d4;
+
+  /* Masthead (top bar) — dark teal-navy gradient of the console */
+  --masthead-top: #1c5f8b;
+  --masthead-bottom: #16456a;
+  --masthead-txt: #ffffff;
+
+  /* Login page + card */
+  --login-page-top: #f7f7f7;
+  --login-page-bottom: #dcdcdc;
+  --login-card-top: #0095d3;
+  --login-card-bottom: #00649c;
+  --login-btn-top: #ffffff;
+  --login-btn-bottom: #ededdf;
+
+  /* Geometry / type */
+  --radius: 3px;
+  --font: 'Segoe UI', 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande',
+    'DejaVu Sans', sans-serif;
+  --fs: 11px;
+  --fs-big: 13px;
+  --fs-title: 18px;
+}

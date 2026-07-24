@@ -1,0 +1,168 @@
+@import 'tailwindcss';
+@import './skins/index.css';
+
+/* Global base — the admin console is a compact 11px Segoe UI surface. Skin
+ * variables (theme.css) drive every color; this file only wires them in. */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--fs);
+  color: var(--txt);
+  background: var(--app-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── Shared controls (shared by views/modals across skins via vars) ── */
+
+/* Toolbar button — squared gradient, ZimbraAdmin style */
+.tbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-family: var(--font);
+  font-size: var(--fs);
+  color: var(--txt);
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  border: 1px solid #bdbdbd;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.tbtn:hover {
+  background: linear-gradient(to bottom, #ffffff, #dcdcdc);
+}
+.tbtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Dialog buttons */
+.btn {
+  padding: 3px 14px;
+  font-family: var(--font);
+  font-size: var(--fs);
+  color: var(--txt);
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  border: 1px solid #bdbdbd;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+  border-color: var(--accent-dark);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* List grid */
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs);
+}
+.grid thead th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--txt);
+  padding: 4px 10px;
+  background: linear-gradient(to bottom, #fbfbfb, #ececec);
+  border-bottom: 1px solid var(--col-header-border);
+  border-right: 1px solid var(--col-header-border);
+  white-space: nowrap;
+}
+.grid tbody td {
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--grid-line);
+  white-space: nowrap;
+}
+.grid tbody tr {
+  cursor: default;
+}
+.grid tbody tr:hover {
+  background: #eef4fb;
+}
+.grid tbody tr.selected {
+  background: var(--sel);
+}
+.grid .email {
+  color: var(--accent);
+}
+
+/* Count badge in the nav / headers */
+.badge {
+  display: inline-block;
+  min-width: 22px;
+  text-align: center;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: #9aa0a6;
+  color: #fff;
+  font-size: 10px;
+}
+
+/* Modal form field row */
+.field {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.field > label {
+  text-align: right;
+  color: var(--txt);
+}
+.field input[type='text'],
+.field input[type='password'],
+.field input[type='number'],
+.field select {
+  height: 24px;
+  padding: 2px 6px;
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+  font-family: var(--font);
+  font-size: var(--fs);
+  color: var(--txt);
+}
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.field-check {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-error {
+  grid-column: 1 / -1;
+  color: #c0392b;
+}
+
+/* Empty state for a list */
+.empty {
+  padding: 24px;
+  color: var(--txt-muted);
+}
