@@ -452,12 +452,6 @@ body {
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  background: var(--color-row-selected);
-  color: var(--color-ink);
-  font-size: 20px;
-  font-weight: 700;
 }
 
 .addr-chip {

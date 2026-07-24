@@ -95,6 +95,35 @@
   font-size: 12px;
 }
 
+/* Soft rounded corners — harmony ButtonRounding/roundCorners(3px).
+   Scoped to the zimbra skin (other skins keep the squared rule). */
+[data-skin='zimbra'] .tbtn,
+[data-skin='zimbra'] .btn-new,
+[data-skin='zimbra'] .btn-split,
+[data-skin='zimbra'] .topbar-search,
+[data-skin='zimbra'] .compose-input,
+[data-skin='zimbra'] .login-input,
+[data-skin='zimbra'] .login-btn,
+[data-skin='zimbra'] .login-version,
+[data-skin='zimbra'] .pref-select,
+[data-skin='zimbra'] .dd-menu,
+[data-skin='zimbra'] .composer-window,
+[data-skin='zimbra'] .gsn-toast,
+[data-skin='zimbra'] .alpha-item,
+[data-skin='zimbra'] .cal-mode-active {
+  border-radius: 3px;
+}
+
+/* Address chips are a touch rounder in Zimbra (addrBubble ~8px) */
+[data-skin='zimbra'] .addr-chip {
+  border-radius: 8px;
+}
+
+/* Selected app tab: rounded top corners only, like the reference */
+[data-skin='zimbra'] .tabstrip .tab.active {
+  border-radius: 3px 3px 0 0;
+}
+
 /* Login: Zimbra 10 — white card centered on a blue mountain scene (original artwork) */
 [data-skin='zimbra'] .login-page {
   background:

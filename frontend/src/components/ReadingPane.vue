@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMailStore } from '../stores/mail'
+import personAvatar from '../assets/person48.png'
 
 const mail = useMailStore()
 
@@ -35,13 +36,7 @@ function attachmentURL(part: number): string {
 
       <header class="px-4 py-3 border-b border-line">
         <div class="flex gap-3">
-          <div class="msg-avatar" aria-hidden="true">
-            <svg viewBox="0 0 48 48" width="48" height="48">
-              <rect width="48" height="48" fill="#d4e6f7" />
-              <circle cx="24" cy="17" r="8" fill="#4d82c3" />
-              <path d="M8 44c1.5-10 8-15 16-15s14.5 5 16 15z" fill="#4d82c3" />
-            </svg>
-          </div>
+          <img class="msg-avatar" :src="personAvatar" width="48" height="48" alt="" aria-hidden="true" />
           <div class="flex-1 min-w-0">
             <div class="flex items-start justify-between gap-3">
               <div class="mt-1 flex items-center gap-2 min-w-0">
