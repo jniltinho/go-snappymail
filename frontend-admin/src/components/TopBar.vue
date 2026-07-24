@@ -46,12 +46,6 @@ function logout() {
       <span class="sep"></span>
       <div class="mh-help"><span>Help</span><span class="caret">&#9662;</span></div>
     </div>
-
-    <div class="queue" aria-hidden="true">
-      <span class="q-row"><i class="q-dot q-blue"></i>0</span>
-      <span class="q-row"><i class="q-dot q-amber"></i>0</span>
-      <span class="q-row"><i class="q-dot q-green"></i>0</span>
-    </div>
   </header>
 </template>
 
