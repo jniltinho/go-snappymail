@@ -74,10 +74,12 @@ matrix and is not reproduced here — query it live with `zmprov ga|gd|gc`.
 
 ### Class of Service (`zimbraCOS`)
 
-A COS is a **named bundle of defaults** applied to every account that references
-it via `zimbraCOSId`. It carries the same 495 feature/pref/quota/password
-attributes as an account, providing the values an account inherits unless
-overridden. This is the big capability PostfixAdmin has no equivalent for.
+A COS is its own `zimbraCOS` object class — a **named bundle of defaults**
+applied to every account that references it via `zimbraCOSId`. It defines
+**many account-inheritable feature/pref/quota/password defaults** (the reference
+COS exposes 495 such attributes), providing the values an account inherits
+unless overridden. It does **not** carry account identity/routing/membership
+fields. This is the big capability PostfixAdmin has no equivalent for.
 
 ## Mapping: Zimbra LDAP → our current PostfixAdmin schema
 

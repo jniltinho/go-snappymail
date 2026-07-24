@@ -19,6 +19,8 @@ Design notes:
 ```go
 package zimbra
 
+import "time"
+
 // Mailbox is zimbra.mailbox — the account -> shard index and usage counters.
 type Mailbox struct {
     ID              uint32 `gorm:"column:id;primaryKey"`
@@ -81,6 +83,8 @@ explicitly.
 ```go
 package zimbra
 
+import "time"
+
 // MailItem is mboxgroup<N>.mail_item — the core item row (message, folder,
 // contact, appointment, …), discriminated by Type.
 type MailItem struct {
@@ -93,19 +97,19 @@ type MailItem struct {
     ImapID      *uint32 `gorm:"column:imap_id"`
     Date        uint32  `gorm:"column:date"` // epoch secs
     Size        uint64  `gorm:"column:size"`
-    Locator     string  `gorm:"column:locator"`
-    BlobDigest  string  `gorm:"column:blob_digest"`
+    Locator     *string `gorm:"column:locator"`     // nullable
+    BlobDigest  *string `gorm:"column:blob_digest"` // nullable
     Unread      *uint32 `gorm:"column:unread"`
     Flags       int32   `gorm:"column:flags"`
     Tags        int64   `gorm:"column:tags"`
-    TagNames    string  `gorm:"column:tag_names"`
-    Sender      string  `gorm:"column:sender"`
-    Recipients  string  `gorm:"column:recipients"`
-    Subject     string  `gorm:"column:subject"`
-    Name        string  `gorm:"column:name"`
-    Metadata    string  `gorm:"column:metadata"`
+    TagNames    *string `gorm:"column:tag_names"`  // nullable
+    Sender      *string `gorm:"column:sender"`     // nullable
+    Recipients  *string `gorm:"column:recipients"` // nullable
+    Subject     *string `gorm:"column:subject"`    // nullable
+    Name        *string `gorm:"column:name"`       // nullable
+    Metadata    *string `gorm:"column:metadata"`   // nullable
     ChangeDate  *uint32 `gorm:"column:change_date"`
-    UUID        string  `gorm:"column:uuid"`
+    UUID        *string `gorm:"column:uuid"` // nullable
 }
 
 // Tag is mboxgroup<N>.tag.
@@ -133,6 +137,8 @@ type Appointment struct {
 ## Example: reading real mailbox usage for one account
 
 ```go
+import "fmt"
+
 // 1) resolve the account's shard + counters from the central DB
 var mb zimbra.Mailbox
 central.Where("account_id = ?", zimbraID).First(&mb)

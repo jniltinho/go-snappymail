@@ -17,6 +17,15 @@ here was extracted live from that install (`information_schema`, `zmprov`,
 | [03-gorm-models.md](03-gorm-models.md) | Ready-to-use GORM structs for the reusable tables |
 | [04-ldap-structure.md](04-ldap-structure.md) | The OpenLDAP directory: DIT, object classes, key attributes |
 | [05-architecture-reuse.md](05-architecture-reuse.md) | Zimbra architecture diagram + what we can realistically reuse |
+| [06-webapp-structure.md](06-webapp-structure.md) | Webmail + admin webapp folders, CSS/JS/HTML, skins, JS bundles |
+| [07-framework-and-jars.md](07-framework-and-jars.md) | AjaxTk/DWT UI framework, backend Java stack, JAR/WAR manifest |
+| [08-source-repos.md](08-source-repos.md) | Where the FOSS source lives (upstream repos) — links, not copies |
+
+> **Copyright note.** These docs map *structure, schema, and behavior* — all
+> functional facts extracted live or from public references. They deliberately
+> contain **no Zimbra source code, decompiled Java, or copied CSS/JS/HTML**. For
+> the code itself, read the upstream repos linked in
+> [08-source-repos.md](08-source-repos.md).
 
 ## How Zimbra stores data (one paragraph)
 

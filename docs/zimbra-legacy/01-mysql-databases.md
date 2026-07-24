@@ -50,24 +50,24 @@ database has an **identical set of tables**.
 
 ## `mail_item.type` discriminator
 
-The single most important field. Common values:
+The single most important field. Full `MailItem.Type` enum (Zimbra
+`zm-mailbox`):
 
-| `type` | Item |
-| --- | --- |
-| 1 | Folder |
-| 3 | Conversation (thread parent) |
-| 5 | Message |
-| 6 | Contact |
-| 8 | Mountpoint (shared folder link) |
-| 11 | Appointment |
-| 13 | Document (Briefcase) |
-| 14 | Task |
-| 15 | Wiki/Notebook |
-| 18 | Chat |
+| `type` | Item | | `type` | Item |
+| --- | --- | --- | --- | --- |
+| 1 | Folder | | 10 | Flag |
+| 2 | SearchFolder | | 11 | Appointment |
+| 3 | Tag | | 12 | VirtualConversation |
+| 4 | Conversation (thread) | | 13 | Mountpoint (shared link) |
+| 5 | Message | | 14 | Wiki *(deprecated)* |
+| 6 | Contact | | 15 | Task |
+| 7 | Invite *(deprecated)* | | 16 | Chat |
+| 8 | Document (Briefcase) | | 17 | Comment |
+| 9 | Note | | 18 | Link |
 
 Folders are themselves `mail_item` rows, so `mail_item.folder_id` is a
-**self-reference** to another `mail_item.id` (with `type=1`). Conversations use
-`parent_id` the same way.
+**self-reference** to another `mail_item.id` (with `type=1`). Conversations
+(`type=4`) group messages via `parent_id` the same way.
 
 ## Entity-Relationship Diagram
 

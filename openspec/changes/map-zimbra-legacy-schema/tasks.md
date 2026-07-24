@@ -20,11 +20,17 @@
 - [x] 4.2 Ranked "what we can borrow" analysis + explicit non-goals
 - [x] 4.3 `README.md` index
 
+## 4b. Front-end webapp structure (expanded scope)
+- [x] 4b.1 `06-webapp-structure.md` — webmail + admin folders, CSS/JS/HTML, skins, JS bundles
+- [x] 4b.2 `07-framework-and-jars.md` — AjaxTk/DWT framework, backend Java stack, JAR/WAR manifest + how to open archives
+- [x] 4b.3 `08-source-repos.md` — upstream FOSS repos map (links only, no copied source)
+- [x] 4b.4 Copyright guardrail: structure/schema/behavior only, no source dumps
+
 ## 5. Validate
-- [ ] 5.1 Review the docs with codex (accuracy of schema/relationships)
-- [ ] 5.2 Review with agent (completeness, reuse recommendations)
-- [ ] 5.3 Review with kilo (architecture/diagram correctness)
-- [ ] 5.4 Apply any corrections from the three reviews
+- [x] 5.1 Review the docs with codex (accuracy of schema/relationships)
+- [~] 5.2 Review with agent — CLI returned no usable output non-interactively (timed out)
+- [~] 5.3 Review with kilo — CLI returned no usable output non-interactively (timed out)
+- [x] 5.4 Apply codex corrections (mail_item.type enum, GORM imports + nullable *string, COS wording, AjaxTk naming)
 
 ## 6. Follow-ups (each a separate future change — not in scope here)
 - [ ] 6.1 Proposal: Class-of-Service-style defaults bundle
