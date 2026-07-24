@@ -42,13 +42,11 @@ export const useMailStore = defineStore('mail', () => {
 
   function fmtFullDate(ts: number, fallback: string): string {
     if (!ts) return fallback
-    return new Date(ts * 1000).toLocaleString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-    })
+    const d = new Date(ts * 1000)
+    // Zimbra format: "July 23, 2026 9:27 PM" (no "at")
+    const date = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    return `${date} ${time}`
   }
 
   function mapMessage(raw: Record<string, unknown>): MailMessage {

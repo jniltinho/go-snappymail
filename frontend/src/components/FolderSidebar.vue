@@ -4,33 +4,37 @@ import { useMailStore } from '../stores/mail'
 
 const mail = useMailStore()
 
-// Filled folder sprites (Zimbra-style): blue folder body + white overlay glyph.
+// Classic gray/graphite sprites (Zimbra palette: gray-tan folders, graphite glyphs).
 type IconPart = { d: string; fill?: string; stroke?: string; sw?: string }
 const FOLDER_BODY: IconPart[] = [
-  { d: 'M1 5.2V3.6h4.4l1.1 1.6H15v9H1z', fill: '#7ba0c4' },
+  { d: 'M1 5.2V3.6h4.4l1.1 1.6H15v9H1z', fill: '#b3ac9c' },
+  { d: 'M1 6.8h14', stroke: '#9c9484', sw: '0.8' },
 ]
 const icons: Record<string, IconPart[]> = {
   inbox: [
-    ...FOLDER_BODY,
-    { d: 'M8 6.8v3.2M6.5 8.6L8 10.2l1.5-1.6', stroke: '#ffffff', sw: '1.3' },
+    { d: 'M2 8.5l1.6-4h8.8L14 8.5v5H2z', fill: '#9a9a9a' },
+    { d: 'M2 8.5h3.4l1 1.6h3.2l1-1.6H14', stroke: '#f2f2f2', sw: '0.9' },
+    { d: 'M8 2.6v3.6M6.6 4.8L8 6.4l1.4-1.6', stroke: '#4a4a4a', sw: '1.3' },
   ],
   sent: [
     ...FOLDER_BODY,
-    { d: 'M6 9.6h3.6M8.4 7.9l1.7 1.7-1.7 1.7', stroke: '#ffffff', sw: '1.3' },
+    { d: 'M5.6 8.4h4.8v3.2H5.6z', fill: '#f5f5f0' },
+    { d: 'M5.6 8.4l2.4 1.7 2.4-1.7', stroke: '#8a8578', sw: '0.8' },
   ],
   drafts: [
     ...FOLDER_BODY,
-    { d: 'M6 12l.5-2 3-3 1.5 1.5-3 3z', fill: '#ffffff' },
+    { d: 'M6 12.2l.5-1.9 2.9-2.9 1.4 1.4-2.9 2.9z', fill: '#e8c94a' },
+    { d: 'M6 12.2l.5-1.9 1.4 1.4z', fill: '#d0452e' },
   ],
   junk: [
     ...FOLDER_BODY,
-    { d: 'M8.5 7.4a2.3 2.3 0 100 4.6 2.3 2.3 0 000-4.6z', stroke: '#ffffff', sw: '1.2' },
-    { d: 'M6.9 11.3l3.2-3.2', stroke: '#ffffff', sw: '1.2' },
+    { d: 'M8.5 7.2a2.5 2.5 0 100 5 2.5 2.5 0 000-5z', stroke: '#c23b2e', sw: '1.3' },
+    { d: 'M6.8 11.4l3.4-3.4', stroke: '#c23b2e', sw: '1.3' },
   ],
   trash: [
-    { d: 'M4 5.5h8l-.9 8.2H4.9z', fill: '#7ba0c4' },
-    { d: 'M3.2 5.5h9.6M6.3 5.5V3.8h3.4v1.7', stroke: '#7ba0c4', sw: '1.4' },
-    { d: 'M6.5 7.5v4M8 7.5v4M9.5 7.5v4', stroke: '#ffffff', sw: '0.9' },
+    { d: 'M4.2 5.5h7.6l-.8 8H5z', fill: '#9a9a9a' },
+    { d: 'M3.4 5.5h9.2M6.4 5.5V3.9h3.2v1.6', stroke: '#7d7d7d', sw: '1.4' },
+    { d: 'M6.6 7.4v4.2M8 7.4v4.2M9.4 7.4v4.2', stroke: '#f2f2f2', sw: '0.9' },
   ],
   folder: FOLDER_BODY,
 }
