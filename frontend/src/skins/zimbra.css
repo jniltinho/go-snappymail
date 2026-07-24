@@ -1,8 +1,11 @@
 /*
- * Zimbra skin — Zimbra 8.8.15 Classic (Harmony) look.
- * Blue #007cc3 chrome, white panels, #99cae7 selection, Segoe UI 12px, squared.
- * Reference: docs/prints/zimbra/ (live capture of webmail.criarenet.com, 2026-07-23).
- * Measured values: see openspec/changes/add-zimbra-skin/design.md palette table.
+ * Zimbra skin — Zimbra Classic (Harmony) look.
+ * Values from the real harmony skin.properties (Zimbra FOSS 10.1.17.p2,
+ * jetty_base/webapps/zimbra/skins/harmony) + live capture of
+ * webmail.criarenet.com 8.8.15 (docs/prints/zimbra/):
+ *   AltC/top row #007CC3 · app row #0087C3 · SelC lighten(AltC,60) = #99CAE7
+ *   btn hover lighten(SelC,50) = #CCE5F3 · borders darken(AppC,10|25) = #E5E5E5|#BFBFBF
+ *   toast #FFC · link #005A95 · TxtC #333 · font "Helvetica Neue" stack
  */
 
 [data-skin='zimbra'] {
@@ -12,7 +15,7 @@
   --color-accent-bar: #005f96;
 
   /* ── Surfaces ────────────────────────────────── */
-  --color-line: #d3d3d3;
+  --color-line: #e5e5e5;
   --color-panel: #ffffff;
   --color-panel-2: #f2f2f2;
   --color-app-bg: #ffffff;
@@ -43,7 +46,9 @@
   --skin-login-error-border: #efb1ad;
 
   --skin-layout: zimbra;
-  --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* harmony FontFamily-default, with Segoe UI first (matches ZWC 'system font' pref) */
+  --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, 'Nimbus Sans L', Arial,
+    'Liberation Sans', sans-serif;
 }
 
 [data-skin='zimbra'].dark {
@@ -138,7 +143,11 @@
   display: flex;
   gap: 4px;
   padding: 5px 10px 0;
-  background: var(--color-topbar-bg);
+  background: #0087c3; /* harmony SkinAppRowColorHex */
+}
+
+[data-skin='zimbra'].dark .tabstrip {
+  background: #0d436a;
 }
 
 [data-skin='zimbra'] .tabstrip .tab {
@@ -172,13 +181,52 @@
   opacity: 0.75;
 }
 
-/* Toolbar buttons: white with 1px #bfbfbf border */
+/* Toolbar buttons: white, 1px #bfbfbf; hover/active from harmony ButtonHov/Act */
 [data-skin='zimbra'] .tbtn {
   border-color: #bfbfbf;
 }
 
+[data-skin='zimbra'] .tbtn:hover:not(:disabled) {
+  background: #cce5f3;
+}
+
+[data-skin='zimbra'] .tbtn:active:not(:disabled) {
+  background: var(--color-row-selected);
+}
+
 [data-skin='zimbra'].dark .tbtn {
   border-color: #4a4f55;
+}
+
+[data-skin='zimbra'].dark .tbtn:hover:not(:disabled) {
+  background: #1f4e73;
+}
+
+/* Inputs: harmony InputBorder darken(AppC,25) = #bfbfbf */
+[data-skin='zimbra'] .topbar-search,
+[data-skin='zimbra'] .compose-input {
+  border-color: #bfbfbf;
+}
+
+[data-skin='zimbra'].dark .topbar-search,
+[data-skin='zimbra'].dark .compose-input {
+  border-color: #4a4f55;
+}
+
+/* Links: harmony Text-link */
+[data-skin='zimbra'] .prose a {
+  color: #005a95;
+}
+
+/* Hover rows: lighten(SelC,50) */
+[data-skin='zimbra'] .side-item:hover:not(.active),
+[data-skin='zimbra'] .msg-row:hover:not(.selected) {
+  background: #cce5f3;
+}
+
+[data-skin='zimbra'].dark .side-item:hover:not(.active),
+[data-skin='zimbra'].dark .msg-row:hover:not(.selected) {
+  background: #16344d;
 }
 
 /* Yellow focus fill on text inputs (Zimbra signature) */
