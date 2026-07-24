@@ -2,7 +2,7 @@
 
 ## 1. Binário único / config multi-serviço (no go-snappymail)
 
-- [ ] 1.1 Blocos `[webmail]`, `[admin]`, `[database]` (mail) no `config.toml` (host, porta, tls, enabled, driver/dsn) + env `GOSM_*`; `[admin] host` permite bind restrito (ex.: `127.0.0.1`)
+- [x] 1.1 Blocos `[webmail]`, `[admin]`, `[database]` (mail) no `config.toml` (host, porta, tls, enabled, driver/dsn) + env `GOSM_*`; `[admin] host` permite bind restrito (ex.: `127.0.0.1`)
 - [ ] 1.2 `serve` sobe dois listeners Echo: webmail `:8082` (atual) + admin `:7071` — cada `enabled=true`
 - [ ] 1.3 Multi-listener com graceful shutdown coordenado (errgroup + signal); `[admin] enabled=false` não abre o listener
 - [ ] 1.4 Verificar isolamento: admin `:7071` e webmail `:8082` sem colisão; cookies/CSRF por serviço

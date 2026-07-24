@@ -3,6 +3,11 @@
 package config
 
 import (
+	"errors"
+	"fmt"
+	"net"
+	"strconv"
+
 	"github.com/spf13/viper"
 	"go-snappymail/internal/ui"
 )
@@ -18,6 +23,63 @@ type Config struct {
 	Upload     UploadConfig
 	ActiveSync ActiveSyncConfig
 	Push       PushConfig
+	Admin      AdminConfig
+}
+
+// AdminConfig controls the ZimbraAdmin-style admin panel served on a dedicated
+// listener, fully isolated from the webmail. It has its own database (the
+// Postfix/Dovecot schema) and its own JWT/RBAC auth.
+type AdminConfig struct {
+	// Enabled turns the admin listener on. When false, the port is never opened.
+	Enabled bool `mapstructure:"enabled"`
+	// Host binds the admin listener; use "127.0.0.1" for a local-only panel.
+	Host string `mapstructure:"host"`
+	// Port defaults to 7071 (matches the legacy Zimbra admin console port).
+	Port int `mapstructure:"port"`
+	// TLS serves the panel over https when true (requires TLSCert/TLSKey).
+	TLS     bool   `mapstructure:"tls"`
+	TLSCert string `mapstructure:"tls_cert"`
+	TLSKey  string `mapstructure:"tls_key"`
+	// Skin selects the admin layout/visual identity (serenity default, carbon).
+	Skin string `mapstructure:"skin"`
+	// JWTSecret signs admin JWTs; must be set when Enabled.
+	JWTSecret string `mapstructure:"jwt_secret"`
+	// JWTMaxAgeSec is the admin token lifetime in seconds (default 3600).
+	JWTMaxAgeSec int `mapstructure:"jwt_max_age_sec"`
+	// Database is the mail (Postfix/Dovecot) database — separate from the
+	// webmail session database.
+	Database DatabaseConfig `mapstructure:"database"`
+}
+
+// AdminAddr returns the host:port the admin listener should bind to.
+func (a AdminConfig) AdminAddr() string {
+	host := a.Host
+	port := a.Port
+	if port == 0 {
+		port = 7071
+	}
+	return net.JoinHostPort(host, strconv.Itoa(port))
+}
+
+// Validate fails fast on an unsafe or incomplete admin configuration. It only
+// checks when the panel is enabled, so a disabled admin never blocks startup.
+func (a AdminConfig) Validate() error {
+	if !a.Enabled {
+		return nil
+	}
+	if a.Port < 1 || a.Port > 65535 {
+		return fmt.Errorf("admin.port %d out of range 1-65535", a.Port)
+	}
+	if a.JWTSecret == "" {
+		return errors.New("admin.jwt_secret must be set when admin.enabled=true")
+	}
+	if a.TLS && (a.TLSCert == "" || a.TLSKey == "") {
+		return errors.New("admin.tls=true requires admin.tls_cert and admin.tls_key")
+	}
+	if a.Database.Driver == "" || a.Database.DSN == "" {
+		return errors.New("admin.database.driver and admin.database.dsn must be set when admin.enabled=true")
+	}
+	return nil
 }
 
 // PushConfig holds Web Push (VAPID) settings for browser push notifications.
@@ -38,15 +100,15 @@ type ActiveSyncConfig struct {
 
 // ServerConfig holds HTTP server settings.
 type ServerConfig struct {
-	Host      string
-	Port      int
-	Debug     bool
+	Host  string
+	Port  int
+	Debug bool
 	// SecretKey is a 32-byte key used for AES-GCM password encryption in sessions.
-	SecretKey string `mapstructure:"secret_key"`
-	BaseURL   string `mapstructure:"base_url"`
-	TLSCert   string `mapstructure:"tls_cert"`
-	TLSKey    string `mapstructure:"tls_key"`
-	SwaggerEnable bool `mapstructure:"swagger_enable"`
+	SecretKey     string `mapstructure:"secret_key"`
+	BaseURL       string `mapstructure:"base_url"`
+	TLSCert       string `mapstructure:"tls_cert"`
+	TLSKey        string `mapstructure:"tls_key"`
+	SwaggerEnable bool   `mapstructure:"swagger_enable"`
 }
 
 // IMAPConfig holds IMAP connection settings.
@@ -88,7 +150,7 @@ type DatabaseConfig struct {
 // SessionConfig controls the HTTP session cookie behaviour.
 type SessionConfig struct {
 	Name     string
-	MaxAge   int  `mapstructure:"max_age"`
+	MaxAge   int `mapstructure:"max_age"`
 	Secure   bool
 	HTTPOnly bool `mapstructure:"http_only"`
 }
@@ -99,7 +161,7 @@ type UIConfig struct {
 	Skin string `mapstructure:"skin"`
 	// Theme is deprecated; use Skin. Kept for backward-compatible config.toml.
 	Theme          string
-	RowsPerPage    int    `mapstructure:"rows_per_page"`
+	RowsPerPage    int `mapstructure:"rows_per_page"`
 	Timezone       string
 	DateFormat     string `mapstructure:"date_format"`
 	DatetimeFormat string `mapstructure:"datetime_format"`
@@ -177,12 +239,34 @@ func Load() *Config {
 		cfg.ActiveSync.ProtocolVersion = "16.1"
 	}
 
-	cfg.Push.VAPIDPublicKey  = viper.GetString("push.vapid_public_key")
+	cfg.Push.VAPIDPublicKey = viper.GetString("push.vapid_public_key")
 	cfg.Push.VAPIDPrivateKey = viper.GetString("push.vapid_private_key")
-	cfg.Push.VAPIDContact    = viper.GetString("push.vapid_contact")
+	cfg.Push.VAPIDContact = viper.GetString("push.vapid_contact")
 	if cfg.Push.VAPIDContact == "" {
 		cfg.Push.VAPIDContact = "mailto:admin@example.com"
 	}
+
+	cfg.Admin.Enabled = viper.GetBool("admin.enabled")
+	cfg.Admin.Host = viper.GetString("admin.host")
+	cfg.Admin.Port = viper.GetInt("admin.port")
+	if cfg.Admin.Port == 0 {
+		cfg.Admin.Port = 7071
+	}
+	cfg.Admin.TLS = viper.GetBool("admin.tls")
+	cfg.Admin.TLSCert = viper.GetString("admin.tls_cert")
+	cfg.Admin.TLSKey = viper.GetString("admin.tls_key")
+	cfg.Admin.Skin = viper.GetString("admin.skin")
+	if cfg.Admin.Skin == "" {
+		cfg.Admin.Skin = "serenity"
+	}
+	cfg.Admin.JWTSecret = viper.GetString("admin.jwt_secret")
+	cfg.Admin.JWTMaxAgeSec = viper.GetInt("admin.jwt_max_age_sec")
+	if cfg.Admin.JWTMaxAgeSec == 0 {
+		cfg.Admin.JWTMaxAgeSec = 3600
+	}
+	cfg.Admin.Database.Driver = viper.GetString("admin.database.driver")
+	cfg.Admin.Database.DSN = viper.GetString("admin.database.dsn")
+	cfg.Admin.Database.Debug = viper.GetBool("admin.database.debug")
 
 	return cfg
 }
