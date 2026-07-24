@@ -30,7 +30,14 @@ const totalMessages = computed(
         :key="msg.uid"
         class="msg-row"
         :class="{ selected: mail.selectedUid === msg.uid, unread: !msg.seen }"
+        draggable="true"
         @click="mail.selectMessage(msg.uid)"
+        @dragstart="
+          (e: DragEvent) => {
+            e.dataTransfer?.setData('application/x-gsn-uid', String(msg.uid))
+            if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'
+          }
+        "
       >
         <div class="min-w-0">
           <div class="text-sm truncate">{{ msg.from || msg.fromEmail }}</div>

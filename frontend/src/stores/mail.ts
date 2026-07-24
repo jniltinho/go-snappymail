@@ -230,16 +230,61 @@ export const useMailStore = defineStore('mail', () => {
     await loadFolders()
   }
 
-  async function moveMessage(uid: number, dest: string): Promise<void> {
+  // Toast (Zimbra ZToast): message + optional Undo action, auto-dismiss.
+  const toastText = ref('')
+  const toastUndo = ref<(() => void) | null>(null)
+  let toastTimer: ReturnType<typeof setTimeout> | undefined
+
+  function showToast(text: string, undo?: () => void): void {
+    toastText.value = text
+    toastUndo.value = undo ?? null
+    if (toastTimer) clearTimeout(toastTimer)
+    toastTimer = setTimeout(() => {
+      toastText.value = ''
+      toastUndo.value = null
+    }, 6000)
+  }
+
+  function dismissToast(): void {
+    if (toastTimer) clearTimeout(toastTimer)
+    toastText.value = ''
+    toastUndo.value = null
+  }
+
+  function displayName(folder: string): string {
+    return folders.value.find((f) => f.name === folder)?.label ?? folder
+  }
+
+  async function moveByUid(source: string, uid: number, dest: string): Promise<void> {
     const body = new URLSearchParams()
     body.set('dest', dest)
-    await axios.post(
-      `${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}/${uid}/move`,
-      body,
-    )
+    await axios.post(`${API_BASE}/mail/${encodeURIComponent(source)}/${uid}/move`, body)
+  }
+
+  // Reverse a move for Undo: find the message back in dest by subject+date, move to source.
+  async function undoMove(dest: string, source: string, snap: MailMessage): Promise<void> {
+    try {
+      const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(dest)}`)
+      const match = (res.data.messages as Record<string, unknown>[])
+        .map(mapMessage)
+        .find((m) => m.subject === snap.subject && m.date === snap.date && m.from === snap.from)
+      if (match) await moveByUid(dest, match.uid, source)
+    } finally {
+      dismissToast()
+      await refresh()
+    }
+  }
+
+  async function moveMessage(uid: number, dest: string, quiet = false): Promise<void> {
+    const source = currentFolder.value
+    const snap = messages.value.find((m) => m.uid === uid)
+    await moveByUid(source, uid, dest)
     messages.value = messages.value.filter((m) => m.uid !== uid)
-    if (selectedUid.value === uid) selectedUid.value = messages.value[0]?.uid ?? null
+    if (selectedUid.value === uid) selectedUid.value = null
     await loadFolders()
+    if (!quiet && snap) {
+      showToast(`1 message moved to "${displayName(dest)}"`, () => void undoMove(dest, source, snap))
+    }
   }
 
   async function moveToSpecial(iconType: string, names: string[], createName: string): Promise<void> {
@@ -254,15 +299,17 @@ export const useMailStore = defineStore('mail', () => {
       await axios.post(`${API_BASE}/folders`, body)
       dest = createName
     }
-    await moveMessage(selectedUid.value, dest)
+    await moveMessage(selectedUid.value, dest, true)
   }
 
   async function archiveSelected(): Promise<void> {
     await moveToSpecial('archive', ['archive'], 'Archive')
+    showToast('1 message moved to "Archive"')
   }
 
   async function spamSelected(): Promise<void> {
     await moveToSpecial('junk', ['junk', 'spam'], 'Junk')
+    showToast('1 message marked as spam')
   }
 
   // ── Composer ──────────────────────────────────────────────────
@@ -387,6 +434,10 @@ export const useMailStore = defineStore('mail', () => {
     moveMessage,
     archiveSelected,
     spamSelected,
+    toastText,
+    toastUndo,
+    showToast,
+    dismissToast,
     deleteSelected,
     composeOpen,
     composeBusy,

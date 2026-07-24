@@ -9,6 +9,7 @@ import MessageList from './components/MessageList.vue'
 import ReadingPane from './components/ReadingPane.vue'
 import AppToolbar from './components/AppToolbar.vue'
 import ComposerModal from './components/ComposerModal.vue'
+import Toast from './components/Toast.vue'
 import ContactsView from './components/ContactsView.vue'
 import CalendarView from './components/CalendarView.vue'
 import TasksView from './components/TasksView.vue'
@@ -109,5 +110,6 @@ onBeforeUnmount(() => {
     <TasksView v-else-if="settings.activeTab === 'tasks'" />
     <PreferencesView v-else-if="settings.activeTab === 'preferences'" />
     <ComposerModal />
+    <Toast />
   </div>
 </template>

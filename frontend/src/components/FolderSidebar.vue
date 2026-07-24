@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useMailStore } from '../stores/mail'
 import MiniCalendar from './MiniCalendar.vue'
 
@@ -42,6 +42,14 @@ const icons: Record<string, IconPart[]> = {
 
 const rank: Record<string, number> = { inbox: 0, sent: 1, drafts: 2, junk: 3, trash: 4 }
 
+const dropTarget = ref<string | null>(null)
+
+function onDrop(folderName: string, e: DragEvent) {
+  dropTarget.value = null
+  const uid = Number(e.dataTransfer?.getData('application/x-gsn-uid'))
+  if (uid && folderName !== mail.currentFolder) void mail.moveMessage(uid, folderName)
+}
+
 const ordered = computed(() =>
   [...mail.folders].sort((a, b) => {
     const ra = rank[a.iconType] ?? 5
@@ -63,9 +71,13 @@ function prettyLabel(label: string): string {
       :key="folder.name"
       type="button"
       class="side-item w-full text-left"
-      :class="{ active: mail.currentFolder === folder.name }"
+      :class="{ active: mail.currentFolder === folder.name, 'drop-target': dropTarget === folder.name }"
       :style="{ paddingLeft: `${12 + folder.depth * 14}px` }"
       @click="mail.selectFolder(folder.name)"
+      @dragover.prevent
+      @dragenter.prevent="dropTarget = folder.name"
+      @dragleave="dropTarget === folder.name && (dropTarget = null)"
+      @drop.prevent="onDrop(folder.name, $event)"
     >
       <svg class="side-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
         <path
