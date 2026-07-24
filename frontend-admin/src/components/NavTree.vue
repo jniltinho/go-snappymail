@@ -119,12 +119,13 @@ onMounted(async () => {
 .node-ico {
   width: 16px;
   height: 16px;
-  background-size: contain;
+  background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: center;
 }
+/* Exact ZimbraAdmin "Manage" section icon. */
 .ico-folder {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%234a7aa8' d='M1 3h5l1 1h8v9H1z'/><path fill='%236699cc' d='M1 5h14v8H1z'/></svg>");
+  background-image: url('../assets/icons/ImgManageAccounts.png');
 }
 
 /* Leaf rows */

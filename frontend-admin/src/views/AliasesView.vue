@@ -76,7 +76,7 @@ onMounted(load)
           @click="selected = a"
           @dblclick="((selected = a), openEdit())"
         >
-          <td class="email namecell">{{ a.address }}</td>
+          <td class="email namecell ico-alias">{{ a.address }}</td>
           <td>{{ a.goto }}</td>
           <td>{{ a.goto.includes(',') ? 'Group' : 'Account' }}</td>
           <td></td>
