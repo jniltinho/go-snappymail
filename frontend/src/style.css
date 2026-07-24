@@ -58,6 +58,25 @@ body {
   display: none;
 }
 
+/* Hidden by default; skins opt in (Zimbra Classic login extras) */
+.login-remember,
+.login-footer,
+.login-show {
+  display: none;
+}
+
+.login-pwd-wrap .login-show {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-38%);
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: var(--color-ink-sub, #656565);
+  cursor: pointer;
+}
+
 .login-input {
   width: 100%;
   height: 28px;
@@ -109,10 +128,9 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 11px;
-  filter: grayscale(1);
-  opacity: 0.6;
+  color: #8a93a1;
   padding: 2px 4px;
+  line-height: 0;
 }
 
 .topbar-link {
@@ -143,12 +161,12 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 170px;
+  min-width: 190px;
   background: var(--color-panel);
   border: 1px solid var(--color-line);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
   z-index: 40;
-  padding: 2px 0;
+  padding: 3px 0;
 }
 
 .dd-menu.dd-right {
@@ -156,11 +174,13 @@ body {
   right: 0;
 }
 
+/* Zimbra DwtMenu items: 24px rows with a left icon gutter */
 .dd-item {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 5px 14px;
+  padding: 4px 16px 4px 28px;
+  min-height: 24px;
   font-size: 12px;
   background: none;
   border: none;
@@ -261,14 +281,39 @@ body {
 
 .btn-new {
   height: 26px;
-  padding: 0 14px;
-  min-width: 160px;
+  min-width: 178px;
   background: var(--color-accent-2);
   color: #ffffff;
   border: 1px solid var(--color-accent-2);
   font-size: 12px;
   cursor: pointer;
+}
+
+.btn-split {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.btn-split-main {
+  flex: 1;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: inherit;
   text-align: left;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.btn-split-arrow {
+  background: none;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.45);
+  color: inherit;
+  font-size: 10px;
+  padding: 0 8px;
+  cursor: pointer;
 }
 
 .composer-overlay {
@@ -338,10 +383,10 @@ body {
 }
 
 .row-attach {
-  font-size: 11px;
+  display: inline-block;
+  color: var(--color-ink-mute);
   margin-right: 2px;
-  filter: grayscale(1);
-  opacity: 0.7;
+  vertical-align: middle;
 }
 
 .subject-bar {
@@ -367,10 +412,11 @@ body {
 }
 
 .row-flag {
+  display: inline-block;
   color: var(--color-ink-mute);
   opacity: 0.45;
   cursor: pointer;
-  font-size: 12px;
+  vertical-align: middle;
 }
 
 .row-flag.on {

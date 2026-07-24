@@ -95,11 +95,41 @@
   font-size: 12px;
 }
 
-/* Login: Zimbra 10 — white card centered on a teal scene */
+/* Login: Zimbra 10 — white card centered on a teal mountain scene (original artwork) */
 [data-skin='zimbra'] .login-page {
-  background: linear-gradient(160deg, #4a98ad 0%, #35768c 55%, #295e70 100%);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 300' preserveAspectRatio='none'%3E%3Cpath d='M0 300V210l180-90 140 70 200-120 220 110 160-60 240 100 180-80 280 120v70z' fill='%23177899' opacity='.55'/%3E%3Cpath d='M0 300v-60l260-80 200 90 240-110 260 100 220-70 240 80 180-40v90z' fill='%230e5f7d' opacity='.7'/%3E%3C/svg%3E")
+      bottom/100% 38% no-repeat,
+    linear-gradient(170deg, #2196c9 0%, #1d86b6 45%, #1a7aa8 100%);
   justify-content: flex-start;
   padding-top: 8vh;
+}
+
+[data-skin='zimbra'] .login-remember {
+  display: flex;
+  color: #333333;
+  font-size: 13.3px;
+}
+
+[data-skin='zimbra'] .login-show {
+  display: block;
+}
+
+[data-skin='zimbra'] .login-footer {
+  display: flex;
+  background: #efefef;
+  border-top: 1px solid #e0e0e0;
+  color: #333333;
+  font-size: 13.3px;
+}
+
+[data-skin='zimbra'] .login-version {
+  border: 1px solid #bfbfbf;
+  background: #ffffff;
+  color: #333333;
+  font-size: 12px;
+  height: 26px;
+  padding: 0 6px;
 }
 
 [data-skin='zimbra'] .login-card {
@@ -147,8 +177,10 @@
 
 [data-skin='zimbra'] .tabstrip {
   display: flex;
-  gap: 10px;
-  padding: 4px 10px 0;
+  gap: 2px;
+  padding: 0 10px;
+  height: 30px;
+  align-items: flex-end;
   background: #007dc3; /* measured: 0.1-alpha app-row tint over the bar */
 }
 
@@ -157,8 +189,9 @@
 }
 
 [data-skin='zimbra'] .tabstrip .tab {
-  padding: 4px 16px;
+  padding: 4px 22px 5px;
   font-size: 15.6px; /* measured tab label size */
+  line-height: 1.3;
   color: #ffffff;
 }
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-defineProps<{ label: string; btnClass?: string; alignRight?: boolean }>()
+defineProps<{ label: string; btnClass?: string; alignRight?: boolean; split?: boolean }>()
+const emit = defineEmits<{ main: [] }>()
 
 const open = ref(false)
 const root = ref<HTMLElement | null>(null)
@@ -25,7 +26,17 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="root" class="relative inline-block">
-    <button type="button" :class="btnClass || 'tbtn'" @click="open = !open">{{ label }} ▾</button>
+    <template v-if="split">
+      <span class="btn-split" :class="btnClass">
+        <button type="button" class="btn-split-main" @click="emit('main')">{{ label }}</button>
+        <button type="button" class="btn-split-arrow" aria-label="More options" @click="open = !open">
+          ▾
+        </button>
+      </span>
+    </template>
+    <button v-else type="button" :class="btnClass || 'tbtn'" @click="open = !open">
+      {{ label }} ▾
+    </button>
     <div v-if="open" class="dd-menu" :class="{ 'dd-right': alignRight }" @click="open = false">
       <slot />
     </div>

@@ -53,7 +53,12 @@ function editAsNew() {
           placeholder="Search"
           class="topbar-search w-56 h-[24px] pl-2 pr-7 text-sm"
         />
-        <button type="submit" class="search-glass" title="Search">🔍</button>
+        <button type="submit" class="search-glass" title="Search">
+          <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4.2" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <path d="M9.8 9.8L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
       </form>
 
       <DropdownMenu :label="userLabel" btn-class="topbar-link font-bold" align-right>
@@ -73,9 +78,9 @@ function editAsNew() {
       <button type="button" class="tab-refresh ml-auto" title="Refresh" @click="mail.refresh">⟳</button>
     </div>
 
-    <div class="actionbar flex items-center gap-2 px-3 py-2 border-b border-line">
+    <div class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
       <div class="w-[204px] shrink-0">
-        <DropdownMenu label="New Message" btn-class="btn-new">
+        <DropdownMenu label="New Message" btn-class="btn-new" split @main="mail.openCompose('new')">
           <button type="button" class="dd-item" @click="mail.openCompose('new')">New Message</button>
         </DropdownMenu>
       </div>

@@ -58,14 +58,20 @@ watch(
   },
 )
 
+let pollTimer: ReturnType<typeof setInterval> | undefined
+
 onMounted(async () => {
   window.addEventListener('keydown', onKey)
   await auth.checkSession()
   if (auth.isAuthenticated) await mail.loadMailbox()
+  pollTimer = setInterval(() => {
+    if (auth.isAuthenticated) void mail.pollNewMail()
+  }, 15000)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
+  if (pollTimer) clearInterval(pollTimer)
 })
 </script>
 

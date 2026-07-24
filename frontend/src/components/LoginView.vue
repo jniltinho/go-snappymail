@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useMailStore } from '../stores/mail'
 import { useSettingsStore } from '../stores/settings'
+import type { SkinId } from '../skins/manifest'
 
 const auth = useAuthStore()
 const mail = useMailStore()
 const settings = useSettingsStore()
 
+const showPwd = ref(false)
+const keepSignedIn = ref(localStorage.getItem('gsn_keep') === '1')
+
 async function onSubmit() {
+  localStorage.setItem('gsn_keep', keepSignedIn.value ? '1' : '0')
   const ok = await auth.login()
   if (ok) await mail.loadMailbox()
+}
+
+function onSkinChange(e: Event) {
+  settings.skin = (e.target as HTMLSelectElement).value as SkinId
 }
 </script>
 
@@ -45,18 +55,38 @@ async function onSubmit() {
 
         <label class="text-sm login-row">
           <span class="login-label">Password</span>
-          <input
-            v-model="auth.loginPwd"
-            type="password"
-            autocomplete="current-password"
-            class="login-input mt-1 block"
-            :disabled="auth.loginBusy"
-          />
+          <span class="login-pwd-wrap block relative">
+            <input
+              v-model="auth.loginPwd"
+              :type="showPwd ? 'text' : 'password'"
+              autocomplete="current-password"
+              class="login-input mt-1 block"
+              :disabled="auth.loginBusy"
+            />
+            <button type="button" class="login-show" tabindex="-1" @click="showPwd = !showPwd">
+              {{ showPwd ? 'Hide' : 'Show' }}
+            </button>
+          </span>
         </label>
 
-        <button type="submit" class="login-btn mt-2 h-9 font-semibold disabled:opacity-60" :disabled="auth.loginBusy">
-          {{ auth.loginBusy ? 'Signing in…' : 'Login' }}
-        </button>
+        <div class="flex items-center gap-4 mt-2">
+          <button type="submit" class="login-btn h-9 font-semibold disabled:opacity-60" :disabled="auth.loginBusy">
+            {{ auth.loginBusy ? 'Signing in…' : 'Login' }}
+          </button>
+          <label class="login-remember text-sm flex items-center gap-1.5">
+            <input v-model="keepSignedIn" type="checkbox" />
+            Stay signed in
+          </label>
+        </div>
+      </div>
+
+      <div class="login-footer px-6 py-3 flex items-center gap-3">
+        <span class="text-sm">Version</span>
+        <select class="login-version" :value="settings.skin" @change="onSkinChange">
+          <option v-for="s in settings.availableSkins" :key="s.id" :value="s.id">
+            {{ s.id === 'zimbra' ? 'Classic' : s.label }}
+          </option>
+        </select>
       </div>
     </form>
   </div>

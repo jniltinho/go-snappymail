@@ -133,6 +133,31 @@ export const useMailStore = defineStore('mail', () => {
     await loadMessages()
   }
 
+  // Background poll: pick up new mail without a reload. Refreshes the list only
+  // when the current folder's counts changed; keeps selection and loaded bodies.
+  async function pollNewMail(): Promise<void> {
+    if (loading.value || composeOpen.value) return
+    try {
+      const prev = folders.value.find((f) => f.name === currentFolder.value)
+      const prevKey = prev ? `${prev.messages}:${prev.unseen}` : ''
+      await loadFolders()
+      const cur = folders.value.find((f) => f.name === currentFolder.value)
+      const curKey = cur ? `${cur.messages}:${cur.unseen}` : ''
+      if (curKey === prevKey || searchQuery.value.trim()) return
+      const res = await axios.get(`${API_BASE}/mail/${encodeURIComponent(currentFolder.value)}`)
+      const old = new Map(messages.value.map((m) => [m.uid, m]))
+      messages.value = (res.data.messages as Record<string, unknown>[]).map((raw) => {
+        const fresh = mapMessage(raw)
+        const o = old.get(fresh.uid)
+        return o?.htmlBody !== undefined
+          ? { ...fresh, htmlBody: o.htmlBody, plainBody: o.plainBody, attachments: o.attachments }
+          : fresh
+      })
+    } catch {
+      /* offline/unauthenticated — try again next tick */
+    }
+  }
+
   async function search(): Promise<void> {
     if (!searchQuery.value.trim()) {
       await loadMessages()
@@ -327,6 +352,7 @@ export const useMailStore = defineStore('mail', () => {
     selectMessage,
     readNextUnread,
     refresh,
+    pollNewMail,
     search,
     toggleFlag,
     setSeen,
