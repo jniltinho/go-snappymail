@@ -63,8 +63,9 @@ onMounted(load)
       <thead>
         <tr>
           <th>Email Address</th>
-          <th>Target</th>
-          <th>Status</th>
+          <th>Target Name</th>
+          <th>Target Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -75,12 +76,13 @@ onMounted(load)
           @click="selected = a"
           @dblclick="((selected = a), openEdit())"
         >
-          <td class="email">{{ a.address }}</td>
+          <td class="email namecell">{{ a.address }}</td>
           <td>{{ a.goto }}</td>
-          <td>{{ a.active ? 'Active' : 'Inactive' }}</td>
+          <td>{{ a.goto.includes(',') ? 'Group' : 'Account' }}</td>
+          <td></td>
         </tr>
         <tr v-if="!rows.length">
-          <td colspan="3" class="empty">No aliases.</td>
+          <td colspan="4" class="empty">No aliases.</td>
         </tr>
       </tbody>
     </table>

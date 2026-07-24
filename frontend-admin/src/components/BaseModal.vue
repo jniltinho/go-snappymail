@@ -17,7 +17,7 @@ const emit = defineEmits<{ close: []; submit: [] }>()
         <div class="modal-actions">
           <slot name="actions">
             <button type="button" class="btn" @click="emit('close')">Cancel</button>
-            <button type="submit" class="btn btn-primary" :disabled="busy">OK</button>
+            <button type="submit" class="btn" :disabled="busy">OK</button>
           </slot>
         </div>
       </form>

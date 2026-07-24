@@ -75,7 +75,7 @@ onMounted(load)
           @click="selected = a"
           @dblclick="((selected = a), openEdit())"
         >
-          <td class="email">{{ a.username }}</td>
+          <td class="email namecell">{{ a.username }}</td>
           <td>{{ a.superadmin ? 'Super administrator' : 'Domain administrator' }}</td>
           <td>{{ a.superadmin ? 'All' : (a.domains ?? []).join(', ') }}</td>
           <td>{{ a.active ? 'Active' : 'Inactive' }}</td>

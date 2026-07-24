@@ -72,7 +72,7 @@ onMounted(load)
           @click="selected = m"
           @dblclick="((selected = m), (showEdit = true))"
         >
-          <td class="email">{{ m.username }}</td>
+          <td class="email namecell">{{ m.username }}</td>
           <td>{{ m.name }}</td>
           <td>{{ m.active ? 'Active' : 'Inactive' }}</td>
           <td class="muted">Never signed in</td>

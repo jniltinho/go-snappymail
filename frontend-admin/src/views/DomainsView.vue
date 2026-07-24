@@ -75,7 +75,7 @@ onMounted(load)
           @click="selected = d"
           @dblclick="((selected = d), openEdit())"
         >
-          <td class="email">{{ d.domain }}</td>
+          <td class="email namecell">{{ d.domain }}</td>
           <td>{{ d.description }}</td>
           <td>{{ d.mailboxes }}</td>
           <td>{{ d.active ? 'Active' : 'Inactive' }}</td>

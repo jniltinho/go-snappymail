@@ -100,14 +100,17 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-/* "Manage" tree node */
+/* "Manage" tree node — highlighted selected parent row, like the reference */
 .node {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 4px;
+  padding: 4px 4px;
   font-weight: 700;
   color: var(--txt);
+  background: linear-gradient(to bottom, #cfe0f1, #b6d2ea);
+  border: 1px solid #a7c4e0;
+  border-radius: var(--radius);
 }
 .node-caret {
   font-size: 9px;
