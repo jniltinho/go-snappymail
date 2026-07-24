@@ -303,7 +303,7 @@ body {
 
 .btn-new {
   height: 26px;
-  min-width: 178px;
+  width: 100%;
   background: var(--color-accent-2);
   color: #ffffff;
   border: 1px solid var(--color-accent-2);
@@ -480,6 +480,7 @@ body {
 
 .new-btn-slot {
   width: 190px;
+  padding-left: 10px;
 }
 
 .cal-arrow {

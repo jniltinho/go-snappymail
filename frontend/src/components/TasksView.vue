@@ -41,7 +41,7 @@ function deleteSelected() {
 
 <template>
   <div class="flex flex-col flex-1 min-h-0">
-    <div class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
+    <div class="actionbar flex items-center gap-2 pr-3 py-1 border-b border-line">
       <div class="new-btn-slot shrink-0">
         <button type="button" class="btn-new w-full text-left px-3" @click="addTask">New Task</button>
       </div>

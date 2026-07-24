@@ -91,8 +91,8 @@ function editAsNew() {
       <button type="button" class="tab-refresh ml-auto" title="Refresh" @click="mail.refresh">⟳</button>
     </div>
 
-    <div v-if="settings.activeTab === 'mail'" class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
-      <div class="shrink-0" :style="{ width: `${settings.sideWidth}px` }">
+    <div v-if="settings.activeTab === 'mail'" class="actionbar flex items-center gap-2 pr-3 py-1 border-b border-line">
+      <div class="shrink-0" :style="{ width: `${settings.sideWidth}px`, paddingLeft: '10px' }">
         <DropdownMenu label="New Message" btn-class="btn-new" split @main="mail.openCompose('new')">
           <button type="button" class="dd-item" @click="mail.openCompose('new')">New Message</button>
         </DropdownMenu>
