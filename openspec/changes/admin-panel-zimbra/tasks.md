@@ -16,7 +16,7 @@
 
 ## 2. Backend admin (GORM → MariaDB/PostgreSQL) — go-postfixadmin como referência
 
-- [ ] 2.1 Modelos GORM do schema Postfix/Dovecot (Domain/Mailbox/Alias/Admin), banco separado do de sessão
+- [x] 2.1 Modelos GORM do schema Postfix/Dovecot (Domain/Mailbox/Alias/Admin), banco separado do de sessão
 - [ ] 2.2 `GET /api/v1/admin/overview` (counts reais accounts/domains/aliases/admins; version/servers/queue/sessions = n/a), permissão admin
 - [ ] 2.3 Handlers `/api/v1/admin/domains|mailboxes|aliases|admins` (CRUD) — portados/adaptados do go-postfixadmin
 - [ ] 2.4 Auth JWT + RBAC granular (superadmin/domain_admin + permissões); 403 sem permissão
