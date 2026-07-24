@@ -156,6 +156,7 @@ onMounted(async () => {
   margin: 0;
   padding-left: 18px;
   color: var(--txt);
+  list-style: decimal;
 }
 .step ol li {
   margin-bottom: 5px;

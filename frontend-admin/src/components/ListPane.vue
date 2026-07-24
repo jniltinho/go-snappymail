@@ -8,7 +8,7 @@ defineProps<{ crumb: string }>()
   <div class="pane">
     <div class="pane-head">
       <span class="crumb">Home &nbsp;&ndash;&nbsp; Manage &nbsp;&ndash;&nbsp; {{ crumb }}</span>
-      <span class="pane-head-right"><a href="#">Help</a></span>
+      <span class="pane-head-right"><span class="help-q">?</span><a href="#">Help</a></span>
     </div>
     <div class="toolbar">
       <slot name="toolbar" />
@@ -36,6 +36,23 @@ defineProps<{ crumb: string }>()
 }
 .crumb {
   color: var(--txt);
+}
+.pane-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.help-q {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  line-height: 1;
 }
 .toolbar {
   display: flex;
