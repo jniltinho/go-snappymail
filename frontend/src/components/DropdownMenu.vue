@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="root" class="relative inline-block">
+  <div ref="root" class="relative" :class="split ? 'block' : 'inline-block'">
     <template v-if="split">
       <span class="btn-split" :class="btnClass">
         <button type="button" class="btn-split-main" @click="emit('main')">{{ label }}</button>

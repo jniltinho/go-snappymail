@@ -54,7 +54,10 @@ function deleteSelected() {
       </div>
       <button type="button" class="tbtn" :disabled="!selectedId">Edit</button>
       <button type="button" class="tbtn" :disabled="!selectedId" @click="deleteSelected">Delete</button>
-      <button type="button" class="tbtn tbtn-icon" disabled>🏷 ▾</button>
+      <DropdownMenu label="🏷" btn-class="tbtn tbtn-icon">
+        <button type="button" class="dd-item" disabled>New Tag…</button>
+        <button type="button" class="dd-item" disabled>No tags defined</button>
+      </DropdownMenu>
       <DropdownMenu label="Actions" btn-class="tbtn">
         <button type="button" class="dd-item" :disabled="!selectedId" @click="deleteSelected">Delete</button>
       </DropdownMenu>
