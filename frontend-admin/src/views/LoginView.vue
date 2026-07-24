@@ -71,16 +71,18 @@ async function submit() {
   background: linear-gradient(to bottom, var(--login-page-top), var(--login-page-bottom));
 }
 
-/* Vertically center the card in the space above the footer, like the legacy. */
+/* The legacy card is NOT centered — it sits at a fixed ~71px from the top
+ * (position:static on a fixed-height page). Top-align and offset to match. */
 .login-center {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .login-wrap {
   width: 500px;
+  margin-top: 71px;
 }
 
 .login-card {
