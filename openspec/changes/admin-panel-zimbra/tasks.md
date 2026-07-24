@@ -78,8 +78,8 @@
 
 ## 6. Lint / qualidade (obrigatório)
 
-- [ ] 6.1 `golangci-lint run` limpo no backend (govet, staticcheck, errcheck, gosec, revive…); config `.golangci.yml`
-- [ ] 6.2 `go vet ./...` e `gofmt`/`goimports` sem diffs
+- [x] 6.1 `golangci-lint run` limpo no backend (govet, staticcheck, errcheck, gosec, revive…); config `.golangci.yml`
+- [x] 6.2 `go vet ./...` e `gofmt`/`goimports` sem diffs
 - [ ] 6.3 Lint do frontend admin: `eslint` + `vue-tsc --noEmit` (typecheck) sem erros; `prettier` consistente
 - [ ] 6.4 CI roda test + lint (backend e frontend) a cada push; falha bloqueia merge
 

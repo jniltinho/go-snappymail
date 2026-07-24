@@ -1,0 +1,37 @@
+# golangci-lint v2 configuration for go-snappymail.
+# Run: golangci-lint run ./...
+version: "2"
+
+linters:
+  enable:
+    - errcheck      # unchecked errors
+    - govet         # suspicious constructs
+    - ineffassign   # ineffectual assignments
+    - staticcheck   # bugs, simplifications, style
+    - unused        # unused code
+    - gosec         # security issues
+    - revive        # style / best practices
+    - bodyclose     # http response bodies closed
+    - misspell      # spelling in comments/strings
+  settings:
+    gosec:
+      excludes:
+        - G104 # duplicate of errcheck
+    revive:
+      rules:
+        - name: exported
+          disabled: true # doc comments not enforced project-wide yet
+  exclusions:
+    generated: lax
+    rules:
+      # Tests may ignore errors on setup helpers and use weak crypto/rand.
+      - path: _test\.go
+        linters:
+          - errcheck
+          - gosec
+          - bodyclose
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

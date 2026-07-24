@@ -8,10 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/labstack/echo/v5"
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/handler"
 	appMiddleware "go-snappymail/internal/server/middleware"
+
+	"github.com/labstack/echo/v5"
 )
 
 func registerAPIRoutes(g *echo.Group, h *handler.Handlers, authMiddleware, authRateLimit echo.MiddlewareFunc) {

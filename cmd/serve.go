@@ -12,6 +12,7 @@ import (
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/database"
 	"go-snappymail/internal/server"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -40,6 +41,6 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 	serveCmd.Flags().String("port", "", "HTTP port (overrides config)")
 	serveCmd.Flags().Bool("debug", false, "Echo debug mode")
-	viper.BindPFlag("server.port", serveCmd.Flags().Lookup("port"))
-	viper.BindPFlag("server.debug", serveCmd.Flags().Lookup("debug"))
+	_ = viper.BindPFlag("server.port", serveCmd.Flags().Lookup("port"))
+	_ = viper.BindPFlag("server.debug", serveCmd.Flags().Lookup("debug"))
 }

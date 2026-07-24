@@ -59,7 +59,8 @@ Examples:
 		}
 
 		// Write the default configuration
-		if err := os.WriteFile(targetFile, defaultConfig, 0644); err != nil {
+		// 0600: the generated config holds secret_key / jwt_secret.
+		if err := os.WriteFile(targetFile, defaultConfig, 0600); err != nil {
 			return fmt.Errorf("failed to write configuration file: %w", err)
 		}
 

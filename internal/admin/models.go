@@ -10,9 +10,6 @@ package admin
 
 import "time"
 
-// zeroTime is the SQL-friendly default used by PostfixAdmin timestamp columns.
-const zeroTime = "2000-01-01 00:00:00"
-
 // Domain is a virtual mail domain.
 type Domain struct {
 	Domain      string    `gorm:"column:domain;type:varchar(255);primaryKey" json:"domain"`

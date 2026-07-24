@@ -6,6 +6,7 @@ import (
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/database"
 	"go-snappymail/internal/model"
+
 	"github.com/spf13/cobra"
 )
 

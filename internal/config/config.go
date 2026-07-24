@@ -8,8 +8,9 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/spf13/viper"
 	"go-snappymail/internal/ui"
+
+	"github.com/spf13/viper"
 )
 
 // Config is the root configuration object passed throughout the application.
