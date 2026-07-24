@@ -143,8 +143,9 @@ O projeto é um **guarda-chuva** de binários Go independentes, cada um com seu 
 Zimbra-em-Go
 ├── go-snappymail      webmail (este repo)          — porta 8082 — clone do Zimbra Web
 ├── go-postfixadmin    backend admin + painel :7071 — clone do ZimbraAdmin (fase atual)
-│   ├── internal/      API Go (GORM → MariaDB/PostgreSQL), JWT/RBAC
-│   └── frontend/      Vue 3 (layout idêntico ao ZimbraAdmin)
+│   ├── internal/         API Go (GORM → MariaDB/PostgreSQL), JWT/RBAC
+│   ├── frontend/         Vue 3 UI atual (neo-brutalism) → web/dist       (NÃO tocar)
+│   └── frontend-admin/   Vue 3 painel ZimbraAdmin → web/admin-dist       (NOVO, separado)
 ├── mailserver         Postfix + Dovecot            — VM/Docker
 └── vagrant/zimbra     Zimbra FOSS instalado        — referência visual/funcional
 ```
