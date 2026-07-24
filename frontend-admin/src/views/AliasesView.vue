@@ -52,10 +52,10 @@ onMounted(load)
 
 <template>
   <ListPane crumb="Aliases">
-    <template #toolbar>
-      <button class="tbtn" @click="openNew">New</button>
-      <button class="tbtn" :disabled="!canEdit" @click="openEdit">Edit</button>
-      <button class="tbtn" :disabled="!canEdit" @click="remove">Delete</button>
+    <template #menu>
+      <li @click="openNew">New</li>
+      <li :class="{ disabled: !canEdit }" @click="canEdit && openEdit()">Edit</li>
+      <li :class="{ disabled: !canEdit }" @click="canEdit && remove()">Delete</li>
     </template>
 
     <p v-if="error" class="empty">{{ error }}</p>

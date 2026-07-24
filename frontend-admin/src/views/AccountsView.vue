@@ -47,10 +47,10 @@ onMounted(load)
 
 <template>
   <ListPane crumb="Accounts">
-    <template #toolbar>
-      <button class="tbtn" @click="showNew = true">New</button>
-      <button class="tbtn" :disabled="!canEdit" @click="showEdit = true">Edit</button>
-      <button class="tbtn" :disabled="!canEdit" @click="remove">Delete</button>
+    <template #menu>
+      <li @click="showNew = true">New</li>
+      <li :class="{ disabled: !canEdit }" @click="canEdit && (showEdit = true)">Edit</li>
+      <li :class="{ disabled: !canEdit }" @click="canEdit && remove()">Delete</li>
     </template>
 
     <p v-if="error" class="empty">{{ error }}</p>

@@ -196,3 +196,21 @@ a:hover {
   padding: 24px;
   color: var(--txt-muted);
 }
+
+/* Gear dropdown menu items (slotted from views into ListPane) */
+.gear-menu li {
+  padding: 5px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--txt);
+}
+.gear-menu li:hover {
+  background: var(--sel);
+}
+.gear-menu li.disabled {
+  color: #9aa0a6;
+  cursor: default;
+}
+.gear-menu li.disabled:hover {
+  background: none;
+}

@@ -68,14 +68,14 @@ onMounted(async () => {
   flex-shrink: 0;
   background: var(--app-bg);
   border-right: 1px solid var(--panel-border);
-  padding: 8px 6px;
+  padding: 8px 0;
   overflow-y: auto;
 }
 
 /* "Home" split button */
 .home-split {
   display: flex;
-  margin-bottom: 8px;
+  margin: 0 6px 8px;
 }
 .home-main {
   flex: 1;
@@ -100,17 +100,17 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-/* "Manage" tree node — highlighted selected parent row, like the reference */
+/* "Manage" tree node — full-width highlighted section bar, like the reference */
 .node {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 4px;
+  padding: 4px 8px;
   font-weight: 700;
   color: var(--txt);
-  background: #d3e4f5;
-  border: 1px solid #b7cfe8;
-  border-radius: var(--radius);
+  background: linear-gradient(to bottom, #d5e6f6, #bcd8ef);
+  border-top: 1px solid #c6dcf1;
+  border-bottom: 1px solid #a9c8e6;
 }
 .node-caret {
   font-size: 9px;

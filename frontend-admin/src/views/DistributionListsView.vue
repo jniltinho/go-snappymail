@@ -7,10 +7,10 @@ import ListPane from '../components/ListPane.vue'
 
 <template>
   <ListPane crumb="Distribution Lists">
-    <template #toolbar>
-      <button class="tbtn" disabled>New</button>
-      <button class="tbtn" disabled>Edit</button>
-      <button class="tbtn" disabled>Delete</button>
+    <template #menu>
+      <li class="disabled">New</li>
+      <li class="disabled">Edit</li>
+      <li class="disabled">Delete</li>
     </template>
     <table class="grid">
       <thead>
