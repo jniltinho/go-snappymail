@@ -15,22 +15,28 @@ const mail = useMailStore()
 const settings = useSettingsStore()
 
 const listWidth = ref(Number(localStorage.getItem('gsn_list_w')) || 340)
+const sideWidth = ref(Number(localStorage.getItem('gsn_side_w')) || 220)
 
-function startListResize(e: MouseEvent) {
-  e.preventDefault()
-  const startX = e.clientX
-  const startW = listWidth.value
-  const move = (ev: MouseEvent) => {
-    listWidth.value = Math.min(680, Math.max(220, startW + ev.clientX - startX))
+function startResize(target: typeof listWidth, key: string, min: number, max: number) {
+  return (e: MouseEvent) => {
+    e.preventDefault()
+    const startX = e.clientX
+    const startW = target.value
+    const move = (ev: MouseEvent) => {
+      target.value = Math.min(max, Math.max(min, startW + ev.clientX - startX))
+    }
+    const up = () => {
+      window.removeEventListener('mousemove', move)
+      window.removeEventListener('mouseup', up)
+      localStorage.setItem(key, String(target.value))
+    }
+    window.addEventListener('mousemove', move)
+    window.addEventListener('mouseup', up)
   }
-  const up = () => {
-    window.removeEventListener('mousemove', move)
-    window.removeEventListener('mouseup', up)
-    localStorage.setItem('gsn_list_w', String(listWidth.value))
-  }
-  window.addEventListener('mousemove', move)
-  window.addEventListener('mouseup', up)
 }
+
+const startListResize = startResize(listWidth, 'gsn_list_w', 220, 680)
+const startSideResize = startResize(sideWidth, 'gsn_side_w', 150, 400)
 
 function onKey(e: KeyboardEvent) {
   if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return
@@ -72,9 +78,10 @@ onBeforeUnmount(() => {
     <AppToolbar />
     <div
       class="grid flex-1 min-h-0 bg-app-bg"
-      :style="{ gridTemplateColumns: `220px ${listWidth}px 6px 1fr` }"
+      :style="{ gridTemplateColumns: `${sideWidth}px 6px ${listWidth}px 6px 1fr` }"
     >
       <FolderSidebar />
+      <div class="col-sash" title="Drag to resize" @mousedown="startSideResize"></div>
       <MessageList />
       <div class="col-sash" title="Drag to resize" @mousedown="startListResize"></div>
       <ReadingPane />

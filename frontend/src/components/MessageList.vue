@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useMailStore } from '../stores/mail'
 
 const mail = useMailStore()
+
+const totalMessages = computed(
+  () => mail.folders.find((f) => f.name === mail.currentFolder)?.messages ?? mail.messages.length,
+)
 </script>
 
 <template>
   <section class="bg-panel min-h-0 flex flex-col">
     <div class="sort-header">
-      <span>Sorted by: Date</span>
-      <span>{{ mail.messages.length }} message{{ mail.messages.length === 1 ? '' : 's' }}</span>
+      <span>Sorted by Date</span>
+      <span>{{ totalMessages }} message{{ totalMessages === 1 ? '' : 's' }}</span>
     </div>
 
     <div class="flex-1 overflow-y-auto min-h-0">
@@ -19,12 +24,13 @@ const mail = useMailStore()
         :class="{ selected: mail.selectedUid === msg.uid, unread: !msg.seen }"
         @click="mail.selectMessage(msg.uid)"
       >
-        <div>
+        <div class="min-w-0">
           <div class="text-sm truncate">{{ msg.from || msg.fromEmail }}</div>
           <div class="msg-subject text-sm truncate">{{ msg.subject }}</div>
         </div>
-        <div class="text-right">
-          <div class="text-xs text-ink-mute whitespace-nowrap">{{ msg.date }}</div>
+        <div class="text-right shrink-0">
+          <div class="msg-date text-xs text-ink-sub whitespace-nowrap">{{ msg.date }}</div>
+          <span v-if="msg.hasAttachment" class="row-attach" title="Has attachment">📎</span>
           <span
             class="row-flag"
             :class="{ on: msg.flagged }"

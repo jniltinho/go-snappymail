@@ -30,16 +30,16 @@
   --color-topbar-bg: #007cc3;
   --color-topbar-ink: #ffffff;
 
-  /* ── Login page (blue card on white fade) ────── */
-  --skin-login-bg: #ffffff;
-  --skin-login-card: #007cc3;
-  --skin-login-header-bg: #007cc3;
+  /* ── Login page (Zimbra 10: white card on teal scene) ── */
+  --skin-login-bg: #35768c;
+  --skin-login-card: #ffffff;
+  --skin-login-header-bg: #ffffff;
   --skin-login-header-border: transparent;
-  --skin-login-text: #ffffff;
+  --skin-login-text: #333333;
   --skin-login-input-bg: #ffffff;
-  --skin-login-input-border: #ffffff;
+  --skin-login-input-border: #d9d9d9;
   --skin-login-input-text: #333333;
-  --skin-login-btn-bg: #007cc3;
+  --skin-login-btn-bg: #0088c1;
   --skin-login-btn-text: #ffffff;
   --skin-login-error-bg: #fbe9eb;
   --skin-login-error-text: #d74942;
@@ -49,6 +49,14 @@
   /* harmony FontFamily-default, with Segoe UI first (matches ZWC 'system font' pref) */
   --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, 'Nimbus Sans L', Arial,
     'Liberation Sans', sans-serif;
+
+  /* Zimbra Classic type scale: 12px chrome (Tailwind v4 utilities read these vars) */
+  --text-xs: 11px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 12px;
+  --text-sm--line-height: 1.4;
+  --text-base: 13px;
+  --text-base--line-height: 1.45;
 }
 
 [data-skin='zimbra'].dark {
@@ -87,51 +95,49 @@
   font-size: 12px;
 }
 
-/* Login: white page fading to #ededed, flat blue card */
+/* Login: Zimbra 10 — white card centered on a teal scene */
 [data-skin='zimbra'] .login-page {
-  background: linear-gradient(to bottom, #ffffff, #ededed);
+  background: linear-gradient(160deg, #4a98ad 0%, #35768c 55%, #295e70 100%);
+  justify-content: flex-start;
+  padding-top: 8vh;
 }
 
 [data-skin='zimbra'] .login-card {
-  border-color: var(--skin-login-card);
+  border: none;
 }
 
 [data-skin='zimbra'] .login-shadow {
-  box-shadow: none;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
-[data-skin='zimbra'] .login-btn {
-  border: 1px solid #ffffff;
-}
-
-[data-skin='zimbra'].dark .login-btn {
-  border-color: #4a4f55;
-}
-
-/* Login form: Zimbra row layout — label left, field right, small Login button */
+/* Stacked labels above 36px bordered inputs (measured from the reference) */
 [data-skin='zimbra'] .login-row {
   opacity: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
 }
 
 [data-skin='zimbra'] .login-label {
-  width: 110px;
-  text-align: right;
-  flex-shrink: 0;
+  display: block;
+  margin-bottom: 4px;
+  color: #333333;
 }
 
 [data-skin='zimbra'] .login-input {
   margin-top: 0;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 12px;
 }
 
 [data-skin='zimbra'] .login-btn {
   width: auto;
-  align-self: flex-end;
-  padding: 0 18px;
-  height: 26px;
+  align-self: flex-start;
+  height: 31px;
+  padding: 0 23px;
+  font-size: 13px;
   font-weight: 400;
+  border: none;
+  cursor: pointer;
 }
 
 /* App tab strip: blue band with white active tab (Zimbra app chooser) */
@@ -141,9 +147,9 @@
 
 [data-skin='zimbra'] .tabstrip {
   display: flex;
-  gap: 4px;
-  padding: 5px 10px 0;
-  background: #0087c3; /* harmony SkinAppRowColorHex */
+  gap: 10px;
+  padding: 4px 10px 0;
+  background: #007dc3; /* measured: 0.1-alpha app-row tint over the bar */
 }
 
 [data-skin='zimbra'].dark .tabstrip {
@@ -151,8 +157,8 @@
 }
 
 [data-skin='zimbra'] .tabstrip .tab {
-  padding: 4px 20px;
-  font-size: 12px;
+  padding: 4px 16px;
+  font-size: 15.6px; /* measured tab label size */
   color: #ffffff;
 }
 
@@ -175,10 +181,32 @@
   padding: 0 8px 4px;
 }
 
-/* Folder icons: gray like Zimbra's, not colored emoji */
+/* Menus: Zimbra Classic chrome */
+[data-skin='zimbra'] .dd-menu {
+  border-color: #bfbfbf;
+}
+
+[data-skin='zimbra'] .dd-item:hover:not(:disabled) {
+  background: #cce5f3;
+}
+
+[data-skin='zimbra'].dark .dd-menu {
+  border-color: #4a4f55;
+}
+
+[data-skin='zimbra'].dark .dd-item:hover:not(:disabled) {
+  background: #1f4e73;
+}
+
+/* Inactive tab hover: white overlay like the reference */
+[data-skin='zimbra'] .tabstrip .tab.disabled:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Zimbra 10 uses colored folder sprites — keep emoji colored, slightly smaller */
 [data-skin='zimbra'] .side-item > span:first-child {
-  filter: grayscale(1);
-  opacity: 0.75;
+  font-size: 12px;
 }
 
 /* Toolbar buttons: white, 1px #bfbfbf; hover/active from harmony ButtonHov/Act */
@@ -218,15 +246,32 @@
   color: #005a95;
 }
 
-/* Hover rows: lighten(SelC,50) */
+/* Reference has NO hover highlight on tree items or list rows (QA #11) */
 [data-skin='zimbra'] .side-item:hover:not(.active),
 [data-skin='zimbra'] .msg-row:hover:not(.selected) {
-  background: #cce5f3;
+  background: transparent;
 }
 
-[data-skin='zimbra'].dark .side-item:hover:not(.active),
-[data-skin='zimbra'].dark .msg-row:hover:not(.selected) {
-  background: #16344d;
+/* Toolbar: 24px buttons, whitespace groups (no visible separators), bold unread date */
+[data-skin='zimbra'] .tbtn {
+  height: 24px;
+}
+
+[data-skin='zimbra'] .btn-new {
+  height: 24px;
+}
+
+[data-skin='zimbra'] .toolbar-sep {
+  background: transparent;
+}
+
+[data-skin='zimbra'] .msg-row.unread .msg-date {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+[data-skin='zimbra'] .topbar-search::placeholder {
+  font-style: italic;
 }
 
 /* Yellow focus fill on text inputs (Zimbra signature) */

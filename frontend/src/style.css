@@ -119,6 +119,47 @@ body {
   display: none;
 }
 
+/* ── Dropdown menus ───────────────────────────────────────────── */
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 170px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  z-index: 40;
+  padding: 2px 0;
+}
+
+.dd-menu.dd-right {
+  left: auto;
+  right: 0;
+}
+
+.dd-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 14px;
+  font-size: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.dd-item:hover {
+  background: var(--color-row-selected);
+}
+
+.dd-item:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .col-sash {
   cursor: col-resize;
   background: var(--color-app-bg);
@@ -147,13 +188,19 @@ body {
   color: var(--color-ink);
 }
 
+.side-header {
+  font-size: 13px;
+  color: var(--color-ink);
+  cursor: default;
+}
+
 .side-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px 6px 12px;
+  padding: 4px 8px 4px 12px;
   cursor: pointer;
-  color: var(--color-ink-sub);
+  color: var(--color-ink);
 }
 
 .side-item:hover {
@@ -265,6 +312,35 @@ body {
   color: var(--color-ink-sub);
   font-size: 12px;
   flex-shrink: 0;
+}
+
+.row-attach {
+  font-size: 11px;
+  margin-right: 2px;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.subject-bar {
+  background: var(--color-panel-2);
+  border-bottom: 1px solid var(--color-line);
+  min-height: 30px;
+  flex-shrink: 0;
+}
+
+.subject-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.attach-strip {
+  background: var(--color-panel-2);
+}
+
+.attach-link {
+  color: var(--color-accent);
+  text-decoration: underline;
 }
 
 .row-flag {

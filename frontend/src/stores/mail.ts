@@ -26,17 +26,45 @@ export const useMailStore = defineStore('mail', () => {
     }
   }
 
+  // Zimbra Classic date style: time today, "Jul 22" this year, "7/20/25" older.
+  function fmtListDate(ts: number, fallback: string): string {
+    if (!ts) return fallback
+    const d = new Date(ts * 1000)
+    const now = new Date()
+    if (d.toDateString() === now.toDateString()) {
+      return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    }
+    if (d.getFullYear() === now.getFullYear()) {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    }
+    return d.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: '2-digit' })
+  }
+
+  function fmtFullDate(ts: number, fallback: string): string {
+    if (!ts) return fallback
+    return new Date(ts * 1000).toLocaleString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    })
+  }
+
   function mapMessage(raw: Record<string, unknown>): MailMessage {
+    const ts = Number(raw.date_ts) || 0
     return {
       uid: Number(raw.uid),
       subject: String(raw.subject || '(No subject)'),
       from: String(raw.from || ''),
       fromEmail: String(raw.from_email || ''),
-      date: String(raw.date || ''),
+      date: fmtListDate(ts, String(raw.date || '')),
+      dateFull: fmtFullDate(ts, String(raw.date || '')),
       seen: Boolean(raw.seen),
       flagged: Boolean(raw.flagged),
       size: Number(raw.size) || 0,
       to: String(raw.to || ''),
+      hasAttachment: Boolean(raw.has_attachment),
     }
   }
 

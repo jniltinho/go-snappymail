@@ -15,6 +15,8 @@ type Envelope struct {
 	FromEmail string   `json:"from_email"`
 	To        string   `json:"to"`
 	Date      string   `json:"date"`
+	DateTS    int64    `json:"date_ts"`
+	HasAttach bool     `json:"has_attachment"`
 	Seen      bool     `json:"seen"`
 	Flagged   bool     `json:"flagged"`
 	Answered  bool     `json:"answered"`
@@ -30,10 +32,11 @@ func (c *Client) FetchEnvelopes(uids []imap.UID) ([]Envelope, error) {
 
 	seqSet := imap.UIDSetNum(uids...)
 	msgs, err := c.Client.Fetch(seqSet, &imap.FetchOptions{
-		UID:        true,
-		Flags:      true,
-		Envelope:   true,
-		RFC822Size: true,
+		UID:           true,
+		Flags:         true,
+		Envelope:      true,
+		RFC822Size:    true,
+		BodyStructure: &imap.FetchItemBodyStructure{Extended: true},
 	}).Collect()
 	if err != nil {
 		return nil, err
@@ -64,8 +67,20 @@ func (c *Client) FetchEnvelopes(uids []imap.UID) ([]Envelope, error) {
 			}
 			env.To = strings.Join(toAddrs, ", ")
 			env.Date = m.Envelope.Date.Format("02/01/2006 15:04")
+			if !m.Envelope.Date.IsZero() {
+				env.DateTS = m.Envelope.Date.Unix()
+			}
 		}
 		env.Size = m.RFC822Size
+		if m.BodyStructure != nil {
+			m.BodyStructure.Walk(func(_ []int, part imap.BodyStructure) bool {
+				if d := part.Disposition(); d != nil && strings.EqualFold(d.Value, "attachment") {
+					env.HasAttach = true
+					return false
+				}
+				return true
+			})
+		}
 		for _, f := range m.Flags {
 			switch f {
 			case imap.FlagSeen:

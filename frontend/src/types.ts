@@ -13,10 +13,12 @@ export interface MailMessage {
   from: string
   fromEmail: string
   date: string
+  dateFull: string
   seen: boolean
   flagged: boolean
   size: number
   to?: string
+  hasAttachment?: boolean
   htmlBody?: string
   plainBody?: string
   attachments?: AttachmentMeta[]
