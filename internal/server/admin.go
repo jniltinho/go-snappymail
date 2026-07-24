@@ -64,18 +64,42 @@ func buildAdminServer(cfg *config.Config, adminDB *gorm.DB, embeddedFiles embed.
 	return srv, nil
 }
 
+// adminBase is the SPA base path (matches vite base in frontend-admin). Assets
+// are requested as /admin/assets/*, so the base is stripped before the embedded
+// file lookup (which is rooted at web/admin-dist).
+const adminBase = "/admin/"
+
 // registerAdminSPA serves the admin SPA (web/admin-dist) with client-side
 // routing fallback, scoped to THIS listener only. It never falls back to the
 // webmail SPA (web/dist).
 func registerAdminSPA(e *echo.Echo, adminFS fs.FS) {
+	serveIndex := func(c *echo.Context) error {
+		data, err := fs.ReadFile(adminFS, "index.html")
+		if err != nil {
+			return echo.ErrNotFound
+		}
+		return c.HTML(http.StatusOK, string(data))
+	}
+
+	// Bare host or "/admin" → the app lives under /admin/.
+	e.GET("/", func(c *echo.Context) error {
+		return c.Redirect(http.StatusFound, adminBase)
+	})
+	e.GET("/admin", func(c *echo.Context) error {
+		return c.Redirect(http.StatusFound, adminBase)
+	})
+
 	e.GET("/*", func(c *echo.Context) error {
 		urlPath := c.Request().URL.Path
 		// API paths never fall through to the admin SPA (clean 404).
 		if strings.HasPrefix(urlPath, "/api/") {
 			return echo.ErrNotFound
 		}
-		if ext := strings.ToLower(filepath.Ext(urlPath)); ext != "" {
-			data, err := fs.ReadFile(adminFS, strings.TrimPrefix(urlPath, "/"))
+		// Map the request to a path relative to the admin dist root by stripping
+		// the SPA base prefix (/admin/assets/x.js → assets/x.js).
+		rel := strings.TrimPrefix(strings.TrimPrefix(urlPath, adminBase), "/")
+		if ext := strings.ToLower(filepath.Ext(rel)); ext != "" && rel != "" {
+			data, err := fs.ReadFile(adminFS, rel)
 			if err != nil {
 				return echo.ErrNotFound
 			}
@@ -85,10 +109,7 @@ func registerAdminSPA(e *echo.Echo, adminFS fs.FS) {
 			}
 			return c.Blob(http.StatusOK, ct, data)
 		}
-		data, err := fs.ReadFile(adminFS, "index.html")
-		if err != nil {
-			return echo.ErrNotFound
-		}
-		return c.HTML(http.StatusOK, string(data))
+		// Any non-asset path (/admin/, /admin/login, …) → the SPA shell.
+		return serveIndex(c)
 	})
 }

@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"testing/fstest"
 
 	"go-snappymail/internal/admin"
 	"go-snappymail/internal/config"
@@ -96,5 +97,43 @@ func TestAdminSurfaceNotOnWebmail(t *testing.T) {
 	// Sanity: admin login DOES resolve on the admin router (401/400, not 404).
 	if got := status(t, adminE, http.MethodGet, "/api/v1/admin/overview"); got == http.StatusNotFound {
 		t.Errorf("admin overview on admin router = 404, want it to resolve (401)")
+	}
+}
+
+// TestAdminSPABasePath verifies the SPA is served under the /admin/ base: hashed
+// assets (requested as /admin/assets/*) resolve to the dist root, client routes
+// fall back to index.html, the bare host redirects into /admin/, and /api/*
+// never resolves to the shell.
+func TestAdminSPABasePath(t *testing.T) {
+	adminFS := fstest.MapFS{
+		"index.html":             {Data: []byte("<html>admin shell</html>")},
+		"assets/index-abc123.js": {Data: []byte("console.log(1)")},
+	}
+	e := echo.New()
+	registerAdminSPA(e, adminFS)
+
+	cases := []struct {
+		path     string
+		want     int
+		bodyHint string
+	}{
+		{"/admin/assets/index-abc123.js", http.StatusOK, "console.log"},
+		{"/admin/", http.StatusOK, "admin shell"},
+		{"/admin/login", http.StatusOK, "admin shell"},
+		{"/", http.StatusFound, ""},
+		{"/admin", http.StatusFound, ""},
+		{"/admin/assets/missing.js", http.StatusNotFound, ""},
+		{"/api/v1/admin/overview", http.StatusNotFound, ""},
+	}
+	for _, c := range cases {
+		req := httptest.NewRequest(http.MethodGet, c.path, nil)
+		rec := httptest.NewRecorder()
+		e.ServeHTTP(rec, req)
+		if rec.Code != c.want {
+			t.Errorf("GET %s = %d, want %d", c.path, rec.Code, c.want)
+		}
+		if c.bodyHint != "" && !strings.Contains(rec.Body.String(), c.bodyHint) {
+			t.Errorf("GET %s body = %q, want to contain %q", c.path, rec.Body.String(), c.bodyHint)
+		}
 	}
 }
