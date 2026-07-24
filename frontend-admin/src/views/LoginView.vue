@@ -53,11 +53,10 @@ async function submit() {
       <div class="login-reflection"></div>
     </div>
     </div>
+    <!-- Footer position/size/color match the legacy; text is a neutral
+         placeholder — set your own product/copyright line here. -->
     <footer class="login-footer">
-      <p>
-        Zimbra :: the leader in open source messaging and collaboration ::
-        <a href="#">Blog</a> - <a href="#">Wiki</a> - <a href="#">Forums</a>
-      </p>
+      <p>Admin Console</p>
       <p>Copyright &copy; 2005&ndash;2026. All rights reserved.</p>
     </footer>
   </div>
@@ -65,6 +64,7 @@ async function submit() {
 
 <style scoped>
 .login-page {
+  position: relative;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -88,7 +88,7 @@ async function submit() {
   /* top right bottom left — logo sits ~30px from the card's left edge (matches
    * the reference), the form stays right-aligned via .login-form padding-right */
   padding: 30px 40px 44px 30px;
-  min-height: 258px;
+  min-height: 275px;
 }
 
 .login-banner {
@@ -166,16 +166,18 @@ async function submit() {
 /* Glossy Web-2.0 reflection: a bluer band directly under the card that fades
  * smoothly into the page background. */
 .login-reflection {
-  height: 88px;
+  height: 160px;
   background: linear-gradient(to bottom, rgba(140, 196, 223, 0.9), rgba(220, 235, 244, 0));
 }
 
 .login-footer {
-  margin-top: auto;
-  padding: 30px 0 30px;
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
   text-align: center;
-  color: var(--txt-muted);
-  font-size: var(--fs);
+  color: #5c5c5c;
+  font-size: 11px;
   line-height: 1.6;
 }
 .login-footer a {
