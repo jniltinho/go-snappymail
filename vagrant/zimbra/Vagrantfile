@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# VM Zimbra FOSS 10.1.17.p2 (maldua build) — referência visual para a skin zimbra
+#
+# Uso:
+#   cd vagrant/zimbra && vagrant up          # instalação leva 20-40 min
+#   Web:   https://192.168.56.30/            (admin@zimbra.test / Password1@)
+#   Admin: https://192.168.56.30:9071/
+#
+# Adicione no /etc/hosts do host:
+#   192.168.56.30  mail.zimbra.test
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.hostname = "mail.zimbra.test"
+
+  config.vm.network "private_network", ip: "192.168.56.30"
+
+  # cache/ keeps the 236MB tarball out of re-downloads (gitignored)
+  config.vm.synced_folder "cache", "/zcs-cache", type: "virtualbox", create: true
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "zimbra-foss-ref"
+    vb.memory = "10240"
+    vb.cpus = 4
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  config.vm.provision "shell", name: "01-dns", path: "provision/01-dns.sh"
+  config.vm.provision "shell", name: "02-zimbra", path: "provision/02-zimbra.sh"
+end
