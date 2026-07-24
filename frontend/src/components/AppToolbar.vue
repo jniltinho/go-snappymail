@@ -17,20 +17,20 @@ async function onSearch() {
     <div class="topbar flex items-center gap-3 px-3">
       <div class="font-bold text-base tracking-tight whitespace-nowrap">go-snappymail</div>
 
-      <form class="flex-1 flex justify-center gap-2 max-w-xl mx-auto" @submit.prevent="onSearch">
+      <form class="ml-auto flex items-center gap-1" @submit.prevent="onSearch">
         <input
           v-model="mail.searchQuery"
           type="search"
           placeholder="Search"
-          class="topbar-search flex-1 h-[26px] px-2 text-sm"
+          class="topbar-search w-56 h-[24px] px-2 text-sm"
         />
-        <button type="submit" class="tbtn">Search</button>
+        <button type="submit" class="topbar-link" title="Search">🔍</button>
       </form>
 
+      <span class="text-xs hidden md:inline opacity-90 font-bold">{{ auth.username }} ▾</span>
       <button type="button" class="topbar-link" @click="settings.toggleDark">
         {{ settings.darkMode ? 'Light' : 'Dark' }}
       </button>
-      <span class="text-xs hidden md:inline opacity-90">{{ auth.username }}</span>
       <button type="button" class="topbar-link" @click="auth.logout">Logout</button>
     </div>
 

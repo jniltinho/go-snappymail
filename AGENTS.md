@@ -83,6 +83,7 @@ Prefixo `/api/v1`. Público: `/version`, `/ui/config`. Auth: `/auth/login|logout
 | `docs/skins.md` | criar/implementar skins |
 | `docs/lab.md` | lab Docker/Vagrant |
 | `docs/deployment-dev.md` | VM Vagrant híbrida: Go via systemd, MariaDB/SnappyMail via docker compose, Postfix/Dovecot nativos |
+| `docs/zimbra-vagrant-foss.md` | VM Zimbra FOSS 10.1.17 (referência da skin zimbra): instalação, domínios, contas |
 | `docs/security.md` | higiene de segredos |
 | `docs/validation-summary.md` | estado atual do projeto (handoff) |
 

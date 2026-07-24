@@ -5,7 +5,7 @@ const mail = useMailStore()
 </script>
 
 <template>
-  <section class="border-r border-line bg-panel min-h-0 flex flex-col">
+  <section class="bg-panel min-h-0 flex flex-col">
     <div class="sort-header">
       <span>Sorted by: Date</span>
       <span>{{ mail.messages.length }} message{{ mail.messages.length === 1 ? '' : 's' }}</span>
