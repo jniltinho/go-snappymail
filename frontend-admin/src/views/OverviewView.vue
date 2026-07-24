@@ -106,7 +106,7 @@ onMounted(async () => {
   margin: 0 0 12px;
   font-size: 15px;
   font-weight: 700;
-  color: #4a6377;
+  color: #5a87ac;
 }
 .ov-col dl {
   display: grid;

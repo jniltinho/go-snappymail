@@ -27,7 +27,7 @@ function logout() {
 
     <div class="search">
       <button class="search-type" aria-label="Search type">
-        <span class="lock">&#128274;</span><span class="caret">&#9662;</span>
+        <span class="stype-ico"></span><span class="caret">&#9662;</span>
       </button>
       <input type="text" aria-label="Search" />
       <button class="search-go" aria-label="Search">&#128269;</button>
@@ -112,7 +112,7 @@ function logout() {
 .search-type {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   height: 22px;
   padding: 0 5px;
   border: none;
@@ -121,6 +121,12 @@ function logout() {
   cursor: pointer;
   font-size: 10px;
   color: var(--masthead-icon);
+}
+.stype-ico {
+  width: 16px;
+  height: 16px;
+  background: url('../assets/icons/ImgAccount.png') no-repeat center;
+  background-size: 16px 16px;
 }
 .search input {
   flex: 1;

@@ -22,12 +22,12 @@
   --col-header-bg: #f3f3f3;
   --col-header-border: #d4d4d4;
 
-  /* Masthead (top bar) — LIGHT silver gradient with dark-navy text (serenity) */
-  --masthead-top: #f7f7f7;
-  --masthead-bottom: #dcdcdc;
+  /* Masthead (top bar) — cool blue-gray gradient with dark-navy text (serenity) */
+  --masthead-top: #eff3f7;
+  --masthead-bottom: #d9e3ec;
   --masthead-txt: #1c3f5f; /* dark-navy brand + icon color */
   --masthead-sub: #6b7a86;
-  --masthead-border: #a7b7c2; /* subtle blue bottom hairline */
+  --masthead-border: #8fb2d0; /* blue bottom accent line */
   --masthead-icon: #4a6377;
 
   /* Dialog/modal title bar — blue gradient (distinct from the light masthead) */

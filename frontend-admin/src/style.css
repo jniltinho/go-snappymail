@@ -84,12 +84,12 @@ a:hover {
 }
 .grid thead th {
   text-align: left;
-  font-weight: 600;
-  color: var(--txt);
+  font-weight: 400;
+  color: #5e7e9b;
   padding: 4px 10px;
-  background: linear-gradient(to bottom, #eef2f6, #dbe3ea);
-  border-bottom: 1px solid #c4ccd3;
-  border-right: 1px solid #c9d0d7;
+  background: linear-gradient(to bottom, #eff3f7, #dbe4ec);
+  border-bottom: 1px solid #c6d0da;
+  border-right: 1px solid #c6d0da;
   white-space: nowrap;
 }
 .grid tbody td {

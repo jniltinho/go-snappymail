@@ -108,8 +108,8 @@ onMounted(async () => {
   padding: 4px 4px;
   font-weight: 700;
   color: var(--txt);
-  background: linear-gradient(to bottom, #cfe0f1, #b6d2ea);
-  border: 1px solid #a7c4e0;
+  background: #d3e4f5;
+  border: 1px solid #b7cfe8;
   border-radius: var(--radius);
 }
 .node-caret {
