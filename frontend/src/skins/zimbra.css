@@ -95,14 +95,19 @@
   font-size: 12px;
 }
 
-/* Login: Zimbra 10 — white card centered on a teal mountain scene (original artwork) */
+/* Login: Zimbra 10 — white card centered on a blue mountain scene (original artwork) */
 [data-skin='zimbra'] .login-page {
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 300' preserveAspectRatio='none'%3E%3Cpath d='M0 300V210l180-90 140 70 200-120 220 110 160-60 240 100 180-80 280 120v70z' fill='%23177899' opacity='.55'/%3E%3Cpath d='M0 300v-60l260-80 200 90 240-110 260 100 220-70 240 80 180-40v90z' fill='%230e5f7d' opacity='.7'/%3E%3C/svg%3E")
-      bottom/100% 38% no-repeat,
-    linear-gradient(170deg, #2196c9 0%, #1d86b6 45%, #1a7aa8 100%);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 300'%3E%3Cdefs%3E%3Cfilter id='b' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23b)'%3E%3Cpath d='M0 300V200l190-85 150 65 210-115 230 105 170-55 250 95 190-75 210 95v70z' fill='%2312709c' opacity='.35'/%3E%3Cpath d='M0 300v-55l270-75 210 85 250-105 270 95 230-65 250 75 120-25v70z' fill='%230b5a80' opacity='.5'/%3E%3C/g%3E%3C/svg%3E")
+      bottom/100% 40% no-repeat,
+    linear-gradient(170deg, #1e8ec4 0%, #1a80b3 50%, #1876a6 100%);
   justify-content: flex-start;
-  padding-top: 8vh;
+  padding-top: 150px;
+}
+
+[data-skin='zimbra'] .login-card {
+  max-width: 380px;
+  font-size: 12px;
 }
 
 [data-skin='zimbra'] .login-remember {
@@ -115,12 +120,18 @@
   display: block;
 }
 
+/* Footer band: label above a full-width select, ~89px tall (measured) */
 [data-skin='zimbra'] .login-footer {
   display: flex;
-  background: #efefef;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-height: 89px;
+  justify-content: center;
+  background: #eeeeee;
   border-top: 1px solid #e0e0e0;
   color: #333333;
-  font-size: 13.3px;
+  font-size: 12px;
 }
 
 [data-skin='zimbra'] .login-version {
@@ -128,7 +139,8 @@
   background: #ffffff;
   color: #333333;
   font-size: 12px;
-  height: 26px;
+  height: 28px;
+  width: 100%;
   padding: 0 6px;
 }
 
@@ -189,7 +201,7 @@
 }
 
 [data-skin='zimbra'] .tabstrip .tab {
-  padding: 4px 22px 5px;
+  padding: 4px 14px 5px;
   font-size: 15.6px; /* measured tab label size */
   line-height: 1.3;
   color: #ffffff;
@@ -214,13 +226,22 @@
   padding: 0 8px 4px;
 }
 
-/* Menus: Zimbra Classic chrome */
+/* Menus: Zimbra Classic chrome (measured: 21px items, 20px gutter, #999 frame) */
 [data-skin='zimbra'] .dd-menu {
-  border-color: #bfbfbf;
+  border-color: #999999;
+  box-shadow: 5px 5px 15px rgba(153, 153, 153, 0.8);
+  min-width: 130px;
+}
+
+[data-skin='zimbra'] .dd-item {
+  padding: 2px 16px 2px 20px;
+  min-height: 21px;
+  border: 1px solid transparent;
 }
 
 [data-skin='zimbra'] .dd-item:hover:not(:disabled) {
-  background: #cce5f3;
+  background: var(--color-row-selected);
+  border-color: #5b8cb8;
 }
 
 [data-skin='zimbra'].dark .dd-menu {
@@ -244,7 +265,7 @@
 
 [data-skin='zimbra'] .login-label,
 [data-skin='zimbra'] .login-input {
-  font-size: 13.3px;
+  font-size: 12px;
 }
 
 [data-skin='zimbra'] .login-heading {
@@ -311,6 +332,20 @@
 [data-skin='zimbra'] .msg-row.unread .msg-date {
   font-weight: 700;
   color: var(--color-ink);
+}
+
+/* Row height 60px like the reference (two 12px lines + breathing room) */
+[data-skin='zimbra'] .msg-row {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Selected folder shows the context ▾ arrow like Zimbra */
+[data-skin='zimbra'] .side-item.active::after {
+  content: '▾';
+  margin-left: auto;
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 [data-skin='zimbra'] .topbar-search::placeholder {

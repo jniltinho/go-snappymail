@@ -14,8 +14,8 @@ const auth = useAuthStore()
 const mail = useMailStore()
 const settings = useSettingsStore()
 
-const listWidth = ref(Number(localStorage.getItem('gsn_list_w')) || 340)
-const sideWidth = ref(Number(localStorage.getItem('gsn_side_w')) || 220)
+const listWidth = ref(Number(localStorage.getItem('gsn_list_w')) || 305)
+const sideWidth = ref(Number(localStorage.getItem('gsn_side_w')) || 190)
 
 function startResize(target: typeof listWidth, key: string, min: number, max: number) {
   return (e: MouseEvent) => {

@@ -4,14 +4,35 @@ import { useMailStore } from '../stores/mail'
 
 const mail = useMailStore()
 
-// Monochrome line-art folder icons (Zimbra-style sprites), stroke inherits currentColor.
-const iconPaths: Record<string, string> = {
-  inbox: 'M2 9l3-6h6l3 6v4H2V9zm0 0h4l1 2h2l1-2h4',
-  sent: 'M2 8l12-5-4 11-3-4-5-2z',
-  drafts: 'M3 13h10M4 11l7-7 2 2-7 7H4v-2z',
-  junk: 'M8 2l6 11H2L8 2zm0 4v3m0 2v1',
-  trash: 'M3 5h10M6 5V3h4v2M4 5l1 8h6l1-8',
-  folder: 'M2 4h5l1 2h6v7H2V4z',
+// Filled folder sprites (Zimbra-style): blue folder body + white overlay glyph.
+type IconPart = { d: string; fill?: string; stroke?: string; sw?: string }
+const FOLDER_BODY: IconPart[] = [
+  { d: 'M1 5.2V3.6h4.4l1.1 1.6H15v9H1z', fill: '#7ba0c4' },
+]
+const icons: Record<string, IconPart[]> = {
+  inbox: [
+    ...FOLDER_BODY,
+    { d: 'M8 6.8v3.2M6.5 8.6L8 10.2l1.5-1.6', stroke: '#ffffff', sw: '1.3' },
+  ],
+  sent: [
+    ...FOLDER_BODY,
+    { d: 'M6 9.6h3.6M8.4 7.9l1.7 1.7-1.7 1.7', stroke: '#ffffff', sw: '1.3' },
+  ],
+  drafts: [
+    ...FOLDER_BODY,
+    { d: 'M6 12l.5-2 3-3 1.5 1.5-3 3z', fill: '#ffffff' },
+  ],
+  junk: [
+    ...FOLDER_BODY,
+    { d: 'M8.5 7.4a2.3 2.3 0 100 4.6 2.3 2.3 0 000-4.6z', stroke: '#ffffff', sw: '1.2' },
+    { d: 'M6.9 11.3l3.2-3.2', stroke: '#ffffff', sw: '1.2' },
+  ],
+  trash: [
+    { d: 'M4 5.5h8l-.9 8.2H4.9z', fill: '#7ba0c4' },
+    { d: 'M3.2 5.5h9.6M6.3 5.5V3.8h3.4v1.7', stroke: '#7ba0c4', sw: '1.4' },
+    { d: 'M6.5 7.5v4M8 7.5v4M9.5 7.5v4', stroke: '#ffffff', sw: '0.9' },
+  ],
+  folder: FOLDER_BODY,
 }
 
 const rank: Record<string, number> = { inbox: 0, sent: 1, drafts: 2, junk: 3, trash: 4 }
@@ -43,10 +64,12 @@ function prettyLabel(label: string): string {
     >
       <svg class="side-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
         <path
-          :d="iconPaths[folder.iconType] || iconPaths.folder"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.3"
+          v-for="(part, i) in icons[folder.iconType] || icons.folder"
+          :key="i"
+          :d="part.d"
+          :fill="part.fill || 'none'"
+          :stroke="part.stroke"
+          :stroke-width="part.sw"
           stroke-linejoin="round"
           stroke-linecap="round"
         />
