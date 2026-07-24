@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import MiniCalendar from './MiniCalendar.vue'
+import DropdownMenu from './DropdownMenu.vue'
 
 interface Contact {
   id: number
@@ -47,13 +48,16 @@ function deleteSelected() {
   <div class="flex flex-col flex-1 min-h-0">
     <div class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
       <div class="new-btn-slot shrink-0">
-        <button type="button" class="btn-new w-full text-left px-3" @click="adding = true">
-          New Contact
-        </button>
+        <DropdownMenu label="New Contact" btn-class="btn-new" split @main="adding = true">
+          <button type="button" class="dd-item" @click="adding = true">New Contact</button>
+        </DropdownMenu>
       </div>
       <button type="button" class="tbtn" :disabled="!selectedId">Edit</button>
       <button type="button" class="tbtn" :disabled="!selectedId" @click="deleteSelected">Delete</button>
-      <button type="button" class="tbtn" disabled>Actions ▾</button>
+      <button type="button" class="tbtn tbtn-icon" disabled>🏷 ▾</button>
+      <DropdownMenu label="Actions" btn-class="tbtn">
+        <button type="button" class="dd-item" :disabled="!selectedId" @click="deleteSelected">Delete</button>
+      </DropdownMenu>
     </div>
 
     <div class="grid flex-1 min-h-0" style="grid-template-columns: 190px 1fr">

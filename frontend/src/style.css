@@ -470,7 +470,14 @@ body {
 /* ── Tab pages: contacts / calendar / tasks / preferences ─────── */
 
 .new-btn-slot {
-  width: var(--side-w, 190px);
+  width: 190px;
+}
+
+.cal-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
 }
 
 .alpha-bar {
@@ -485,8 +492,8 @@ body {
   flex: 1;
   border: 1px solid var(--color-line);
   background: var(--color-panel);
-  color: var(--color-accent);
-  font-size: 11px;
+  color: var(--color-ink);
+  font-size: 12px;
   padding: 2px 0;
   cursor: pointer;
 }
@@ -519,6 +526,33 @@ body {
 
 .cal-dayhead.today {
   font-weight: 700;
+  color: #005d92;
+}
+
+.cal-year {
+  font-size: 11px;
+  color: var(--color-ink-sub);
+  text-align: right;
+  padding: 4px 6px 0 0;
+}
+
+.cal-alldayrow {
+  display: grid;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel);
+  min-height: 18px;
+  flex-shrink: 0;
+}
+
+.cal-allday-collapse {
+  font-size: 7px;
+  color: var(--color-ink-mute);
+  text-align: center;
+  align-self: center;
+}
+
+.cal-allday-cell {
+  border-left: 1px solid var(--color-line);
 }
 
 .cal-row {
@@ -578,6 +612,10 @@ body {
   font-weight: 700;
   color: var(--color-ink);
   flex-shrink: 0;
+}
+
+.pref-icon {
+  font-size: 12px;
 }
 
 .pref-select {

@@ -7,6 +7,7 @@ import type { SkinId, UIConfigResponse, SkinInfo } from '../skins/manifest'
 export const useSettingsStore = defineStore('settings', () => {
   const darkMode = ref(localStorage.getItem('gsn_dark') === '1')
   const activeTab = ref<'mail' | 'contacts' | 'calendar' | 'tasks' | 'preferences'>('mail')
+  const sideWidth = ref(Number(localStorage.getItem('gsn_side_w')) || 190)
   const skin = ref<SkinId>(DEFAULT_SKIN)
   const availableSkins = ref<SkinInfo[]>([])
   const rowsPerPage = ref(50)
@@ -59,6 +60,7 @@ export const useSettingsStore = defineStore('settings', () => {
   return {
     darkMode,
     activeTab,
+    sideWidth,
     skin,
     availableSkins,
     rowsPerPage,

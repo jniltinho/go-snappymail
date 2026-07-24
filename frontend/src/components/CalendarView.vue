@@ -1,18 +1,28 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import MiniCalendar from './MiniCalendar.vue'
 
 const anchor = ref(new Date())
 const mode = ref<'Day' | 'Work Week' | 'Week' | 'Month' | 'List'>('Work Week')
 const modes = ['Day', 'Work Week', 'Week', 'Month', 'List'] as const
+const gridEl = ref<HTMLElement | null>(null)
 
 const days = computed(() => {
   const base = new Date(anchor.value)
-  const dow = base.getDay()
-  const monday = new Date(base)
-  monday.setDate(base.getDate() - ((dow + 6) % 7))
-  const count = mode.value === 'Day' ? 1 : mode.value === 'Week' ? 7 : 5
-  const start = mode.value === 'Day' ? new Date(anchor.value) : monday
+  if (mode.value === 'Day') return [new Date(base)]
+  let start: Date
+  let count: number
+  if (mode.value === 'Week') {
+    // Zimbra Week starts on Sunday
+    start = new Date(base)
+    start.setDate(base.getDate() - base.getDay())
+    count = 7
+  } else {
+    // Work Week: Monday..Friday
+    start = new Date(base)
+    start.setDate(base.getDate() - ((base.getDay() + 6) % 7))
+    count = 5
+  }
   return Array.from({ length: count }, (_, i) => {
     const d = new Date(start)
     d.setDate(start.getDate() + i)
@@ -25,6 +35,8 @@ const rangeLabel = computed(() => {
   const l = days.value[days.value.length - 1]
   return `${f.getMonth() + 1}/${f.getDate()} - ${l.getMonth() + 1}/${l.getDate()}`
 })
+
+const year = computed(() => days.value[0].getFullYear())
 
 const hours = Array.from({ length: 20 }, (_, i) => i + 4) // 4 AM .. 11 PM
 
@@ -46,6 +58,11 @@ function isToday(d: Date) {
 function dayHeader(d: Date) {
   return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
 }
+
+onMounted(() => {
+  // Zimbra opens with 8 AM as the first visible hour
+  if (gridEl.value) gridEl.value.scrollTop = 4 * 42
+})
 </script>
 
 <template>
@@ -56,11 +73,17 @@ function dayHeader(d: Date) {
           New Appointment
         </button>
       </div>
+      <button type="button" class="tbtn" disabled>Delete</button>
+      <button type="button" class="tbtn tbtn-icon" disabled>🏷 ▾</button>
       <button type="button" class="tbtn" @click="anchor = new Date()">Today</button>
       <span class="mx-2 flex items-center gap-1 text-sm">
-        <button type="button" class="tbtn" @click="shiftDays(mode === 'Day' ? -1 : -7)">◀</button>
+        <button type="button" class="tbtn cal-arrow" @click="shiftDays(mode === 'Day' ? -1 : -7)">
+          <svg viewBox="0 0 12 12" width="10" height="10"><path d="M8.5 1.5L3.5 6l5 4.5z" fill="currentColor" /></svg>
+        </button>
         {{ rangeLabel }}
-        <button type="button" class="tbtn" @click="shiftDays(mode === 'Day' ? 1 : 7)">▶</button>
+        <button type="button" class="tbtn cal-arrow" @click="shiftDays(mode === 'Day' ? 1 : 7)">
+          <svg viewBox="0 0 12 12" width="10" height="10"><path d="M3.5 1.5L8.5 6l-5 4.5z" fill="currentColor" /></svg>
+        </button>
       </span>
       <div class="ml-auto flex items-center gap-1">
         <button
@@ -90,12 +113,16 @@ function dayHeader(d: Date) {
       <section class="bg-panel min-h-0 flex flex-col overflow-hidden">
         <template v-if="mode !== 'List' && mode !== 'Month'">
           <div class="cal-headrow" :style="{ gridTemplateColumns: `56px repeat(${days.length}, 1fr)` }">
-            <div></div>
+            <div class="cal-year">{{ year }}</div>
             <div v-for="d in days" :key="d.toISOString()" class="cal-dayhead" :class="{ today: isToday(d) }">
               {{ dayHeader(d) }}
             </div>
           </div>
-          <div class="flex-1 overflow-y-auto">
+          <div class="cal-alldayrow" :style="{ gridTemplateColumns: `56px repeat(${days.length}, 1fr)` }">
+            <div class="cal-allday-collapse">▴▴▴</div>
+            <div v-for="d in days" :key="'ad' + d.toISOString()" class="cal-allday-cell"></div>
+          </div>
+          <div ref="gridEl" class="flex-1 overflow-y-auto">
             <div
               v-for="h in hours"
               :key="h"

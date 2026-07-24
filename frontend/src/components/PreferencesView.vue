@@ -6,20 +6,20 @@ import MiniCalendar from './MiniCalendar.vue'
 const settings = useSettingsStore()
 
 const sections = [
-  'General',
-  'Accounts',
-  'Mail',
-  'Filters',
-  'Signatures',
-  'Out of Office',
-  'Trusted Addresses',
-  'Contacts',
-  'Calendar',
-  'Sharing',
-  'Notifications',
-  'Import / Export',
-  'Shortcuts',
-  'Zimlets',
+  { label: 'General', icon: '⚙' },
+  { label: 'Accounts', icon: '👤' },
+  { label: 'Mail', icon: '✉' },
+  { label: 'Filters', icon: '🔽' },
+  { label: 'Signatures', icon: '✍' },
+  { label: 'Out of Office', icon: '🏝' },
+  { label: 'Trusted Addresses', icon: '✅' },
+  { label: 'Contacts', icon: '📇' },
+  { label: 'Calendar', icon: '📅' },
+  { label: 'Sharing', icon: '🔗' },
+  { label: 'Notifications', icon: '🔔' },
+  { label: 'Import / Export', icon: '📤' },
+  { label: 'Shortcuts', icon: '⌨' },
+  { label: 'Zimlets', icon: '🧩' },
 ]
 
 function onThemeChange(e: Event) {
@@ -45,12 +45,12 @@ function done() {
         <div class="side-header px-3 py-2">▼ Preferences</div>
         <button
           v-for="(s, i) in sections"
-          :key="s"
+          :key="s.label"
           type="button"
           class="side-item w-full text-left"
           :class="{ active: i === 0 }"
         >
-          <span>⚙</span><span>{{ s }}</span>
+          <span class="pref-icon">{{ s.icon }}</span><span>{{ s.label }}</span>
         </button>
         <MiniCalendar />
       </aside>

@@ -18,8 +18,10 @@ const auth = useAuthStore()
 const mail = useMailStore()
 const settings = useSettingsStore()
 
+import { storeToRefs } from 'pinia'
+
 const listWidth = ref(Number(localStorage.getItem('gsn_list_w')) || 305)
-const sideWidth = ref(Number(localStorage.getItem('gsn_side_w')) || 190)
+const { sideWidth } = storeToRefs(settings)
 
 function startResize(target: typeof listWidth, key: string, min: number, max: number) {
   return (e: MouseEvent) => {

@@ -92,7 +92,7 @@ function editAsNew() {
     </div>
 
     <div v-if="settings.activeTab === 'mail'" class="actionbar flex items-center gap-2 px-3 py-1 border-b border-line">
-      <div class="new-btn-slot shrink-0">
+      <div class="shrink-0" :style="{ width: `${settings.sideWidth}px` }">
         <DropdownMenu label="New Message" btn-class="btn-new" split @main="mail.openCompose('new')">
           <button type="button" class="dd-item" @click="mail.openCompose('new')">New Message</button>
         </DropdownMenu>
