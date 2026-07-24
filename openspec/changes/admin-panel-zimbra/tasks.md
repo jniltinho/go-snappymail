@@ -3,16 +3,16 @@
 ## 1. Binário único / config multi-serviço (no go-snappymail)
 
 - [x] 1.1 Blocos `[webmail]`, `[admin]`, `[database]` (mail) no `config.toml` (host, porta, tls, enabled, driver/dsn) + env `GOSM_*`; `[admin] host` permite bind restrito (ex.: `127.0.0.1`)
-- [ ] 1.2 `serve` sobe dois listeners Echo: webmail `:8082` (atual) + admin `:7071` — cada `enabled=true`
-- [ ] 1.3 Multi-listener com graceful shutdown coordenado (errgroup + signal); `[admin] enabled=false` não abre o listener
-- [ ] 1.4 Verificar isolamento: admin `:7071` e webmail `:8082` sem colisão; cookies/CSRF por serviço
+- [x] 1.2 `serve` sobe dois listeners Echo: webmail `:8082` (atual) + admin `:7071` — cada `enabled=true`
+- [x] 1.3 Multi-listener com graceful shutdown coordenado (errgroup + signal); `[admin] enabled=false` não abre o listener
+- [x] 1.4 Verificar isolamento: admin `:7071` e webmail `:8082` sem colisão; cookies/CSRF por serviço
 
 ## 1b. Separação de arquivos (backend): rotas, render, templates
 
-- [ ] 1b.1 `internal/server/routes_admin.go` (admin) separado de `routes.go` (webmail); `registerAdminRoutes` próprio
-- [ ] 1b.2 `internal/server/render_admin.go` servindo **só** `web/admin-dist` (sem fallback cruzado com `web/dist`)
-- [ ] 1b.3 `internal/admin/` isolado (handlers/models/auth/overview) — nada de handler admin no pacote do webmail
-- [ ] 1b.4 `main.go` `//go:embed` inclui `web/admin-dist` além de `web/dist`; ambos embutidos
+- [x] 1b.1 `internal/server/routes_admin.go` (admin) separado de `routes.go` (webmail); `registerAdminRoutes` próprio
+- [x] 1b.2 `internal/server/render_admin.go` servindo **só** `web/admin-dist` (sem fallback cruzado com `web/dist`)
+- [x] 1b.3 `internal/admin/` isolado (handlers/models/auth/overview) — nada de handler admin no pacote do webmail
+- [x] 1b.4 `main.go` `//go:embed` inclui `web/admin-dist` além de `web/dist`; ambos embutidos
 
 ## 2. Backend admin (GORM → MariaDB/PostgreSQL) — go-postfixadmin como referência
 
@@ -60,7 +60,7 @@
 - [ ] 5.4 **Aliases** — list/get/create/update/delete + destino inválido + loop/duplicado
 - [ ] 5.5 **Admins** — list/get/create/update/delete + atribuição de papel RBAC
 - [ ] 5.6 **Auth/RBAC** — JWT válido/expirado/ausente → 401; sem permissão → 403; superadmin × domain_admin (escopo por domínio)
-- [ ] 5.7 **Isolamento de superfície** — rota `/api/v1/admin/*` na porta do webmail (:8082) → 404; rota do webmail na porta do admin (:7071) → 404
+- [x] 5.7 **Isolamento de superfície** — rota `/api/v1/admin/*` na porta do webmail (:8082) → 404; rota do webmail na porta do admin (:7071) → 404
 - [ ] 5.8 **Config multi-serviço** — blocos enabled/disabled → portas/bind certos; `[admin] host` restrito; parsing TOML/env
 - [ ] 5.9 **Persistência GORM** — MariaDB **e** PostgreSQL (matrix; sqlmock para unit); migrações aplicam limpo; transações/rollback
 - [ ] 5.10 Cobertura mínima acordada por pacote admin e CI verde bloqueando merge

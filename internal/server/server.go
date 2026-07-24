@@ -13,13 +13,16 @@ import (
 	"syscall"
 	"time"
 
+	"go-snappymail/internal/admin"
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/handler"
 	"go-snappymail/internal/model"
 	appMiddleware "go-snappymail/internal/server/middleware"
 	"go-snappymail/internal/session"
+
 	"github.com/labstack/echo/v5"
 	echoMiddleware "github.com/labstack/echo/v5/middleware"
+	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm"
 )
 
@@ -101,23 +104,65 @@ func Start(cfg *config.Config, db *gorm.DB, embeddedFiles embed.FS) error {
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
+	// Optionally build the ISOLATED admin listener (separate Echo, own DB).
+	var adminSrv *http.Server
+	if cfg.Admin.Enabled {
+		if err := cfg.Admin.Validate(); err != nil {
+			return fmt.Errorf("admin config: %w", err)
+		}
+		adminDB, err := admin.Open(cfg.Admin)
+		if err != nil {
+			return err
+		}
+		if err := admin.Migrate(adminDB); err != nil {
+			return err
+		}
+		adminSrv, err = buildAdminServer(cfg, adminDB, embeddedFiles)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Coordinated graceful shutdown of every listener on signal.
 	go func() {
 		<-ctx.Done()
-		slog.Info("shutting down server")
+		slog.Info("shutting down servers")
 		shutCtx, shutCancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer shutCancel()
 		_ = srv.Shutdown(shutCtx)
+		if adminSrv != nil {
+			_ = adminSrv.Shutdown(shutCtx)
+		}
 	}()
 
-	slog.Info("go-snappymail listening", "addr", addr, "version", AppVersion)
-	var listenErr error
-	if cfg.Server.TLSCert != "" && cfg.Server.TLSKey != "" {
-		listenErr = srv.ListenAndServeTLS(cfg.Server.TLSCert, cfg.Server.TLSKey)
-	} else {
-		listenErr = srv.ListenAndServe()
+	g, _ := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		slog.Info("go-snappymail webmail listening", "addr", addr, "version", AppVersion)
+		return serveHTTP(srv, cfg.Server.TLSCert, cfg.Server.TLSKey)
+	})
+	if adminSrv != nil {
+		g.Go(func() error {
+			slog.Info("go-snappymail admin listening", "addr", adminSrv.Addr, "skin", cfg.Admin.Skin)
+			return serveHTTP(adminSrv, cfg.Admin.TLSCert, cfg.Admin.TLSKey)
+		})
 	}
-	if listenErr == http.ErrServerClosed {
+	if err := g.Wait(); err != nil && err != http.ErrServerClosed {
+		return err
+	}
+	return nil
+}
+
+// serveHTTP starts a server with optional TLS and treats ErrServerClosed as a
+// clean shutdown.
+func serveHTTP(srv *http.Server, certFile, keyFile string) error {
+	var err error
+	if certFile != "" && keyFile != "" {
+		err = srv.ListenAndServeTLS(certFile, keyFile)
+	} else {
+		err = srv.ListenAndServe()
+	}
+	if err == http.ErrServerClosed {
 		return nil
 	}
-	return listenErr
+	return err
 }

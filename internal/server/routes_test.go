@@ -8,9 +8,9 @@ import (
 	"testing"
 	"testing/fstest"
 
+	"github.com/labstack/echo/v5"
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/handler"
-	"github.com/labstack/echo/v5"
 )
 
 func TestVersionRoute(t *testing.T) {

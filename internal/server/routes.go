@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/labstack/echo/v5"
 	"go-snappymail/internal/config"
 	"go-snappymail/internal/handler"
 	appMiddleware "go-snappymail/internal/server/middleware"
-	"github.com/labstack/echo/v5"
 )
 
 func registerAPIRoutes(g *echo.Group, h *handler.Handlers, authMiddleware, authRateLimit echo.MiddlewareFunc) {
@@ -60,6 +60,12 @@ func registerRoutes(e *echo.Echo, cfg *config.Config, h *handler.Handlers, distF
 
 	e.GET("/*", func(c *echo.Context) error {
 		urlPath := c.Request().URL.Path
+		// Never serve the SPA for API paths — an unknown API route is a clean
+		// 404, not the app shell. Keeps admin API paths from resolving to the
+		// webmail SPA on this listener.
+		if strings.HasPrefix(urlPath, "/api/") {
+			return echo.ErrNotFound
+		}
 		ext := strings.ToLower(filepath.Ext(urlPath))
 		if ext != "" {
 			fsPath := strings.TrimPrefix(urlPath, "/")

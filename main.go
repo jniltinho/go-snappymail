@@ -8,6 +8,7 @@ import (
 )
 
 //go:embed all:web/dist
+//go:embed all:web/admin-dist
 //go:embed all:web/files
 var embeddedFiles embed.FS
 
