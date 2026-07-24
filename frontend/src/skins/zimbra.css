@@ -383,6 +383,16 @@
   min-height: 60px;
 }
 
+/* Selected row: thin focus outline like Zimbra's Row-focused (#5b798a 1px) */
+[data-skin='zimbra'] .msg-row.selected {
+  outline: 1px solid #5b798a;
+  outline-offset: -1px;
+}
+
+[data-skin='zimbra'].dark .msg-row.selected {
+  outline-color: #4a6a8a;
+}
+
 /* Selected folder shows the context ▾ arrow like Zimbra */
 [data-skin='zimbra'] .side-item.active::after {
   content: '▾';
