@@ -51,6 +51,13 @@ O admin SHALL persistir no banco Postfix/Dovecot em MariaDB ou PostgreSQL via GO
 - **WHEN** `[database] driver` muda entre `mysql` e `postgres` com DSN válido
 - **THEN** o painel funciona sem alteração de código (só config/migração)
 
+### Requirement: API JSON ponta a ponta
+Todas as rotas `/api/v1/admin/*` SHALL aceitar e retornar **JSON** (request body JSON + response JSON com envelope consistente), com `Content-Type: application/json`. Sem form-encoded/HTML no CRUD do painel; erros também em JSON. O frontend consome JSON tipado.
+
+#### Scenario: CRUD em JSON
+- **WHEN** um modal envia um create/update com body JSON
+- **THEN** o backend responde JSON (recurso criado/atualizado ou erro estruturado), nunca HTML/form
+
 ### Requirement: Cobertura total de testes do backend admin
 **Toda** rota `/api/v1/admin/*` SHALL ter testes automatizados cobrindo sucesso, validação, erro e permissão — nenhum endpoint sem teste. `go test -race ./...` SHALL passar; a suíte cobre CRUD de domains/mailboxes/aliases/admins, overview, auth/RBAC, isolamento de superfície e persistência (MariaDB e PostgreSQL). Regra do projeto: backend-first, cada rota entra com seu teste.
 

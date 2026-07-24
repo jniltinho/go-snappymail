@@ -39,6 +39,8 @@
 - [ ] 3b.2 `frontend/src/components/modals/` (webmail) — mover/organizar os modais existentes (ex.: composer) para um arquivo por modal, mesmo padrão
 - [ ] 3b.3 Estrutura consistente nos dois: `layouts/` (shell), `views/` (telas), `components/` (reuso), `components/modals/` (modais), `stores/`, `api/`, `theme/`
 - [ ] 3b.4 **Tema/layout separados por frontend**: cada um com seu `tailwind.config`, seu `@theme`/tokens, seu shell/layout — nada compartilhado; um não importa do outro
+- [ ] 3b.5 **Componente base `Modal.vue`** (overlay, foco, Esc/click-outside, header/body/footer) + store de UI para modal aberto; admin é **modal-heavy** (toda ação em diálogo, não página)
+- [ ] 3b.6 **Cliente API JSON tipado** (`api/`): request/response JSON com envelope consistente; modais enviam e populam JSON (sem form-encoded)
 
 ## 4. Telas de gerenciamento (uma view + um modal por recurso)
 

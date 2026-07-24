@@ -69,6 +69,10 @@ Tailwind utility-first para estrutura + camada de tokens ZimbraAdmin (`@theme`/C
 
 **Antes de codar a UI:** capturar **todos os prints do ZimbraAdmin** (`192.168.56.30:7071`) em `docs/prints/zimbra-admin/` — login, Home, cada nó da árvore, telas de Domains/Accounts/Aliases/Admins com seus modais, toolbars e toasts — e extrair deles os tokens (paleta harmony, tipografia Helvetica/Arial, cantos 3px). O tema Tailwind do admin é derivado desses prints para ficar **idêntico** ao legado. Tirar novos prints sempre que precisar comparar (convenção do projeto: prints só em `docs/prints/`). **Toda a UI em inglês** (o console legado está em pt-BR por locale da VM; o clone usa inglês).
 
+**Admin é modal-heavy (como o ZimbraAdmin):** toda ação de criar/editar/ver-detalhe/confirmar abre um **modal/diálogo** (New Domain, Edit Account, Delete confirm, etc.), não páginas separadas. Um **componente base `Modal.vue`** (overlay, foco, Esc/click-outside, header/body/footer) + **um modal por recurso** em `components/modals/`. Um store de UI controla qual modal está aberto e seus dados.
+
+**API JSON ponta a ponta:** todas as rotas `/api/v1/admin/*` recebem e devolvem **JSON** (request body JSON + response JSON com envelope consistente), tipado no cliente (`api/` com tipos TS). Sem form-encoded/HTML — os modais mandam JSON e populam a partir de JSON.
+
 **Organização Vue (nos dois frontends):** **um modal por arquivo** em `components/modals/` (`DomainModal.vue`, `MailboxModal.vue`, …) — nunca vários modais no mesmo arquivo. Estrutura consistente: `layouts/` (shell), `views/` (uma tela por arquivo), `components/` (reuso), `components/modals/` (modais), `stores/`, `api/`, `theme/`. O webmail (`frontend/`) segue o mesmo padrão (organizar modais existentes, ex. composer, em `components/modals/`).
 
 ### D3b — Multi-skin nos DOIS frontends (deixar pronto para trocar de skin)
