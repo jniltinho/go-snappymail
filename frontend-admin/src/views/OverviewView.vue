@@ -102,6 +102,9 @@ onMounted(async () => {
   display: flex;
   gap: 120px;
 }
+.ov-col {
+  min-width: 400px;
+}
 .ov-col h3 {
   margin: 0 0 12px;
   font-size: 15px;

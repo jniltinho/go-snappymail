@@ -78,6 +78,7 @@ a:hover {
  * light vertical + horizontal grid lines through the data, tight rows, dark
  * text (email/name are NOT blue links here), and a leading account icon. */
 .grid {
+  display: table; /* override Tailwind's .grid utility (display:grid) collision */
   width: 100%;
   border-collapse: collapse;
   font-size: var(--fs);
@@ -85,9 +86,9 @@ a:hover {
 .grid thead th {
   text-align: left;
   font-weight: 400;
-  color: #5e7e9b;
+  color: #5a6b7a;
   padding: 4px 10px;
-  background: linear-gradient(to bottom, #eff3f7, #dbe4ec);
+  background: linear-gradient(to bottom, #eef2f6, #dde4ea);
   border-bottom: 1px solid #c6d0da;
   border-right: 1px solid #c6d0da;
   white-space: nowrap;
@@ -108,10 +109,10 @@ a:hover {
 .grid tbody tr.selected {
   background: var(--sel);
 }
-/* Email / primary-name column: dark text (like the reference), with a small
- * account icon on the left of each row. */
+/* Email / primary-name column: blue link text (like the reference), with a
+ * small account icon on the left of each row. */
 .grid .email {
-  color: var(--txt);
+  color: #1a6ba8;
 }
 .grid td.namecell {
   padding-left: 28px;

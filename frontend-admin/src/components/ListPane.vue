@@ -13,7 +13,7 @@ function closeMenu() {
 <template>
   <div class="pane" @click="closeMenu">
     <div class="pane-head">
-      <span class="crumb">Home &nbsp;&ndash;&nbsp; Manage &nbsp;&ndash;&nbsp; {{ crumb }}</span>
+      <span class="crumb">Home - Manage - {{ crumb }}</span>
       <span class="pane-head-right">
         <span class="help-q">?</span><a href="#" @click.prevent>Help</a>
         <span class="gear-wrap" @click.stop>
@@ -37,6 +37,7 @@ function closeMenu() {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-width: 0;
 }
 .pane-head {
   display: flex;

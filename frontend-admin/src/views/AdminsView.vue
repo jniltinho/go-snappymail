@@ -61,10 +61,10 @@ onMounted(load)
     <table v-else class="grid">
       <thead>
         <tr>
-          <th>Username</th>
-          <th>Role</th>
-          <th>Managed Domains</th>
-          <th>Status</th>
+          <th style="width: 30%">Username</th>
+          <th style="width: 18%">Role</th>
+          <th style="width: 28%">Managed Domains</th>
+          <th style="width: 24%">Status</th>
         </tr>
       </thead>
       <tbody>

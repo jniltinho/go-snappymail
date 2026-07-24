@@ -38,8 +38,9 @@ onMounted(() => {
   min-height: 0;
 }
 .content {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
+  width: 0;
   background: var(--view-bg);
   overflow: auto;
 }

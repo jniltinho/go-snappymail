@@ -61,7 +61,6 @@ onMounted(async () => {
       <!-- Home (leaf) -->
       <li>
         <RouterLink :to="{ name: 'overview' }" class="tnode" :class="{ sel: onHome }">
-          <span class="tnode-caret-spacer"></span>
           <span class="tnode-ico ico-home"></span><span class="tnode-label">Home</span>
         </RouterLink>
       </li>
@@ -69,16 +68,16 @@ onMounted(async () => {
       <!-- Monitor (inert, collapsed) -->
       <li>
         <span class="tnode inert">
-          <span class="tnode-caret">&#9656;</span>
           <span class="tnode-ico ico-monitor"></span><span class="tnode-label">Monitor</span>
+          <span class="tnode-caret">&#9656;</span>
         </span>
       </li>
 
       <!-- Manage (expanded section bar) -->
       <li>
         <span class="tnode section" :class="{ sel: inManage }">
-          <span class="tnode-caret open">&#9662;</span>
           <span class="tnode-ico ico-manage"></span><span class="tnode-label">Manage</span>
+          <span class="tnode-caret open">&#9662;</span>
         </span>
       </li>
       <ul class="leaves">
@@ -95,9 +94,8 @@ onMounted(async () => {
       <!-- Remaining inert sections -->
       <li v-for="s in sections.slice(1)" :key="s.key">
         <span class="tnode inert">
-          <span v-if="s.key !== 'help'" class="tnode-caret">&#9656;</span>
-          <span v-else class="tnode-caret-spacer"></span>
           <span class="tnode-ico" :class="s.ico"></span><span class="tnode-label">{{ s.label }}</span>
+          <span v-if="s.key !== 'help'" class="tnode-caret">&#9656;</span>
         </span>
       </li>
     </ul>
@@ -174,6 +172,9 @@ onMounted(async () => {
 .tnode.section {
   font-weight: 700;
 }
+.tnode-label {
+  flex: 1;
+}
 .tnode-caret {
   font-size: 8px;
   color: #5a6b78;
@@ -182,10 +183,6 @@ onMounted(async () => {
 }
 .tnode-caret.open {
   font-size: 9px;
-}
-.tnode-caret-spacer {
-  display: inline-block;
-  width: 9px;
 }
 .tnode-ico {
   width: 16px;
