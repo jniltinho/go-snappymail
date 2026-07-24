@@ -170,8 +170,11 @@ async function submit() {
 
 /* Glossy Web-2.0 reflection: a bluer band directly under the card that fades
  * smoothly into the page background. */
+/* Reflection ("sombra") — 100px tall, flush under the card, matching the legacy
+ * .decor1 element (346 -> 446). Approximated with a CSS gradient (the legacy
+ * uses a skin reflection image). */
 .login-reflection {
-  height: 160px;
+  height: 100px;
   background: linear-gradient(to bottom, rgba(140, 196, 223, 0.9), rgba(220, 235, 244, 0));
 }
 
