@@ -2,7 +2,7 @@
 
 ## 1. Binário único / config multi-serviço (no go-snappymail)
 
-- [ ] 1.1 Blocos `[webmail]`, `[admin]`, `[database]` (mail) no `config.toml` (porta, tls, enabled, driver/dsn) + env `GOSM_*`
+- [ ] 1.1 Blocos `[webmail]`, `[admin]`, `[database]` (mail) no `config.toml` (host, porta, tls, enabled, driver/dsn) + env `GOSM_*`; `[admin] host` permite bind restrito (ex.: `127.0.0.1`)
 - [ ] 1.2 `serve` sobe dois listeners Echo: webmail `:8082` (atual) + admin `:7071` — cada `enabled=true`
 - [ ] 1.3 Multi-listener com graceful shutdown coordenado (errgroup + signal); `[admin] enabled=false` não abre o listener
 - [ ] 1.4 Verificar isolamento: admin `:7071` e webmail `:8082` sem colisão; cookies/CSRF por serviço
@@ -50,6 +50,7 @@
 - [ ] 5.1 Testes do `GET /api/v1/admin/overview` (agregados corretos; papel admin exigido; 403 sem papel) — table-driven, `-race`
 - [ ] 5.2 Testes dos handlers reusados nas telas: domains/mailboxes/aliases/admins/transports (CRUD, validação, erros) — cobrir casos de sucesso e falha
 - [ ] 5.3 Testes de auth/RBAC do painel (JWT válido/expirado/sem papel → 401/403)
+- [ ] 5.3b Teste de **isolamento de superfície**: rota `/api/v1/admin/*` na porta do webmail (:8082) → 404; rota do webmail na porta do admin (:7071) → 404 (instâncias Echo separadas, sem fallback cruzado)
 - [ ] 5.4 Testes de config multi-serviço (blocos enabled/disabled → portas certas; parsing TOML/env)
 - [ ] 5.5 Testes de persistência GORM em MariaDB **e** PostgreSQL (matrix; sqlmock para unit — ConnectDB não tem SQLite), migrações aplicam limpo
 - [ ] 5.6 Cobertura mínima acordada e `go test -race ./...` verde no CI

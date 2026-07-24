@@ -15,6 +15,21 @@ O binário SHALL ler blocos `[admin]`, `[webmail]` e `[database]` do `config.tom
 - **WHEN** ambos `enabled=true`
 - **THEN** um processo serve `:7071` (admin) e `:8082` (webmail) sem interferência
 
+### Requirement: Isolamento total das superfícies admin × webmail
+Os endpoints de admin (`/api/v1/admin/*`) e a SPA admin (`web/admin-dist`) SHALL ser registrados **apenas** no listener admin (`:7071`), em uma **instância Echo separada**, e **nunca** serem alcançáveis pela porta/listener do webmail (`:8082`) — nem por rota, nem por proxy, nem por SPA fallback. O inverso também: rotas do webmail não existem no router do admin.
+
+#### Scenario: Admin não vaza pela porta do webmail
+- **WHEN** uma requisição chega em `http://host:8082/api/v1/admin/overview` (porta do webmail)
+- **THEN** o router do webmail responde **404** (a rota admin não existe ali); o handler admin nunca é invocado
+
+#### Scenario: Webmail não vaza pela porta do admin
+- **WHEN** uma requisição chega em `http://host:7071/api/v1/mail/INBOX` (porta do admin)
+- **THEN** o router do admin responde **404**
+
+#### Scenario: Bind restrito opcional
+- **WHEN** `[admin] host = "127.0.0.1"`
+- **THEN** o painel admin só aceita conexões locais em `:7071`, sem exposição externa
+
 ### Requirement: Overview endpoint
 O backend SHALL expor `GET /api/v1/admin/overview` (prefixo `/api/v1/admin`, envelope JSON consistente do go-snappymail) retornando os contadores **que existem no schema** — accounts (mailboxes), domains, aliases, admins — para a Home, exigindo permissão de admin. Campos do console legado sem fonte no schema (COS, servers, active sessions, mail queue) SHALL ser omitidos ou retornados como `null`/`"n/a"`, nunca inventados.
 

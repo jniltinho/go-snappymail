@@ -84,8 +84,15 @@ Persistência: **banco separado** do mail (MariaDB/PostgreSQL via GORM), distint
 ### D5 — Auth admin (JWT + RBAC), independente do webmail
 O webmail usa cookie de sessão IMAP; o admin usa **JWT próprio + RBAC granular** (superadmin/domain_admin + permissões `domains:read`, `mailboxes:write`, …) contra a tabela de admins do banco. Cada nó/rota exige a permissão; sem ela → 403; nós fora da permissão ficam ocultos. **Isolamento de cookies/CSRF:** como admin e webmail podem coexistir no mesmo host, usar nomes/Path/SameSite/CSRF distintos por serviço (ex.: `gsn_session` webmail × `gsn_admin_jwt` admin).
 
-### D6 — Multi-listener num processo
-`serve` sobe dois listeners Echo: `:8082` (webmail, atual) e `:7071` (admin), cada um com seu middleware, seu `fs.Sub` de SPA e **graceful shutdown** coordenado (errgroup + signal). Bloco `[admin] enabled=false` → listener não abre.
+### D6 — Multi-listener num processo, com REGRA DE OURO de isolamento
+`serve` sobe dois listeners Echo **independentes**: `:8082` (webmail, atual) e `:7071` (admin), cada um com seu próprio `*echo.Echo`, seu middleware, seu `fs.Sub` de SPA e **graceful shutdown** coordenado (errgroup + signal). Bloco `[admin] enabled=false` → listener não abre.
+
+**Regra de ouro (isolamento de superfície — inviolável):** os endpoints de admin **nunca** podem ser alcançados pela porta/listener do webmail, e vice-versa.
+- **Instâncias Echo separadas**, não um Echo com dois grupos: as rotas `/api/v1/admin/*` e a SPA `web/admin-dist` são registradas **apenas** no Echo do `:7071`; as rotas do webmail e `web/dist` **apenas** no Echo do `:8082`. Não existe um único router que conheça as duas árvores.
+- `registerAdminRoutes` é chamado **só** para o Echo admin; `registerAPIRoutes` (webmail) **só** para o Echo webmail. Um não referencia o outro.
+- **Bind opcional em interface distinta:** o admin pode escutar em `127.0.0.1:7071` (só local) enquanto o webmail escuta em `0.0.0.0:8082`, reduzindo exposição — configurável por `[admin] host`.
+- **Sem proxy/rewrite** que reencaminhe `/admin` a partir da porta do webmail. Bater em `http://host:8082/api/v1/admin/...` retorna 404 (a rota não existe naquele router), nunca alcança o handler admin.
+- Teste obrigatório: requisição a rota de admin **na porta do webmail → 404**; e rota do webmail **na porta do admin → 404** (ver tasks §5).
 
 ### D7 — Separação de arquivos: rotas e templates (webmail × admin)
 Rotas e templates/SPA de cada serviço ficam em **arquivos próprios**, nunca misturados:
