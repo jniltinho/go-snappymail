@@ -57,11 +57,11 @@ onMounted(load)
     <table v-else class="grid">
       <thead>
         <tr>
-          <th style="width: 29%">Email Address</th>
-          <th style="width: 19%">Display Name</th>
-          <th style="width: 12%">Status</th>
-          <th style="width: 19%">Last Login</th>
-          <th style="width: 21%">Description</th>
+          <th style="width: 22%">Email Address</th>
+          <th style="width: 20%">Display Name</th>
+          <th style="width: 13%">Status</th>
+          <th style="width: 20%">Last Login</th>
+          <th style="width: 25%">Description</th>
         </tr>
       </thead>
       <tbody>
@@ -75,7 +75,7 @@ onMounted(load)
           <td class="email namecell ico-account">{{ m.username }}</td>
           <td>{{ m.name }}</td>
           <td>{{ m.active ? 'Active' : 'Inactive' }}</td>
-          <td class="muted">Never signed in</td>
+          <td class="muted">Never logged In</td>
           <td></td>
         </tr>
         <tr v-if="!rows.length">

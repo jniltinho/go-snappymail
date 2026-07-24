@@ -51,7 +51,7 @@ onMounted(async () => {
             <dd>n/a</dd>
             <dt>Active Sessions:</dt>
             <dd>{{ fmt(ov?.active_sessions) }}</dd>
-            <dt>Mail Queue:</dt>
+            <dt>Queue Length:</dt>
             <dd>{{ fmt(ov?.queue) }}</dd>
           </dl>
         </section>
@@ -103,13 +103,16 @@ onMounted(async () => {
   gap: 120px;
 }
 .ov-col {
-  min-width: 400px;
+  min-width: 480px;
+}
+.ov-col dl {
+  column-gap: 14px;
 }
 .ov-col h3 {
   margin: 0 0 12px;
   font-size: 15px;
   font-weight: 700;
-  color: #5a87ac;
+  color: #8fa0ac;
 }
 .ov-col dl {
   display: grid;

@@ -88,8 +88,8 @@ a:hover {
   font-weight: 400;
   color: #5a6b7a;
   padding: 4px 10px;
-  background: linear-gradient(to bottom, #eef2f6, #dde4ea);
-  border-bottom: 1px solid #c6d0da;
+  background: linear-gradient(to bottom, #eaedf0, #d6dce2);
+  border-bottom: 1px solid #bfc9d2;
   border-right: 1px solid #c6d0da;
   white-space: nowrap;
 }
