@@ -51,7 +51,7 @@ const emit = defineEmits<{ close: []; submit: [] }>()
   padding: 6px 10px;
   color: #fff;
   font-size: var(--fs-big);
-  background: linear-gradient(to bottom, var(--masthead-top), var(--masthead-bottom));
+  background: linear-gradient(to bottom, var(--dialog-title-top), var(--dialog-title-bottom));
 }
 .modal-x {
   background: none;

@@ -45,6 +45,6 @@ onMounted(() => {
 }
 .statusbar {
   height: 5px;
-  background: linear-gradient(to bottom, var(--masthead-top), var(--masthead-bottom));
+  background: var(--statusbar);
 }
 </style>

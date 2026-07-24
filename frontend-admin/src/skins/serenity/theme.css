@@ -22,10 +22,20 @@
   --col-header-bg: #f3f3f3;
   --col-header-border: #d4d4d4;
 
-  /* Masthead (top bar) — dark teal-navy gradient of the console */
-  --masthead-top: #1c5f8b;
-  --masthead-bottom: #16456a;
-  --masthead-txt: #ffffff;
+  /* Masthead (top bar) — LIGHT silver gradient with dark-navy text (serenity) */
+  --masthead-top: #f7f7f7;
+  --masthead-bottom: #dcdcdc;
+  --masthead-txt: #1c3f5f; /* dark-navy brand + icon color */
+  --masthead-sub: #6b7a86;
+  --masthead-border: #a7b7c2; /* subtle blue bottom hairline */
+  --masthead-icon: #4a6377;
+
+  /* Dialog/modal title bar — blue gradient (distinct from the light masthead) */
+  --dialog-title-top: var(--accent);
+  --dialog-title-bottom: var(--accent-dark);
+
+  /* Thin status strip at the very bottom of the app */
+  --statusbar: #2f7fb5;
 
   /* Login page + card */
   --login-page-top: #f7f7f7;

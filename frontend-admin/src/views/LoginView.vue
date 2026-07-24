@@ -77,24 +77,29 @@ async function submit() {
 
 .login-card {
   background: linear-gradient(to bottom, var(--login-card-top), var(--login-card-bottom));
-  padding: 34px 40px 28px;
-  min-height: 250px;
+  padding: 24px 40px 46px;
+  min-height: 276px;
 }
 
 .login-banner {
-  margin-bottom: 34px;
+  margin-bottom: 30px;
 }
 .login-banner img {
   display: block;
-  height: 40px;
+  height: 44px;
   width: auto;
 }
 
+/* The form group sits left-of-center under the logo (not flush to the card's
+ * right edge), matching the reference. */
+.login-form {
+  padding-right: 42px;
+}
 .login-row {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 10px;
 }
 .login-row label {
@@ -148,15 +153,16 @@ async function submit() {
   cursor: default;
 }
 
-/* Glossy Web-2.0 reflection panel below the card. */
+/* Glossy Web-2.0 reflection: a bluer band directly under the card that fades
+ * smoothly into the page background. */
 .login-reflection {
-  height: 96px;
-  background: linear-gradient(to bottom, rgba(190, 224, 240, 0.9), rgba(255, 255, 255, 0));
+  height: 88px;
+  background: linear-gradient(to bottom, rgba(140, 196, 223, 0.9), rgba(220, 235, 244, 0));
 }
 
 .login-footer {
   margin-top: auto;
-  padding: 18px 0 26px;
+  padding: 30px 0 30px;
   text-align: center;
   color: var(--txt-muted);
   font-size: var(--fs);
